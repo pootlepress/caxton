@@ -43,6 +43,10 @@ class Caxton_Public{
 		$this->version =   Caxton::$version;
 	}
 
+	public function caxton_shortcode() {
+		echo 'Shortcode test...';
+	}
+
 	/**
 	 * Adds front end stylesheet and js
 	 * @action wp_enqueue_scripts

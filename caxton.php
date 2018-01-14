@@ -86,7 +86,7 @@ class Caxton{
 		$this->admin = Caxton_Admin::instance();
 
 		//Enqueue admin end JS and CSS
-		add_action( 'admin_enqueue_scripts',	array( $this->admin, 'enqueue' ) );
+		add_action( 'enqueue_block_editor_assets',	array( $this->admin, 'enqueue' ) );
 
 	}
 
@@ -99,6 +99,7 @@ class Caxton{
 
 		//Enqueue front end JS and CSS
 		add_action( 'wp_enqueue_scripts',	array( $this->public, 'enqueue' ) );
+		add_shortcode( 'caxton_shortcode',	array( $this->public, 'caxton_shortcode' ) );
 
 	}
 }

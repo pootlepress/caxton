@@ -52,7 +52,8 @@ class Caxton_Admin {
 		$token = $this->token;
 		$url = $this->url;
 
-		wp_enqueue_style( $token . '-css', $url . '/assets/admin.css' );
-		wp_enqueue_script( $token . '-js', $url . '/assets/admin.js', array( 'jquery' ) );
+		wp_enqueue_style( $token . '-css', $url . '/assets/front.css' );
+
+		wp_enqueue_script( $token . '-gb', $url . 'assets/admin.js', array( 'wp-blocks' ) );
 	}
 }
