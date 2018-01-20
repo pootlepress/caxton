@@ -95,23 +95,33 @@ class Caxton_Public{
 		];
 		$posts = Caxton_Admin::instance()->posts( $args );
 		ob_start();
-		echo '<div class="caxton-posts-grid caxton-grid">';
+
+		$classes = "caxton-posts-grid caxton-grid";
+
+		if ( ! empty( $block['circularImages'] ) )	$classes .= ' caxton-circle-images';
+		if ( ! empty( $block['titleBelowImage'] ) )	$classes .= ' caxton-title-below-image';
+
+		echo "<div class='$classes'>";
 		$width = $block['columns'] ? 100 / $block['columns'] : 50;
 		foreach ( $posts as $post ) {
-			$date = $excerpt = '';
+			$in_image = $after_image = '';
 
-			if ( $block['displayDate'] )		$date = "<date>$post[date]</date>";
-			if ( $block['displayExcerpt'] )	$excerpt = "<p>$post[excerpt]</p>";
+			if ( empty( $block['titleBelowImage'] ) )	{
+				$in_image .= "<h3 class='grid-title'>$post[title]</h3>\n";
+			} else {
+				$after_image .= "<h3 class='grid-title'>$post[title]</h3>\n";
+			}
+			if ( $block['displayDate'] )		$after_image .= "<time>$post[date]</time>\n";
+			if ( $block['displayExcerpt'] )	$after_image .= "<p>$post[excerpt]</p>\n";
 
 			echo <<<HTML
-<div class="grid-item" style="width: {$width}%'">
+<div class="grid-item" style="width: {$width}%">
 	<a href="$post[link]">
 		<div class="grid-image" style="background-image: url('$post[thumb_ml]');">
-			<h3 class="grid-title">$post[title]</h3>
+			$in_image
 		</div>
 	</a>
-	$date
-	$excerpt
+	$after_image
 </div>
 HTML;
 		}

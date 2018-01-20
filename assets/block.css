@@ -8,4 +8,9 @@
   max-width: 300px;
   margin: auto; }
 
+.caxton-grid .grid-image h3.grid-title {
+  font-size: 16px; }
+.caxton-grid p {
+  font-size: 14px; }
+
 /*# sourceMappingURL=block.css.map */

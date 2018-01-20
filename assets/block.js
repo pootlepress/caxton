@@ -31,6 +31,12 @@
 					displayExcerpt: {
 						type: 'string',
 					},
+					circularImages: {
+						type: 'string',
+					},
+					titleBelowImage: {
+						type: 'string',
+					},
 					rows: {
 						type: 'string',
 					},
@@ -50,14 +56,17 @@
 						order = props.attributes.order.split( '/' ),
 						url =
 							'/caxton/v1/posts' +
-							'?posts_per_page=' + ( props.attributes.rows * props.attributes.columns ) +
-							'&cat=' + ( props.attributes.cat ) +
+							'?posts_per_page=' + (
+								props.attributes.rows * props.attributes.columns
+							) +
+							'&cat=' + (
+								props.attributes.cat
+							) +
 							'&orderby=' + order[0] +
 							'&order=' + order[1];
 					console.log( url );
-					return { posts: url };
+					return {posts: url};
 				} )( function ( props ) {
-
 					var attrs = $.extend( {
 						cat: '',
 						order: 'date/desc',
@@ -67,10 +76,18 @@
 						displayExcerpt: false,
 					}, props.attributes );
 
-						var post, gridInfo,
-							grids = [],
-							focus = props.focus,
-							className = props.className + ' ' + props.name.replace( '/', '-' ) + ' caxton-grid';
+					var post, gridInfo,
+						grids = [],
+						focus = props.focus,
+						className = props.className + ' ' + props.name.replace( '/', '-' ) + ' caxton-grid';
+
+					if ( attrs.circularImages ) {
+						className += ' caxton-circle-images';
+					}
+
+					if ( attrs.titleBelowImage ) {
+						className += ' caxton-title-below-image';
+					}
 
 					if ( ! props.posts.data ) {
 						grids.push( el( 'div', {className: 'caxton-notification',}, 'Loading posts...' ) );
@@ -87,8 +104,10 @@
 								)
 							];
 
+							gridInfo.push( el( 'h3', {className: 'grid-title',}, post.title ) );
+
 							if ( attrs.displayDate ) {
-								gridInfo.push( el( 'date', {}, post.date ) );
+								gridInfo.push( el( 'time', {}, post.date ) );
 							}
 
 							if ( attrs.displayExcerpt ) {
@@ -132,13 +151,13 @@
 									label: 'Order',
 									value: attrs.order,
 									options: [
-										{ label: __( 'Newest to Oldest' ),	value: 'date/desc', },
-										{ label: __( 'Oldest to Newest' ),	value: 'date/asc', },
-										{ label: __( 'A → Z' ),							value: 'title/asc', },
-										{ label: __( 'Z → A' ),							value: 'title/desc', },
+										{label: __( 'Newest to Oldest' ), value: 'date/desc',},
+										{label: __( 'Oldest to Newest' ), value: 'date/asc',},
+										{label: __( 'A → Z' ), value: 'title/asc',},
+										{label: __( 'Z → A' ), value: 'title/desc',},
 									],
 									onChange: function ( val ) {
-										props.setAttributes( {order: val } );
+										props.setAttributes( {order: val} );
 									}
 								}
 							),
@@ -149,9 +168,9 @@
 									checked: attrs.displayDate,
 									onChange: function ( val ) {
 										if ( val.target ) {
-											props.setAttributes( { displayDate: val.target.checked } );
+											props.setAttributes( {displayDate: val.target.checked} );
 										} else {
-											props.setAttributes( { displayDate: val } );
+											props.setAttributes( {displayDate: val} );
 										}
 									}
 								}
@@ -163,9 +182,37 @@
 									checked: attrs.displayExcerpt,
 									onChange: function ( val ) {
 										if ( val.target ) {
-											props.setAttributes( { displayExcerpt: val.target.checked } );
+											props.setAttributes( {displayExcerpt: val.target.checked} );
 										} else {
-											props.setAttributes( { displayExcerpt: val } );
+											props.setAttributes( {displayExcerpt: val} );
+										}
+									}
+								}
+							),
+							el(
+								InspectorControls.ToggleControl,
+								{
+									label: 'Circular images',
+									checked: attrs.circularImages,
+									onChange: function ( val ) {
+										if ( val.target ) {
+											props.setAttributes( {circularImages: val.target.checked} );
+										} else {
+											props.setAttributes( {circularImages: val} );
+										}
+									}
+								}
+							),
+							el(
+								InspectorControls.ToggleControl,
+								{
+									label: 'Show title below image',
+									checked: attrs.titleBelowImage,
+									onChange: function ( val ) {
+										if ( val.target ) {
+											props.setAttributes( {titleBelowImage: val.target.checked} );
+										} else {
+											props.setAttributes( {titleBelowImage: val} );
 										}
 									}
 								}
@@ -176,7 +223,7 @@
 									label: 'Post columns',
 									value: attrs.columns,
 									onChange: function ( val ) {
-										props.setAttributes( {columns: val } );
+										props.setAttributes( {columns: val} );
 									},
 									min: 1,
 									max: 4,
@@ -188,7 +235,7 @@
 									label: 'Post rows',
 									value: attrs.rows,
 									onChange: function ( val ) {
-										props.setAttributes( {rows: val } );
+										props.setAttributes( {rows: val} );
 									},
 									min: 1,
 									max: 20,

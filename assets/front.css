@@ -4,17 +4,58 @@
  * @package Caxton
  * @version 1.0.0
  */
+/**
+ * Plugin front end styles
+ *
+ * @package Caxton
+ * @version 1.0.0
+ */
 .caxton-grid {
   display: flex;
   flex-wrap: wrap; }
-
-.grid-item {
-  width: 33.33%;
-  padding: 1%; }
-
-.grid-image {
-  padding-top: 56.25%;
-  background: center/cover; }
+  .caxton-grid .grid-item {
+    width: 33.33%;
+    padding: 1%; }
+  .caxton-grid h3.grid-title {
+    padding: 0 7%;
+    margin: .7em 0;
+    font-size: 18px;
+    text-align: center;
+    display: none; }
+  .caxton-grid .grid-image {
+    position: relative;
+    padding-top: 100%;
+    background: center/cover;
+    overflow: hidden; }
+    .caxton-grid .grid-image h3.grid-title, .caxton-grid .grid-image:before {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 50%;
+      right: 0;
+      left: 0;
+      transform: translateY(-50%);
+      opacity: .25; }
+    .caxton-grid .grid-image h3.grid-title {
+      margin: 0;
+      color: #ffffff; }
+    .caxton-grid .grid-image:before {
+      background: rgba(0, 0, 0, 0.5);
+      height: 9999px; }
+    .caxton-grid .grid-image:hover h3.grid-title, .caxton-grid .grid-image:hover:before {
+      opacity: 1; }
+  .caxton-grid.caxton-title-below-image h3.grid-title {
+    display: block; }
+  .caxton-grid.caxton-title-below-image .grid-image h3.grid-title, .caxton-grid.caxton-title-below-image .grid-image:before {
+    display: none; }
+  .caxton-grid.caxton-circle-images .grid-image {
+    border-radius: 100%;
+    overflow: hidden;
+    z-index: 7; }
+  .caxton-grid time {
+    text-align: center;
+    display: block;
+    margin: .5em 0 .2em; }
 
 .clear-fix:after {
   content: '';

@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Caxton - Gutenberg pro
+Plugin Name: Caxton
 Plugin URI: http://shramee.me/
-Description: Simple plugin starter for quick delivery
-Author: Shramee
+Description: Caxton - blocks for Gutenberg
+Author: PootlePress
 Version: 1.0.0
-Author URI: http://shramee.me/
+Author URI: https://pootlepress.com/
 @developer shramee <shramee.srivastav@gmail.com>
 */
 
@@ -22,7 +22,7 @@ require 'inc/class-public.php';
  * @static string $path Plugin root dir path
  * @static string $version Plugin version
  */
-class Caxton{
+class Caxton {
 
 	/** @var Caxton Instance */
 	private static $_instance = null;
