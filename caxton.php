@@ -87,6 +87,8 @@ class Caxton{
 
 		//Enqueue admin end JS and CSS
 		add_action( 'enqueue_block_editor_assets',	array( $this->admin, 'enqueue' ) );
+		add_action( 'rest_api_init',	array( $this->admin, 'rest_api_init' ) );
+		add_action( 'wp_ajax_caxton_posts',	array( $this->admin, 'posts' ) );
 
 	}
 
@@ -99,7 +101,7 @@ class Caxton{
 
 		//Enqueue front end JS and CSS
 		add_action( 'wp_enqueue_scripts',	array( $this->public, 'enqueue' ) );
-		add_shortcode( 'caxton_shortcode',	array( $this->public, 'caxton_shortcode' ) );
+		add_action( 'init',	array( $this->public, 'register_blocks' ) );
 
 	}
 }

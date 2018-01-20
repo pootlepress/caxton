@@ -1,0 +1,27 @@
+/**
+ * Plugin front end styles
+ *
+ * @package Caxton
+ * @version 1.0.0
+ */
+
+.caxton-grid {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.grid-item {
+	width: 33.33%;
+	padding: 1%;
+}
+
+.grid-image {
+	padding-top: 56.25%;
+	background: center/cover;
+}
+
+.clear-fix:after {
+	content: '';
+	display: block;
+	clear: both;
+}

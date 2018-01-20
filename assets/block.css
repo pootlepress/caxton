@@ -1,0 +1,11 @@
+/**
+ * Plugin front end styles
+ * @package Caxton
+ */
+.caxton-notification {
+  padding: 50px;
+  text-align: center;
+  max-width: 300px;
+  margin: auto; }
+
+/*# sourceMappingURL=block.css.map */

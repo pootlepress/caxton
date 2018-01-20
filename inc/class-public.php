@@ -43,10 +43,6 @@ class Caxton_Public{
 		$this->version =   Caxton::$version;
 	}
 
-	public function caxton_shortcode() {
-		echo 'Shortcode test...';
-	}
-
 	/**
 	 * Adds front end stylesheet and js
 	 * @action wp_enqueue_scripts
@@ -56,6 +52,71 @@ class Caxton_Public{
 		$url = $this->url;
 
 		wp_enqueue_style( $token . '-css', $url . '/assets/front.css' );
+		wp_enqueue_script( '-js', $url . '/assets/front.js', array( 'jquery' ) );
 		wp_enqueue_script( $token . '-js', $url . '/assets/front.js', array( 'jquery' ) );
+	}
+
+	public function register_blocks() {
+		register_block_type(
+			'caxton/posts-grid',
+			[ 'render_callback' => [ $this, 'post_grid' ] ]
+		);
+
+
+		function my_plugin_render_block_latest_post( $attributes ) {
+			$recent_posts = wp_get_recent_posts( array(
+				'numberposts' => 1,
+				'post_status' => 'publish',
+			) );
+			if ( count( $recent_posts ) === 0 ) {
+				return 'No posts';
+			}
+			$post = $recent_posts[ 0 ];
+			$post_id = $post['ID'];
+			return sprintf(
+				'<a class="wp-block-my-plugin-latest-post" href="%1$s">%2$s</a>',
+				esc_url( get_permalink( $post_id ) ),
+				esc_html( get_the_title( $post_id ) )
+			);
+		}
+
+		register_block_type( 'my-plugin/latest-post', array(
+			'render_callback' => 'my_plugin_render_block_latest_post',
+		) );
+	}
+
+	public function post_grid( $block ) {
+		$order = ! empty( $block['order'] ) ? explode( '/', $block['order'] ) : [ 'date', 'desc' ];
+		$args = [
+			'posts_per_page' => $block['rows'] * $block['columns'],
+			'cat'            => $block['cat'],
+			'orderby'        => $order[0],
+			'order'          => $order[1],
+		];
+		$posts = Caxton_Admin::instance()->posts( $args );
+		ob_start();
+		echo '<div class="caxton-posts-grid caxton-grid">';
+		$width = $block['columns'] ? 100 / $block['columns'] : 50;
+		foreach ( $posts as $post ) {
+			$date = $excerpt = '';
+
+			if ( $block['displayDate'] )		$date = "<date>$post[date]</date>";
+			if ( $block['displayExcerpt'] )	$excerpt = "<p>$post[excerpt]</p>";
+
+			echo <<<HTML
+<div class="grid-item" style="width: {$width}%'">
+	<a href="$post[link]">
+		<div class="grid-image" style="background-image: url('$post[thumb_ml]');">
+			<h3 class="grid-title">$post[title]</h3>
+		</div>
+	</a>
+	$date
+	$excerpt
+</div>
+HTML;
+		}
+		echo '</div>';
+
+		return ob_get_clean();
 	}
 }

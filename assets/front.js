@@ -6,6 +6,9 @@
  */
 jQuery(function ($) {
 
-    //Put all jquery code in here
+	$( '.caxton-posts-slider' ).each( function() {
+		var $t = $( this );
+		$t.initSlider();// @TODO Get slider intiated here
+	} );
 
 });
