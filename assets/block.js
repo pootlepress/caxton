@@ -20,51 +20,57 @@
 
 				attributes: {
 					cat: {
-						type: 'array',
+						type: 'string',
 					},
 					order: {
 						type: 'string',
 					},
-					displayDate: {
+					imagesType: {
 						type: 'string',
+					},
+					displayPostWithoutImages: {
+						type: 'boolean',
+					},
+					displayDate: {
+						type: 'boolean',
 					},
 					displayExcerpt: {
-						type: 'string',
+						type: 'boolean',
 					},
-					circularImages: {
-						type: 'string',
+					displayMeta: {
+						type: 'boolean',
 					},
 					titleBelowImage: {
-						type: 'string',
+						type: 'boolean',
+					},
+					titleSize: {
+						type: 'number',
 					},
 					rows: {
-						type: 'string',
+						type: 'number',
 					},
 					columns: {
-						type: 'string',
+						type: 'number',
 					},
 				},
 				edit: withAPIData( function ( props ) {
-					props.attributes = $.extend( {
-						cat: '',
+					var attrs = $.extend( {
+						cat: [],
 						order: 'date/desc',
 						rows: 4,
 						columns: 2,
 					}, props.attributes );
 
 					var
-						order = props.attributes.order.split( '/' ),
+						order = attrs.order.split( '/' ),
 						url =
 							'/caxton/v1/posts' +
-							'?posts_per_page=' + (
-								props.attributes.rows * props.attributes.columns
-							) +
-							'&cat=' + (
-								props.attributes.cat
-							) +
+							'?posts_per_page=' + (attrs.rows * attrs.columns) +
+							'&post__not_in=' + caxton.post +
+							'&cat=' + attrs.cat +
+							( attrs.displayPostWithoutImages ? '&meta_key=' : '' ) +
 							'&orderby=' + order[0] +
 							'&order=' + order[1];
-					console.log( url );
 					return {posts: url};
 				} )( function ( props ) {
 					var attrs = $.extend( {
@@ -72,22 +78,22 @@
 						order: 'date/desc',
 						rows: 4,
 						columns: 2,
-						displayDate: false,
-						displayExcerpt: false,
+						titleSize: 20,
 					}, props.attributes );
 
 					var post, gridInfo,
+						commentIcon = '<span class="fa fa-comments"></span>',
+						authorIcon = '<span class="fa fa-user-circle-o"></span>',
 						grids = [],
 						focus = props.focus,
 						className = props.className + ' ' + props.name.replace( '/', '-' ) + ' caxton-grid';
 
-					if ( attrs.circularImages ) {
-						className += ' caxton-circle-images';
-					}
+					className += ' caxton-'+ attrs.imagesType + '-images';
 
 					if ( attrs.titleBelowImage ) {
 						className += ' caxton-title-below-image';
 					}
+
 
 					if ( ! props.posts.data ) {
 						grids.push( el( 'div', {className: 'caxton-notification',}, 'Loading posts...' ) );
@@ -96,15 +102,22 @@
 					} else {
 						for ( var i = 0; i < props.posts.data.length; i ++ ) {
 							post = props.posts.data[i];
+							function postMetaMarkup() {
+								if ( attrs.displayMeta ) {
+									return { __html: '<span class="author">' + authorIcon + post.author + '</span><span class="comments">' + commentIcon + ' ' + post.comments + '</span>' };
+								} else {
+									return { __html: '' };
+								}
+							};
 							gridInfo = [
-								el( 'a', {className: 'grid-link', href: post.link,},
+								el( 'a', {className: 'grid-link', href: '#',},
 									el( 'div', {className: 'grid-image', style: {backgroundImage: 'url(' + post.thumb_ml + ')'},},
-										el( 'h3', {className: 'grid-title',}, post.title )
+										el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize}, }, post.title ),
 									),
 								)
 							];
 
-							gridInfo.push( el( 'h3', {className: 'grid-title',}, post.title ) );
+							gridInfo.push( el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize}, }, post.title ) );
 
 							if ( attrs.displayDate ) {
 								gridInfo.push( el( 'time', {}, post.date ) );
@@ -114,12 +127,14 @@
 								gridInfo.push( el( 'p', {}, post.excerpt ) );
 							}
 
+							gridInfo.push( el( 'div', {className: 'grid-meta', dangerouslySetInnerHTML: postMetaMarkup() }, ), );
+
 							grids.push(
 								el(
 									'div',
 									{
 										className: 'grid-item',
-										style: {width: 100 / attrs.columns + '%'}
+										style: { width: ( 100 / attrs.columns - 2 ) + '%'}
 									},
 									gridInfo
 								)
@@ -136,11 +151,8 @@
 									label: 'Category',
 									value: attrs.cat,
 									instanceId: 'caxton-postCats',
-									multiple: 'multiple',
 									options: caxton.postCategories,
 									onChange: function ( val ) {
-										val = $( '.wp-admin select[multiple]' ).val();
-
 										props.setAttributes( {cat: val} );
 									}
 								}
@@ -162,6 +174,35 @@
 								}
 							),
 							el(
+								InspectorControls.SelectControl,
+								{
+									label: 'Images shape',
+									value: attrs.imagesType,
+									options: [
+										{label: __( 'Square' ), value: '',},
+										{label: __( 'Circle' ), value: 'circle',},
+										{label: __( 'Rectangle' ), value: 'rectangle',},
+									],
+									onChange: function ( val ) {
+										props.setAttributes( {imagesType: val} );
+									}
+								}
+							),
+							el(
+								InspectorControls.ToggleControl,
+								{
+									label: 'Include posts without image',
+									checked: attrs.displayPostWithoutImages,
+									onChange: function ( val ) {
+										if ( val.target ) {
+											props.setAttributes( {displayPostWithoutImages: val.target.checked} );
+										} else {
+											props.setAttributes( {displayPostWithoutImages: val} );
+										}
+									}
+								}
+							),
+							el(
 								InspectorControls.ToggleControl,
 								{
 									label: 'Display post date',
@@ -171,6 +212,20 @@
 											props.setAttributes( {displayDate: val.target.checked} );
 										} else {
 											props.setAttributes( {displayDate: val} );
+										}
+									}
+								}
+							),
+							el(
+								InspectorControls.ToggleControl,
+								{
+									label: 'Display post meta',
+									checked: attrs.displayMeta,
+									onChange: function ( val ) {
+										if ( val.target ) {
+											props.setAttributes( {displayMeta: val.target.checked} );
+										} else {
+											props.setAttributes( {displayMeta: val} );
 										}
 									}
 								}
@@ -192,20 +247,6 @@
 							el(
 								InspectorControls.ToggleControl,
 								{
-									label: 'Circular images',
-									checked: attrs.circularImages,
-									onChange: function ( val ) {
-										if ( val.target ) {
-											props.setAttributes( {circularImages: val.target.checked} );
-										} else {
-											props.setAttributes( {circularImages: val} );
-										}
-									}
-								}
-							),
-							el(
-								InspectorControls.ToggleControl,
-								{
 									label: 'Show title below image',
 									checked: attrs.titleBelowImage,
 									onChange: function ( val ) {
@@ -220,13 +261,25 @@
 							el(
 								InspectorControls.RangeControl,
 								{
+									label: 'Title size',
+									value: attrs.titleSize,
+									onChange: function ( val ) {
+										props.setAttributes( {titleSize: val} );
+									},
+									min: 10,
+									max: 50,
+								}
+							),
+							el(
+								InspectorControls.RangeControl,
+								{
 									label: 'Post columns',
 									value: attrs.columns,
 									onChange: function ( val ) {
 										props.setAttributes( {columns: val} );
 									},
 									min: 1,
-									max: 4,
+									max: 5,
 								}
 							),
 							el(

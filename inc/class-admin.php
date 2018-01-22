@@ -72,6 +72,7 @@ class Caxton_Admin {
 		}
 
 		wp_localize_script( $token . '-gb', 'caxton', [
+			'post' => get_the_ID(),
 			'postCategories' => $categories,
 		] );
 	}
@@ -99,6 +100,16 @@ class Caxton_Admin {
 				'post_type' => 'post',
 				'meta_key'  => '_thumbnail_id',
 			], $_REQUEST, $args );
+
+		if ( empty( $args['post__not_in'] ) ) {
+			$args['post__not_in'] = [];
+		}
+		if ( ! is_array( $args['post__not_in'] ) ) {
+			$args['post__not_in'] = explode( ',', $args['post__not_in'] );
+		}
+
+		$args['post__not_in'][] = get_the_ID();
+
 		$qry    = new WP_Query( $args );
 
 		while ( $qry->have_posts() ) {
@@ -106,6 +117,8 @@ class Caxton_Admin {
 			$output[] = [
 				'title'    => get_the_title(),
 				'date'     => the_date( '', '', '', false ),
+				'author'   => get_the_author_posts_link(),
+				'comments' => get_comments_number_text(),
 				'excerpt'  => strip_tags( apply_filters( 'the_excerpt', get_the_excerpt() ) ),
 				'img'      => get_the_post_thumbnail( null, 'medium' ),
 				'thumb_md' => get_the_post_thumbnail_url( null, 'medium' ),

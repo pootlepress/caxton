@@ -93,27 +93,39 @@ class Caxton_Public{
 			'orderby'        => $order[0],
 			'order'          => $order[1],
 		];
+		if ( $block['displayPostWithoutImages'] ) {
+			$args['meta_key'] = '';
+		}
 		$posts = Caxton_Admin::instance()->posts( $args );
 		ob_start();
 
 		$classes = "caxton-posts-grid caxton-grid";
 
-		if ( ! empty( $block['circularImages'] ) )	$classes .= ' caxton-circle-images';
+		$classes .= " caxton-$block[imagesType]-images";
 		if ( ! empty( $block['titleBelowImage'] ) )	$classes .= ' caxton-title-below-image';
 
 		echo "<div class='$classes'>";
-		$width = $block['columns'] ? 100 / $block['columns'] : 50;
+		$width = $block['columns'] ? 100 / $block['columns'] - 2 : 48;
 		foreach ( $posts as $post ) {
 			$in_image = $after_image = '';
 
+			$title = "<h3 class='grid-title' style='font-size:$block[titleSize]px'>$post[title]</h3>\n";
+
 			if ( empty( $block['titleBelowImage'] ) )	{
-				$in_image .= "<h3 class='grid-title'>$post[title]</h3>\n";
+				$in_image .= $title;
 			} else {
-				$after_image .= "<h3 class='grid-title'>$post[title]</h3>\n";
+				$after_image .= $title;
 			}
+
 			if ( $block['displayDate'] )		$after_image .= "<time>$post[date]</time>\n";
 			if ( $block['displayExcerpt'] )	$after_image .= "<p>$post[excerpt]</p>\n";
-
+			if ( $block['displayMeta'] ) {
+				$after_image .=
+					'<div class="grid-meta">' .
+					"<span class='author'><span class='fa fa-user-circle-o'></span>$post[author]</span>" .
+					"<span class='comments'><span class='fa fa-comments'></span>$post[comments]</span>" .
+					'</div>';
+			}
 			echo <<<HTML
 <div class="grid-item" style="width: {$width}%">
 	<a href="$post[link]">

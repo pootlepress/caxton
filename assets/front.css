@@ -14,11 +14,13 @@
   display: flex;
   flex-wrap: wrap; }
   .caxton-grid .grid-item {
-    width: 33.33%;
-    padding: 1%; }
+    box-sizing: border-box;
+    width: 31.33%;
+    margin: 1%;
+    padding: 0; }
   .caxton-grid h3.grid-title {
     padding: 0 7%;
-    margin: .7em 0;
+    margin: calc( .3em + 7px ) 0 0;
     font-size: 18px;
     text-align: center;
     display: none; }
@@ -35,10 +37,13 @@
       right: 0;
       left: 0;
       transform: translateY(-50%);
-      opacity: .25; }
+      opacity: .7; }
+    .caxton-grid .grid-image:before {
+      opacity: .2; }
     .caxton-grid .grid-image h3.grid-title {
       margin: 0;
-      color: #ffffff; }
+      color: #ffffff;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5), 0 0 3px #000; }
     .caxton-grid .grid-image:before {
       background: rgba(0, 0, 0, 0.5);
       height: 9999px; }
@@ -52,10 +57,20 @@
     border-radius: 100%;
     overflow: hidden;
     z-index: 7; }
+  .caxton-grid.caxton-rectangle-images .grid-image {
+    padding-top: 56.25%; }
   .caxton-grid time {
     text-align: center;
     display: block;
     margin: .5em 0 .2em; }
+  .caxton-grid .grid-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; }
+    .caxton-grid .grid-meta .author, .caxton-grid .grid-meta .comments {
+      margin: 0; }
+    .caxton-grid .grid-meta .fa:before {
+      margin-right: 7px; }
 
 .clear-fix:after {
   content: '';
