@@ -4,14 +4,16 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 4.9.2
 Requires PHP: 5.6.0
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Caxton bring to you super useful blocks which make your Gutenberg more and more powerful.
 
 == Description ==
-Caxton adds new blocks to WordPress\' Gutenberg editor.
+Caxton adds new blocks to WordPress' Gutenberg editor.
+
+https://www.youtube.com/watch?v=ZCfp1RtSnWg
 
 **THIS IS IN BETA RIGHT NOW, USE ON PRODUCTION SITE AT YOUR OWN RISK.**
 
@@ -49,5 +51,8 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 3. Block preview
 
 == Changelog ==
+Version 0.1.1
+* Fix - Securing posts endpoint Thanks Ov3rfly :)
+
 Version 0.1.0
 THIS IS BETA VERSION PLEASE BACKUP YOUR SITE BEFORE TESTING THIS PLUGIN

@@ -101,6 +101,8 @@ class Caxton_Admin {
 				'meta_key'  => '_thumbnail_id',
 			], $_REQUEST, $args );
 
+		unset( $args['post_status'] );
+
 		if ( empty( $args['post__not_in'] ) ) {
 			$args['post__not_in'] = [];
 		}

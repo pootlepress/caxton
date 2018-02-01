@@ -4,7 +4,7 @@ Plugin Name: Caxton
 Plugin URI: http://shramee.me/
 Description: Caxton - blocks for Gutenberg
 Author: PootlePress
-Version: 0.1.0
+Version: 0.1.1
 Author URI: https://pootlepress.com/
 @developer shramee <shramee.srivastav@gmail.com>
 */
@@ -71,7 +71,7 @@ class Caxton {
 		self::$file    = $file;
 		self::$url     = plugin_dir_url( $file );
 		self::$path    = plugin_dir_path( $file );
-		self::$version = '0.1.0';
+		self::$version = '0.1.1';
 
 		add_action( 'plugins_loaded', [ $this, 'init' ] );
 
