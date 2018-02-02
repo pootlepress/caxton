@@ -4,7 +4,7 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 4.9.2
 Requires PHP: 5.6.0
-Stable tag: 0.1.2
+Stable tag: 0.1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,10 +51,13 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 3. Block preview
 
 == Changelog ==
-Version 0.1.2
+Version 0.1.2.1
+* 02-02-2018
 * Tweak - Query only public posts in posts endpoint, Thanks again Ov3rfly :)
+* Tweak - Posts endpoint - Disallowed setting password, permissions and cache parameters
 
 Version 0.1.1
+* 01-02-2018
 * Tweak - Securing posts endpoint Thanks Ov3rfly :)
 
 Version 0.1.0

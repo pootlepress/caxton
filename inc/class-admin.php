@@ -88,14 +88,29 @@ class Caxton_Admin {
 		if ( isset( $_REQUEST['post_type'] ) ) {
 			$type = get_post_type_object( $_REQUEST['post_type'] );
 			if ( ! $type ) {
-				return "Post type $_REQUEST[post_type] doesn't exist";
+				return sprintf( __( "Post type %s doesn't exist", 'caxton' ), $_REQUEST['post_type'] );
 			} else if ( ! $type->public ) {
-				return "Post type $type->name is not public";
+				return sprintf( __( "Post type %s is not public", 'caxton' ), $type->name );
 			}
 		}
 
-		// Post status can't be changed
-		unset( $_REQUEST['post_status'] );
+		$denied_params = [
+			// Disallow password params
+			'has_password',
+			'post_password',
+			// Disallow post status param
+			'post_status',
+			// Disallow changing permission param
+			'perm',
+			// Disallow caching params
+			'cache_results',
+			'update_post_meta_cache',
+			'update_post_term_cache',
+		];
+
+		foreach ( $denied_params as $param ) {
+			unset( $_REQUEST[ $param ] );
+		}
 
 		return $this->posts( $_REQUEST );
 	}
