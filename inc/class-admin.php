@@ -85,7 +85,19 @@ class Caxton_Admin {
 	}
 
 	public function api_posts() {
-		die( json_encode( $this->posts() ) );
+		if ( isset( $_REQUEST['post_type'] ) ) {
+			$type = get_post_type_object( $_REQUEST['post_type'] );
+			if ( ! $type ) {
+				return "Post type $_REQUEST[post_type] doesn't exist";
+			} else if ( ! $type->public ) {
+				return "Post type $type->name is not public";
+			}
+		}
+
+		// Post status can't be changed
+		unset( $_REQUEST['post_status'] );
+
+		return $this->posts( $_REQUEST );
 	}
 
 	/**
@@ -99,9 +111,7 @@ class Caxton_Admin {
 			[
 				'post_type' => 'post',
 				'meta_key'  => '_thumbnail_id',
-			], $_REQUEST, $args );
-
-		unset( $args['post_status'] );
+			], $args );
 
 		if ( empty( $args['post__not_in'] ) ) {
 			$args['post__not_in'] = [];
