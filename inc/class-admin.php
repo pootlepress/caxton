@@ -58,7 +58,9 @@ class Caxton_Admin {
 
 		wp_enqueue_style( $token . '-gb', $url . '/assets/block.css' );
 
-		wp_enqueue_script( $token . '-gb', $url . 'assets/block.js', array( 'wp-blocks' ) );
+		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
+		wp_enqueue_script( $token . '-blocks', $url . 'assets/block.js', array( $token ) );
+
 		$categories = [];
 
 		$cats = get_categories();

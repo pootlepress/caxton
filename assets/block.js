@@ -8,8 +8,28 @@
 	function ( $, blocks, el, withAPIData, i18n ) {
 		var
 			registerBlockType = blocks.registerBlockType,
-			InspectorControls = wp.blocks.InspectorControls,
+			InspectorControls = blocks.InspectorControls,
 			__ = i18n.__;
+		var Editable = blocks.Editable;
+		var children = blocks.source.children;
+
+
+		var block = {
+			id: '',
+			fields: {
+				'Background image': 'MediaUploadButton',
+				'Title': 'Editable',
+				'Title color': '',
+				'Title size': '',
+				'Sub-title': '',
+				'Sub-title color': '',
+				'Sub-title size': '',
+				'Call to action button': '',
+				'Button text color': '',
+				'Button size': '',
+				'Button background color': '',
+			},
+		};
 
 		registerBlockType(
 			'caxton/posts-grid',
