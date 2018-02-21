@@ -73,7 +73,7 @@ class Caxton_Admin {
 			];
 		}
 
-		wp_localize_script( $token . '-gb', 'caxton', [
+		wp_localize_script( $token, 'caxton', [
 			'post' => get_the_ID(),
 			'postCategories' => $categories,
 		] );

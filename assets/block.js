@@ -14,22 +14,23 @@
 		var children = blocks.source.children;
 
 
-		var block = {
-			id: '',
+		var block = new CaxtonBlock( {
+			id: 'hero',
+			title: 'Hero',
 			fields: {
-				'Background image': 'MediaUploadButton',
-				'Title': 'Editable',
-				'Title color': '',
-				'Title size': '',
-				'Sub-title': '',
-				'Sub-title color': '',
-				'Sub-title size': '',
-				'Call to action button': '',
-				'Button text color': '',
-				'Button size': '',
-				'Button background color': '',
+				'Background image': {type: 'MediaUploadButton'},
+				'Title': {type: 'editable'},
+				'Title color': {type: 'color'},
+				'Title size': {type: 'range'},
+				'Sub-title': {type: 'editable'},
+				'Sub-title color': {type: 'color'},
+				'Sub-title size': {type: 'range'},
+				'Call to action button': {type: 'editable'},
+				'Button text color': {type: 'color'},
+				'Button size': {type: 'range'},
+				'Button background color': {type: 'color'},
 			},
-		};
+		} );
 
 		registerBlockType(
 			'caxton/posts-grid',
@@ -170,7 +171,6 @@
 								{
 									label: 'Category',
 									value: attrs.cat,
-									instanceId: 'caxton-postCats',
 									options: caxton.postCategories,
 									onChange: function ( val ) {
 										props.setAttributes( {cat: val} );

@@ -1,74 +1,211 @@
 
-function initCaxton( $, blocks, el, withAPIData, i18n ) {
-	var
-		registerBlockType = blocks.registerBlockType;
+function initCaxton( $, blocks, el, i18n ) {
+	var registerBlockType = blocks.registerBlockType;
 
-	function CaxtonBlock( block ) {
-
-		this.block = block;
-
-		var fields = block.fields;
-
-		delete block.fields;
-
-		for ( var f in fields ) {
-
+	function CxB( block ) {
+		if ( ! block.id ) {
+			console.log( 'Parameter `id` is required for CaxtonBlock' )
 		}
-	}
+		this.block = $.extend( {
+			title: block.id,
+			icon: 'star-filled',
+			category: 'layout',
+			fields: {},
+			attributes: {},
+		}, block );
 
-	CaxtonBlock.prototype.fields = {
-		'editable' : blocks.Editable,
-//		'base'     : blocks.InspectorControls.BaseControl,
-		'checkbox' : blocks.InspectorControls.CheckboxControl,
-		'radio'    : blocks.InspectorControls.RadioControl,
-		'range'    : blocks.InspectorControls.RangeControl,
-		'select'   : blocks.InspectorControls.SelectControl,
-		'text'     : blocks.InspectorControls.TextControl,
-		'textarea' : blocks.InspectorControls.TextareaControl,
-		'toggle'   : blocks.InspectorControls.ToggleControl,
+		this.fields = this.processFields( this.block.fields );
+		this.registerBlock();
 	};
 
-	CaxtonBlock.prototype.registerBlock = function() {
+	CxB.prototype.processFields = function( fields ) {
+		var ret = [];
 
-		blocks.registerBlockType( 'caxton/' + this.block.id, {
-			title: __( block.title, 'caxton' ),
-			icon: 'universal-access-alt',
-			category: 'layout',
+		for ( var id in fields ) {
+			if( fields.hasOwnProperty( id ) ) {
+				var
+					type = fields[id],
+					field = {};
+				if ( typeof type === 'object' ) {
+					field = type;
+				} else {
+					field.type = type;
+				}
+				field.id = id;
+				field.label = field.label ? field.label : id;
+				this.block.attributes[ id ] = field.attr ? field.attr : {
+					type: 'string',
+				};
+				ret.push( field );
+			}
+		}
+		return ret;
+	};
 
-			attributes: {
-				content: {
-					type: 'array',
-					source: 'children',
-					selector: 'p',
+	// region Inspector Fields
+
+	CxB.prototype.fieldProps = function( field ) {
+		var
+			attrs = this.attrs,
+			id = field.id,
+			that = this,
+			fieldProps = $.extend( {
+				value: attrs[ id ],
+				onChange: function ( val ) {
+					var attrs = {};
+					attrs[ id ] = val;
+					that.props.setAttributes( attrs );
 				},
-			},
+			}, field );
+
+		delete fieldProps.id;
+		delete fieldProps.type;
+
+		console.log( fieldProps );
+
+		return fieldProps;
+	};
+
+	CxB.prototype.editableInit = function( field ) {
+		return el(
+			blocks.Editable,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.imageFieldInit = function( field ) {
+		return el(
+			blocks.MediaUpload,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.colorFieldInit = function( field ) {
+		var props = this.fieldProps( field );
+		props.title = props.label;
+		return el(
+			wp.components.PanelColor,
+			props,
+			el(
+				wp.blocks.ColorPalette,
+				props,
+			)
+		)
+	};
+	CxB.prototype.checkboxFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.CheckboxControl,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.radioFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.RadioControl,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.rangeFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.RangeControl,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.selectFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.SelectControl,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.textFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.TextControl,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.textareaFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.TextareaControl,
+			this.fieldProps( field )
+		)
+	};
+	CxB.prototype.toggleFieldInit = function( field ) {
+		return el(
+			blocks.InspectorControls.ToggleControl,
+			this.fieldProps( field )
+		)
+	};
+
+	// endregion
+
+	CxB.prototype.inspectorFields = function () {
+		var
+			fields = this.fields,
+			els = [];
+		for ( var i = 0; i < fields.length; i ++ ) {
+			var
+				f = fields[i],
+				func = f['type'] + 'FieldInit';
+			if ( typeof this[ func ] === 'function' ) {
+				els.push( this[func]( f ) );
+			}
+		}
+		if ( els ) {
+			return el(
+				blocks.InspectorControls,
+				{ key: 'inspector' },
+				els
+			);
+		}
+	};
+
+	// region Register block
+
+	CxB.prototype.edit = function ( props ) {
+		var id = 'Unknown';
+		if ( this.block ) {
+			if ( typeof this.block.edit === 'function' ) {
+				return this.block.edit();
+			}
+			id = this.block.id;
+		}
+		return el( 'div', {}, 'Editing block: ' + id + '.' );
+	};
+
+	CxB.prototype.save = function ( props ) {
+		var id = 'Unknown';
+		if ( this.block ) {
+			if ( typeof this.block.save === 'function' ) {
+				return this.block.save();
+			}
+			id = this.block.id;
+		}
+		return el( 'div', {}, 'Saved block: ' + id + '.' );
+	};
+
+	CxB.prototype.registerBlock = function () {
+		var
+			that = this,
+			block = this.block;
+		blocks.registerBlockType( 'caxton/' + block.id, {
+			title: block.title,
+			icon: block.icon,
+			category: block.category,
+			attributes: block.attributes,
 
 			edit: function ( props ) {
-				var content = props.attributes.content;
-				var focus = props.focus;
-
-				function onChangeContent( newContent ) {
-					props.setAttributes( {content: newContent} );
-				}
-
-				return el(
-					Editable,
-					{
-						tagName: 'p',
-						className: props.className,
-						onChange: onChangeContent,
-						value: content,
-						focus: focus,
-						onFocus: props.setFocus
-					}
-				);
+				that.props = props;
+				that.attrs = props.attributes;
+				return [
+					! ! props.focus && that.inspectorFields(),
+					that.edit( props )
+				]
 			},
 
-			save: function ( props ) {
-				return el( 'p', {}, props.attributes.content );
-			},
+			save: that.save,
 		} );
-	}
+	};
+
+	// endregion Register block
+
+	window.CaxtonBlock = CxB;
 }
 
 initCaxton( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n );
