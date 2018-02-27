@@ -199,6 +199,9 @@ function initCaxton( $, blocks, el, i18n ) {
 		}
 		return el( 'div', {
 			dangerouslySetInnerHTML: this.outputHTML( 'edit' ),
+			onClick: function ( e ) {
+				e.preventDefault();
+			},
 			onBlur: function ( e ) {
 				var
 					$t = $( e.target ),
