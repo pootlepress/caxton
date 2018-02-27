@@ -14,21 +14,64 @@
 		var children = blocks.source.children;
 
 
-		var block = new CaxtonBlock( {
+		var block = CaxtonBlock( {
 			id: 'hero',
-			title: 'Hero',
+			title: 'Hero section',
+			icon: 'archive',
+			tpl:
+			'<div class="" style="background:url([Background image]);">' +
+			'<h1 style="color:[Title color];font-size:[Title size]px">[Title]</h1>' +
+			'<h2 style="color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</h2>' +
+			'<a href="[Button Link]" class="button" style="color:[Button text color];background:[Button background color];font-size:[Button size]px">[Call to action button]</a></div>',
 			fields: {
-				'Background image': {type: 'MediaUploadButton'},
-				'Title': {type: 'editable'},
-				'Title color': {type: 'color'},
-				'Title size': {type: 'range'},
-				'Sub-title': {type: 'editable'},
-				'Sub-title color': {type: 'color'},
-				'Sub-title size': {type: 'range'},
-				'Call to action button': {type: 'editable'},
-				'Button text color': {type: 'color'},
-				'Button size': {type: 'range'},
-				'Button background color': {type: 'color'},
+				'Background image': {
+					type: 'image',
+					default: ''
+				},
+				'Title': {
+					type: 'editable',
+					default: 'Click here to edit title'
+				},
+				'Title color': {
+					type: 'color',
+					default: '#aaa'
+				},
+				'Title size': {
+					type: 'range',
+					default: '20'
+				},
+				'Sub-title': {
+					type: 'editable',
+					default: 'Edit sub-title'
+				},
+				'Sub-title color': {
+					type: 'color',
+					default: '#aaa'
+				},
+				'Sub-title size': {
+					type: 'range',
+					default: '16'
+				},
+				'Call to action button': {
+					type: 'editable',
+					default: 'Button'
+				},
+				'Button Link': {
+					type: 'range',
+					default: '16'
+				},
+				'Button size': {
+					type: 'range',
+					default: '16'
+				},
+				'Button text color': {
+					type: 'color',
+					default: '#444'
+				},
+				'Button background color': {
+					type: 'color',
+					default: '#eee'
+				},
 			},
 		} );
 
