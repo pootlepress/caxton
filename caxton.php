@@ -78,7 +78,7 @@ class Caxton {
 	}
 
 	public function init() {
-		if ( function_exists( 'the_gutenberg_project' ) ) {
+		if ( function_exists( 'register_block_type' ) ) {
 			$this->_admin(); //Initiate admin
 			$this->_public(); //Initiate public
 		}
