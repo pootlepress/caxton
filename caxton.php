@@ -1,13 +1,14 @@
 <?php
 /*
-Plugin Name: Caxton
-Plugin URI: http://shramee.me/
-Description: Caxton - blocks for Gutenberg
-Author: PootlePress
-Version: 0.1.2.1
-Author URI: https://pootlepress.com/
-@developer shramee <shramee.srivastav@gmail.com>
-*/
+ * Plugin Name: Caxton
+ * Plugin URI: http://shramee.me/
+ * Description: Caxton - blocks for Gutenberg
+ * Author: PootlePress
+ * Version: 0.1.2.1
+ * Author URI: https://pootlepress.com/
+ * @developer shramee <shramee.srivastav@gmail.com>
+ * TACHYONS v4.9.0 | http://tachyons.io - MIT License
+ */
 
 /** Plugin admin class */
 require 'inc/class-admin.php';

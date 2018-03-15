@@ -10,70 +10,208 @@
 			registerBlockType = blocks.registerBlockType,
 			InspectorControls = blocks.InspectorControls,
 			__ = i18n.__;
-		var Editable = blocks.Editable;
-		var children = blocks.source.children;
 
+        CaxtonBlock( {
+            id: 'hero',
+            title: 'Hero section',
+            icon: 'archive',
+            tpl:
+            '<div class="cover bg-center" style="background-image:url([Background image]);[Background parallax]">' +
+            '<div class="pv4 min-h-7 dt w-100 center-mid-children [Dim image][Full width][Full height]">' +
+            '<div class="tc white ph3 ph4-l[Text position]">' +
+            '<h2 style="color:[Title color];font-size:[Title size]px">[Title]</h2>' +
+            '<p style="color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</p>' +
+            '<a href="[Button Link]" class="button" ' +
+            'style="color:[Button text color];background:[Button background color];font-size:[Button size]px">' +
+            '[Call to action button]</a></div></div></div>',
+            fields: {
+                'Background image': {
+                    type: 'image',
+                    default: ''
+                },
+                'Dim image': {
+                    type: 'radio',
+                    options: [
+                        { value: ' bg-white-50', label: 'Lighter', },
+                        { value: ' bg-white-30', label: 'Light', },
+                        { value: '', label: "Don't dim", },
+                        { value: ' bg-black-20', label: 'Dark', },
+                        { value: ' bg-black-40', label: 'Darker', },
+                    ],
+                    default: ' bg-black-20',
+                },
+                'Text position': {
+                    type: 'radio',
+                    options: [
+                        { value: ' mba', label: 'Top', },
+                        { value: ' mva', label: 'Center', },
+                        { value: ' mta', label: 'Bottom', },
+                    ],
+                    default: ' mva',
+                },
+                'Background parallax': {
+                    type: 'checkbox',
+                    value: 'background-attachment:fixed;',
+                },
+                'Full width': {
+                    type: 'checkbox',
+                    value: ' vw-100',
+                },
+                'Full height': {
+                    type: 'checkbox',
+                    value: ' min-vh-100',
+                },
+                'Title': {
+                    type: 'editable',
+                    default: 'Click here to edit title'
+                },
+                'Title color': {
+                    type: 'color',
+                    default: '#fff'
+                },
+                'Title size': {
+                    type: 'range',
+                    default: '20'
+                },
+                'Sub-title': {
+                    type: 'editable',
+                    default: 'Edit sub-title'
+                },
+                'Sub-title color': {
+                    type: 'color',
+                    default: '#fff'
+                },
+                'Sub-title size': {
+                    type: 'range',
+                    default: '16'
+                },
+                'Call to action button': {
+                    type: 'editable',
+                    default: 'Button'
+                },
+                'Button Link': {
+                    type: 'range',
+                    default: '16'
+                },
+                'Button size': {
+                    type: 'range',
+                    default: '16'
+                },
+                'Button text color': {
+                    type: 'color',
+                    default: '#444'
+                },
+                'Button background color': {
+                    type: 'color',
+                    default: '#eee'
+                },
+            },
+        } );
 
-		var block = CaxtonBlock( {
-			id: 'hero',
-			title: 'Hero section',
-			icon: 'archive',
-			tpl:
-			'<div class="" style="background:url([Background image]);">' +
-			'<h1 style="color:[Title color];font-size:[Title size]px">[Title]</h1>' +
-			'<h2 style="color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</h2>' +
-			'<a href="[Button Link]" class="button" style="color:[Button text color];background:[Button background color];font-size:[Button size]px">[Call to action button]</a></div>',
-			fields: {
-				'Background image': {
-					type: 'image',
-					default: ''
-				},
-				'Title': {
-					type: 'editable',
-					default: 'Click here to edit title'
-				},
-				'Title color': {
-					type: 'color',
-					default: '#aaa'
-				},
-				'Title size': {
-					type: 'range',
-					default: '20'
-				},
-				'Sub-title': {
-					type: 'editable',
-					default: 'Edit sub-title'
-				},
-				'Sub-title color': {
-					type: 'color',
-					default: '#aaa'
-				},
-				'Sub-title size': {
-					type: 'range',
-					default: '16'
-				},
-				'Call to action button': {
-					type: 'editable',
-					default: 'Button'
-				},
-				'Button Link': {
-					type: 'range',
-					default: '16'
-				},
-				'Button size': {
-					type: 'range',
-					default: '16'
-				},
-				'Button text color': {
-					type: 'color',
-					default: '#444'
-				},
-				'Button background color': {
-					type: 'color',
-					default: '#eee'
-				},
-			},
-		} );
+        CaxtonBlock( {
+            id: 'hero-2-col',
+            title: 'Hero - 2 columns',
+            icon: 'archive',
+            tpl:
+            '<div class="cover bg-center" style="background-image:url([Background image]);[Background parallax]">' +
+            '<div class="dt w-100 center-mid-children [Full width]">' +
+            '<div class="min-h-7 p4 tc white ph3 ph4-l center-mid-children [Horizontal position][Content position][Dim image][Full height]">' +
+            '<h2 style="color:[Title color];font-size:[Title size]px">[Title]</h2>' +
+            '<div style="color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
+            '<a href="[Button Link]" class="button" ' +
+            'style="color:[Button text color];background:[Button background color];font-size:[Button size]px">' +
+            '[Call to action button]</a></div></div></div>',
+            fields: {
+                'Background image': {
+                    type: 'image',
+                    default: ''
+                },
+                'Dim image': {
+                    type: 'radio',
+                    options: [
+                        { value: ' bg-white-50', label: 'Lighter', },
+                        { value: ' bg-white-30', label: 'Light', },
+                        { value: '', label: "Don't dim", },
+                        { value: ' bg-black-20', label: 'Dark', },
+                        { value: ' bg-black-40', label: 'Darker', },
+                    ],
+                    default: ' bg-white-30',
+                },
+                'Horizontal position': {
+                    type: 'radio',
+                    options: [
+                        { value: ' mra', label: 'Left', },
+                        { value: ' mla', label: 'Right', },
+                    ],
+                    default: ' mra',
+                },
+                'Content position': {
+                    type: 'radio',
+                    options: [
+                        { value: ' mra', label: 'Left', },
+                        { value: ' mha', label: 'Center', },
+                        { value: ' mla', label: 'Right', },
+                    ],
+                    default: ' mra',
+                },
+                'Background parallax': {
+                    type: 'checkbox',
+                    value: 'background-attachment:fixed;',
+                },
+                'Full width': {
+                    type: 'checkbox',
+                    value: ' vw-100',
+                },
+                'Full height': {
+                    type: 'checkbox',
+                    value: ' min-vh-100',
+                },
+                'Title': {
+                    type: 'editable',
+                    default: 'Click here to edit title'
+                },
+                'Title color': {
+                    type: 'color',
+                    default: '#232324'
+                },
+                'Title size': {
+                    type: 'range',
+                    default: '20'
+                },
+                'Sub-title': {
+                    type: 'editable',
+                    default: 'Edit sub-title'
+                },
+                'Sub-title color': {
+                    type: 'color',
+                    default: '#232324'
+                },
+                'Sub-title size': {
+                    type: 'range',
+                    default: '16'
+                },
+                'Call to action button': {
+                    type: 'editable',
+                    default: 'Button'
+                },
+                'Button Link': {
+                    type: 'range',
+                    default: '16'
+                },
+                'Button size': {
+                    type: 'range',
+                    default: '16'
+                },
+                'Button text color': {
+                    type: 'color',
+                    default: '#444'
+                },
+                'Button background color': {
+                    type: 'color',
+                    default: '#eee'
+                },
+            },
+        } );
 
 		registerBlockType(
 			'caxton/posts-grid',

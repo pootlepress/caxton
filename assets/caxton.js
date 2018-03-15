@@ -55,6 +55,9 @@ function initCaxton( $, blocks, el, i18n ) {
 				onChange: function ( val ) {
 					var attrs = {};
 					attrs[ id ] = val;
+					if ( field.type === 'checkbox' && val ) {
+						attrs[ id ] = field.value;
+					}
 					that.props.setAttributes( attrs );
 				},
 			}, field );
@@ -103,16 +106,15 @@ function initCaxton( $, blocks, el, i18n ) {
 		)
 	};
 	CxB.prototype.checkboxFieldInit = function( field ) {
-		return el(
-			wp.components.CheckboxControl,
-			this.fieldProps( field )
-		)
+		var fieldProps = this.fieldProps( field );
+		fieldProps.checked = !! this.attrs[ field.id ];
+		console.log( fieldProps );
+		return el( wp.components.CheckboxControl, fieldProps );
 	};
 	CxB.prototype.radioFieldInit = function( field ) {
-		return el(
-			wp.components.RadioControl,
-			this.fieldProps( field )
-		)
+		var fieldProps = this.fieldProps( field );
+		fieldProps.selected = fieldProps.value;
+		return el( wp.components.RadioControl, fieldProps );
 	};
 	CxB.prototype.rangeFieldInit = function( field ) {
 		return el(

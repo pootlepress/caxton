@@ -93,7 +93,7 @@ class Caxton_Public{
 			'orderby'        => $order[0],
 			'order'          => $order[1],
 		];
-		if ( $block['displayPostWithoutImages'] ) {
+		if ( ! empty( $block['displayPostWithoutImages'] ) ) {
 			$args['meta_key'] = '';
 		}
 		$posts = Caxton_Admin::instance()->posts( $args );
@@ -117,9 +117,9 @@ class Caxton_Public{
 				$after_image .= $title;
 			}
 
-			if ( $block['displayDate'] )		$after_image .= "<time>$post[date]</time>\n";
-			if ( $block['displayExcerpt'] )	$after_image .= "<p>$post[excerpt]</p>\n";
-			if ( $block['displayMeta'] ) {
+			if ( ! empty( $block['displayDate'] ) )		$after_image .= "<time>$post[date]</time>\n";
+			if ( ! empty( $block['displayExcerpt'] ) )	$after_image .= "<p>$post[excerpt]</p>\n";
+			if ( ! empty( $block['displayMeta'] ) ) {
 				$after_image .=
 					'<div class="grid-meta">' .
 					"<span class='author'><span class='fa fa-user-circle-o'></span>$post[author]</span>" .
