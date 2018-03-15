@@ -1,0 +1,27 @@
+.vw-100 {
+	width: 100vw;
+	margin-left: calc( -50vh + 50% );
+}
+
+.center-mid-children {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.min-h4 { min-height: $height-4; }
+.min-h5 { min-height: $height-5; }
+
+.min-h-6{ min-height: 25rem; }
+.min-h-7{ min-height: 32rem; }
+.min-h-8{ min-height: 40rem; }
+.min-h-9{ min-height: 50rem; }
+
+.maa{ margin: auto; }
+.mla{ margin-left: auto; }
+.mra{ margin-right: auto; }
+.mba{ margin-bottom: auto; }
+.mta{ margin-top: auto; }
+.mva{ margin-top: auto; margin-bottom: auto; }
+.mha{ margin-left: auto; margin-right: auto; }
