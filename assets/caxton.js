@@ -172,7 +172,21 @@ function initCaxton( $, blocks, el, i18n ) {
 
 	// region Register block
 
-	CxB.prototype.outputHTML = function ( edit ) {
+	elementFromHTML = function ( html, props, tag ) {
+		if ( ! props ) {
+			props = {};
+		}
+		if ( ! tag ) {
+			tag = 'div'
+		}
+
+		var _props = jQuery.extend( {
+			dangerouslySetInnerHTML: { __html: html },
+		}, props );
+
+		return el( tag, _props );
+	};
+    CxB.prototype.outputHTML = function ( edit ) {
 		var html = this.tpl;
 
 		for ( let f in this.fields ) {
@@ -183,7 +197,7 @@ function initCaxton( $, blocks, el, i18n ) {
 				if ( edit && fld.type === 'editable' ) {
 					val = '<div contentEditable="true" data-editableproperty="' + fld.id + '">' +  val + '</div>';
 				}
-				html = html.replace( '[' + fld.id + ']', val );
+				html = html.split( '[' + fld.id + ']' ).join( val );
 			}
 		}
 
@@ -241,6 +255,18 @@ function initCaxton( $, blocks, el, i18n ) {
 		var
 			that = this,
 			block = this.block;
+		if ( block.icon.indexOf( '<svg' ) > -1 ) {
+			var $icon = jQuery( block.icon );
+			var props = {};
+			$.each($icon[0].attributes, function() {
+				if(this.specified) {
+					props[this.name] = this.value;
+				}
+			});
+			props.height = 20;
+			props.width = 20;
+			block.icon = elementFromHTML( $icon.html(), props, 'svg' );
+		}
 		blocks.registerBlockType( 'caxton/' + block.id, {
 			title: block.title,
 			icon: block.icon,
