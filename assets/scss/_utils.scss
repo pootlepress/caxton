@@ -1,6 +1,6 @@
 .vw-100 {
 	width: 100vw;
-	margin-left: calc( -50vh + 50% );
+	margin-left: calc( -50vw + 50% );
 }
 
 .center-mid-children {
@@ -17,6 +17,7 @@
 .min-h-7{ min-height: 32rem; }
 .min-h-8{ min-height: 40rem; }
 .min-h-9{ min-height: 50rem; }
+.min-vh-100 { min-height: 100vh; }
 
 .maa{ margin: auto; }
 .mla{ margin-left: auto; }

@@ -1,16 +1,2 @@
-/**
- * Plugin front end styles
- * @package Caxton
- */
-.caxton-notification {
-  padding: 50px;
-  text-align: center;
-  max-width: 300px;
-  margin: auto; }
-
-.caxton-grid .grid-image h3.grid-title {
-  font-size: 16px; }
-.caxton-grid p {
-  font-size: 14px; }
-
+.caxton-notification{padding:50px;text-align:center;max-width:300px;margin:auto}.caxton-grid .grid-image h3.grid-title{font-size:16px}.caxton-grid p{font-size:14px}div>span[contentEditable],h1>span[contentEditable],h2>span[contentEditable],h3>span[contentEditable],h4>span[contentEditable],h5>span[contentEditable],h6>span[contentEditable],p>span[contentEditable],header>span[contentEditable],footer>span[contentEditable],section>span[contentEditable]{display:block}
 /*# sourceMappingURL=block.css.map */

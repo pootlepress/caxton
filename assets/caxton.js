@@ -1,6 +1,8 @@
 
 function initCaxton( $, blocks, el, i18n ) {
-	var registerBlockType = blocks.registerBlockType;
+	var
+		__ = i18n.__,
+		registerBlockType = blocks.registerBlockType;
 
 	function CxB( block ) {
 		if ( ! block.id ) {
@@ -71,7 +73,7 @@ function initCaxton( $, blocks, el, i18n ) {
 		var props = this.fieldProps( field );
 		return el(
 			wp.components.BaseControl,
-			{},
+			props,
 			el(
 				blocks.MediaUpload,
 				{
@@ -84,9 +86,11 @@ function initCaxton( $, blocks, el, i18n ) {
 					render: function ( obj ) {
 						return el( wp.components.Button, {
 								className: props.value ? 'image-button' : 'button button-large',
-								onClick: obj.open
+								onClick: obj.open,
 							},
-							! props.value ? props.label : el( 'img', {src: props.value} )
+							! props.value ?
+								__( 'Select image' ) :
+								[el( 'img', {src: props.value} ), __( 'Click the image to edit or update' )]
 						);
 					},
 				}
@@ -195,7 +199,11 @@ function initCaxton( $, blocks, el, i18n ) {
 					fld = this.fields[ f ],
 					val = this.attrs[fld.id];
 				if ( edit && fld.type === 'editable' ) {
-					val = '<div contentEditable="true" data-editableproperty="' + fld.id + '">' +  val + '</div>';
+					console.log( val, fld, val === fld.default );
+					if ( val === fld.default ) {
+						val = '<span class="default">' +  val + '</span>';
+					}
+					val = '<span contentEditable="true" title="' + __( 'Click to Edit' ) + '" data-editableproperty="' + fld.id + '">' +  val + '</span>';
 				}
 				html = html.split( '[' + fld.id + ']' ).join( val );
 			}
@@ -217,6 +225,10 @@ function initCaxton( $, blocks, el, i18n ) {
 			dangerouslySetInnerHTML: this.outputHTML( 'edit' ),
 			onClick: function ( e ) {
 				e.preventDefault();
+			},
+			onKeyDown: function ( e ) {
+				var $def = $( e.target ).find( '.default' );
+				if ($def.length ) $def.remove();
 			},
 			onBlur: function ( e ) {
 				var
@@ -295,4 +307,4 @@ function initCaxton( $, blocks, el, i18n ) {
 	};
 }
 
-initCaxton( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n );
+initCaxton( jQuery, wp.blocks, wp.element.createElement, window.wp.i18n );
