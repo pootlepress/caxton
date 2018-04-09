@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 (
-	function ( $, blocks, el, withAPIData, i18n ) {
+	function ( $, blocks, el, withAPIData, i18n, components ) {
 		var
 			registerBlockType = blocks.registerBlockType,
 			InspectorControls = blocks.InspectorControls,
@@ -20,7 +20,7 @@
 			'<div class="pv4 min-h-7 dt w-100 center-mid-children [Dim image][Full height]">' +
 			'<div class="tc white ph3 ph4-l[Text position]">' +
 			'<h2 style="color:[Title color];font-size:[Title size]px">[Title]</h2>' +
-			'<div style="padding: 1em 0;color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
+			'<div style="margin: 0 1em 1em;color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
 			'<a href="[Button Link]" class="no-underline tc [Buttons style] pa2" ' +
 			'style="color:[Button text color];background:[Button background color];font-size:[Button size]px">' +
 			'[Call to action button]</a></div></div></div>',
@@ -117,7 +117,7 @@
 			'<div class="dt w-100 center-mid-children">' +
 			'<div class="min-h-7 p4 tc white ph3 ph4-l center-mid-children [Content width][Content position][Dim image behind content][Full height]">' +
 			'<h2 style="color:[Title color];font-size:[Title size]px">[Title]</h2>' +
-			'<div style="padding: 1em 0;color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
+			'<div style="margin: 1em 0;color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
 			'<a href="[Button Link]" class="no-underline tc [Buttons style] pa2" ' +
 			'style="color:[Button text color];background:[Button background color];font-size:[Button size]px">' +
 			'[Call to action button]</a></div></div></div>',
@@ -320,14 +320,10 @@
 						order = attrs.order.split( '/' ),
 						url =
 							'/caxton/v1/posts' +
-							'?posts_per_page=' + (
-								attrs.rows * attrs.columns
-							) +
+							'?posts_per_page=' + (attrs.rows * attrs.columns) +
 							'&post__not_in=' + caxton.post +
 							'&cat=' + attrs.cat +
-							(
-								attrs.displayPostWithoutImages ? '&meta_key=' : ''
-							) +
+							( attrs.displayPostWithoutImages ? '&meta_key=' : '' ) +
 							'&orderby=' + order[0] +
 							'&order=' + order[1];
 					return {posts: url};
@@ -347,7 +343,7 @@
 						focus = props.focus,
 						className = props.className + ' ' + props.name.replace( '/', '-' ) + ' caxton-grid';
 
-					className += ' caxton-' + attrs.imagesType + '-images';
+					className += ' caxton-'+ attrs.imagesType + '-images';
 
 					if ( attrs.titleBelowImage ) {
 						className += ' caxton-title-below-image';
@@ -361,32 +357,22 @@
 					} else {
 						for ( var i = 0; i < props.posts.data.length; i ++ ) {
 							post = props.posts.data[i];
-
 							function postMetaMarkup() {
 								if ( attrs.displayMeta ) {
-									return {__html: '<span class="author">' + authorIcon + post.author + '</span><span class="comments">' + commentIcon + ' ' + post.comments + '</span>'};
+									return { __html: '<span class="author">' + authorIcon + post.author + '</span><span class="comments">' + commentIcon + ' ' + post.comments + '</span>' };
 								} else {
-									return {__html: ''};
+									return { __html: '' };
 								}
 							};
 							gridInfo = [
 								el( 'a', {className: 'grid-link', href: '#',},
-									el( 'div', {
-											className: 'grid-image',
-											style: {backgroundImage: 'url(' + post.thumb_ml + ')'},
-										},
-										el( 'h3', {
-											className: 'grid-title',
-											style: {fontSize: attrs.titleSize},
-										}, post.title ),
+									el( 'div', {className: 'grid-image', style: {backgroundImage: 'url(' + post.thumb_ml + ')'},},
+										el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize}, }, post.title ),
 									),
 								)
 							];
 
-							gridInfo.push( el( 'h3', {
-								className: 'grid-title',
-								style: {fontSize: attrs.titleSize},
-							}, post.title ) );
+							gridInfo.push( el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize}, }, post.title ) );
 
 							if ( attrs.displayDate ) {
 								gridInfo.push( el( 'time', {}, post.date ) );
@@ -396,21 +382,14 @@
 								gridInfo.push( el( 'p', {}, post.excerpt ) );
 							}
 
-							gridInfo.push( el( 'div', {
-								className: 'grid-meta',
-								dangerouslySetInnerHTML: postMetaMarkup()
-							}, ), );
+							gridInfo.push( el( 'div', {className: 'grid-meta', dangerouslySetInnerHTML: postMetaMarkup() }, ), );
 
 							grids.push(
 								el(
 									'div',
 									{
 										className: 'grid-item',
-										style: {
-											width: (
-															 100 / attrs.columns - 2
-														 ) + '%'
-										}
+										style: { width: ( 100 / attrs.columns - 2 ) + '%'}
 									},
 									gridInfo
 								)
@@ -422,10 +401,11 @@
 							InspectorControls,
 							{key: 'inspector'},
 							el(
-								InspectorControls.SelectControl,
+								components.SelectControl,
 								{
 									label: 'Category',
 									value: attrs.cat,
+									instanceId: 'caxton-postCats',
 									options: caxton.postCategories,
 									onChange: function ( val ) {
 										props.setAttributes( {cat: val} );
@@ -433,7 +413,7 @@
 								}
 							),
 							el(
-								InspectorControls.SelectControl,
+								components.SelectControl,
 								{
 									label: 'Order',
 									value: attrs.order,
@@ -449,7 +429,7 @@
 								}
 							),
 							el(
-								InspectorControls.SelectControl,
+								components.SelectControl,
 								{
 									label: 'Images shape',
 									value: attrs.imagesType,
@@ -464,7 +444,7 @@
 								}
 							),
 							el(
-								InspectorControls.ToggleControl,
+								components.ToggleControl,
 								{
 									label: 'Include posts without image',
 									checked: attrs.displayPostWithoutImages,
@@ -478,7 +458,7 @@
 								}
 							),
 							el(
-								InspectorControls.ToggleControl,
+								components.ToggleControl,
 								{
 									label: 'Display post date',
 									checked: attrs.displayDate,
@@ -492,7 +472,7 @@
 								}
 							),
 							el(
-								InspectorControls.ToggleControl,
+								components.ToggleControl,
 								{
 									label: 'Display post meta',
 									checked: attrs.displayMeta,
@@ -506,7 +486,7 @@
 								}
 							),
 							el(
-								InspectorControls.ToggleControl,
+								components.ToggleControl,
 								{
 									label: 'Display post excerpt',
 									checked: attrs.displayExcerpt,
@@ -520,7 +500,7 @@
 								}
 							),
 							el(
-								InspectorControls.ToggleControl,
+								components.ToggleControl,
 								{
 									label: 'Show title below image',
 									checked: attrs.titleBelowImage,
@@ -534,7 +514,7 @@
 								}
 							),
 							el(
-								InspectorControls.RangeControl,
+								components.RangeControl,
 								{
 									label: 'Title size',
 									value: attrs.titleSize,
@@ -546,7 +526,7 @@
 								}
 							),
 							el(
-								InspectorControls.RangeControl,
+								components.RangeControl,
 								{
 									label: 'Post columns',
 									value: attrs.columns,
@@ -558,7 +538,7 @@
 								}
 							),
 							el(
-								InspectorControls.RangeControl,
+								components.RangeControl,
 								{
 									label: 'Post rows',
 									value: attrs.rows,
@@ -582,4 +562,4 @@
 		);
 
 	}
-)( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n );
+)( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n, wp.components );

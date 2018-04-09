@@ -87,6 +87,14 @@ class Caxton_Public{
 
 	public function post_grid( $block ) {
 		$order = ! empty( $block['order'] ) ? explode( '/', $block['order'] ) : [ 'date', 'desc' ];
+//		var_dump( $block );
+		$block = wp_parse_args( $block, [
+			'cat'     => [],
+			'order'   => 'date/desc',
+			'rows'    => 4,
+			'columns' => 2,
+			'titleSize' => 20,
+		] );
 		$args = [
 			'posts_per_page' => $block['rows'] * $block['columns'],
 			'cat'            => $block['cat'],

@@ -1,5 +1,5 @@
 
-function initCaxton( $, blocks, el, i18n ) {
+function initCaxton( $, blocks, el, i18n, components ) {
 	var
 		__ = i18n.__,
 		registerBlockType = blocks.registerBlockType;
@@ -72,7 +72,7 @@ function initCaxton( $, blocks, el, i18n ) {
 	CxB.prototype.imageFieldInit = function( field ) {
 		var props = this.fieldProps( field );
 		return el(
-			wp.components.BaseControl,
+			components.BaseControl,
 			props,
 			el(
 				blocks.MediaUpload,
@@ -84,7 +84,7 @@ function initCaxton( $, blocks, el, i18n ) {
 					value: props.value,
 					label: props.label,
 					render: function ( obj ) {
-						return el( wp.components.Button, {
+						return el( components.Button, {
 								className: props.value ? 'image-button' : 'button button-large',
 								onClick: obj.open,
 							},
@@ -101,7 +101,7 @@ function initCaxton( $, blocks, el, i18n ) {
 		var props = this.fieldProps( field );
 		props.title = props.label;
 		return el(
-			wp.components.PanelColor,
+			components.PanelColor,
 			props,
 			el(
 				wp.blocks.ColorPalette,
@@ -113,40 +113,40 @@ function initCaxton( $, blocks, el, i18n ) {
 		var fieldProps = this.fieldProps( field );
 		fieldProps.checked = !! this.attrs[ field.id ];
 		console.log( fieldProps );
-		return el( wp.components.CheckboxControl, fieldProps );
+		return el( components.CheckboxControl, fieldProps );
 	};
 	CxB.prototype.radioFieldInit = function( field ) {
 		var fieldProps = this.fieldProps( field );
 		fieldProps.selected = fieldProps.value;
-		return el( wp.components.RadioControl, fieldProps );
+		return el( components.RadioControl, fieldProps );
 	};
 	CxB.prototype.rangeFieldInit = function( field ) {
 		return el(
-			wp.components.RangeControl,
+			components.RangeControl,
 			this.fieldProps( field )
 		)
 	};
 	CxB.prototype.selectFieldInit = function( field ) {
 		return el(
-			wp.components.SelectControl,
+			components.SelectControl,
 			this.fieldProps( field )
 		)
 	};
 	CxB.prototype.textFieldInit = function( field ) {
 		return el(
-			wp.components.TextControl,
+			components.TextControl,
 			this.fieldProps( field )
 		)
 	};
 	CxB.prototype.textareaFieldInit = function( field ) {
 		return el(
-			wp.components.TextareaControl,
+			components.TextareaControl,
 			this.fieldProps( field )
 		)
 	};
 	CxB.prototype.toggleFieldInit = function( field ) {
 		return el(
-			wp.components.ToggleControl,
+			components.ToggleControl,
 			this.fieldProps( field )
 		)
 	};
@@ -190,20 +190,30 @@ function initCaxton( $, blocks, el, i18n ) {
 
 		return el( tag, _props );
 	};
-    CxB.prototype.outputHTML = function ( edit ) {
-		var html = this.tpl;
+
+	CxB.prototype.outputHTML = function ( edit ) {
+		var html = this.tpl, c2e, tag;
 
 		for ( let f in this.fields ) {
 			if ( this.fields.hasOwnProperty( f ) ) {
 				var
 					fld = this.fields[ f ],
 					val = this.attrs[fld.id];
-				if ( edit && fld.type === 'editable' ) {
-					console.log( val, fld, val === fld.default );
-					if ( val === fld.default ) {
-						val = '<span class="default">' +  val + '</span>';
+				if ( fld.type === 'editable' ) {
+					tag = fld.tag ? fld.tag : 'span';
+					if ( edit ) {
+						if ( val === fld.default ) {
+							val = '<span class="default">' + val + '</span>';
+						}
+						c2e = __( 'Click to Edit' );
+						val =
+							'<' + tag + ' contentEditable="true" title="' + c2e + '" ' + 'data-editableproperty="' + fld.id + '">' +
+							val + '</' + tag + '>';
+					} else {
+						if ( val ) {
+							val = '<' + tag + '>' + val + '</' + tag + '>';
+						}
 					}
-					val = '<span contentEditable="true" title="' + __( 'Click to Edit' ) + '" data-editableproperty="' + fld.id + '">' +  val + '</span>';
 				}
 				html = html.split( '[' + fld.id + ']' ).join( val );
 			}
@@ -307,4 +317,4 @@ function initCaxton( $, blocks, el, i18n ) {
 	};
 }
 
-initCaxton( jQuery, wp.blocks, wp.element.createElement, window.wp.i18n );
+initCaxton( jQuery, wp.blocks, wp.element.createElement, window.wp.i18n, wp.components );
