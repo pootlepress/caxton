@@ -91,7 +91,7 @@
 				},
 				'Button Link': {
 					type: 'text',
-					default: '16'
+					default: '#'
 				},
 				'Button size': {
 					type: 'range',
@@ -205,7 +205,7 @@
 				},
 				'Button Link': {
 					type: 'text',
-					default: '16'
+					default: '#'
 				},
 				'Button size': {
 					type: 'range',
@@ -348,7 +348,6 @@
 					if ( attrs.titleBelowImage ) {
 						className += ' caxton-title-below-image';
 					}
-
 
 					if ( ! props.posts.data ) {
 						grids.push( el( 'div', {className: 'caxton-notification',}, 'Loading posts...' ) );

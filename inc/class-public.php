@@ -89,11 +89,12 @@ class Caxton_Public{
 		$order = ! empty( $block['order'] ) ? explode( '/', $block['order'] ) : [ 'date', 'desc' ];
 //		var_dump( $block );
 		$block = wp_parse_args( $block, [
-			'cat'     => [],
-			'order'   => 'date/desc',
-			'rows'    => 4,
-			'columns' => 2,
-			'titleSize' => 20,
+			'cat'        => [],
+			'order'      => 'date/desc',
+			'rows'       => 4,
+			'columns'    => 2,
+			'titleSize'  => 20,
+			'imagesType' => '',
 		] );
 		$args = [
 			'posts_per_page' => $block['rows'] * $block['columns'],
