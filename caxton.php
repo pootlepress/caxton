@@ -4,7 +4,7 @@
  * Plugin URI: http://shramee.me/
  * Description: Caxton - blocks for Gutenberg
  * Author: PootlePress
- * Version: 0.1.2.1
+ * Version: 0.5.0
  * Author URI: https://pootlepress.com/
  * @developer shramee <shramee.srivastav@gmail.com>
  * TACHYONS v4.9.0 | http://tachyons.io - MIT License
@@ -72,7 +72,7 @@ class Caxton {
 		self::$file    = $file;
 		self::$url     = plugin_dir_url( $file );
 		self::$path    = plugin_dir_path( $file );
-		self::$version = '0.1.2.1';
+		self::$version = '0.5.0';
 
 		add_action( 'plugins_loaded', [ $this, 'init' ] );
 
