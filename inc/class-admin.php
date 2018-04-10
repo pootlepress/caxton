@@ -61,7 +61,12 @@ class Caxton_Admin {
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( $token . '-blocks', $url . 'assets/block.js', array( $token ) );
 
-		$categories = [];
+		$categories = [
+			[
+				'label' => 'Please choose...',
+				'value' => '',
+			]
+		];
 
 		$cats = get_categories();
 

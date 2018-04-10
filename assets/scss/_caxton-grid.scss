@@ -10,7 +10,7 @@
 
 	h3.grid-title {
 		padding: 0 7%;
-		margin: calc( .3em + 7px ) 0 0;
+		margin: 0;
 		font-size: 18px;
 		text-align: center;
 		display: none;
@@ -21,6 +21,7 @@
 		padding-top: 100%;
 		background: center/cover;
 		overflow: hidden;
+		margin: 0 0 1em;
 
 		h3.grid-title,
 		&:before {
