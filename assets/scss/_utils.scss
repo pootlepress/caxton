@@ -3,6 +3,22 @@
 	margin-left: calc( -50vw + 50% );
 }
 
+.shadow {
+	box-shadow: 0 0 0.1em #000;
+}
+
+.glow {
+	box-shadow: 0 0 0.1em #fff;
+}
+
+.text-shadow {
+	text-shadow: 0 0 0.1em #000;
+}
+
+.text-glow {
+	text-shadow: 0 0 0.1em #fff;
+}
+
 .center-mid-children {
 	display: flex;
 	align-items: center;

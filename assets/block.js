@@ -16,19 +16,16 @@
 			title: 'Hero section',
 			icon: 'archive',
 			tpl:
-			'<div class="cover bg-center[Full width]" style="background-image:url([Background image]);[Background parallax]">' +
-			'<div class="pv4 min-h-7 dt w-100 center-mid-children [Dim image][Full height]">' +
-			'<div class="tc white ph3 ph4-l[Text position]">' +
-			'<h2 style="color:[Title color];font-size:[Title size]px">[Title]</h2>' +
-			'<div style="margin: 0 1em 1em;color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
-			'<a href="[Button Link]" class="no-underline tc [Buttons style] pa2" ' +
-			'style="color:[Button text color];background:[Button background color];font-size:[Button size]px">' +
-			'[Call to action button]</a></div></div></div>',
+			'<div class="cover bg-center{{Full width}}" style="background-image:url({{Background image}});{{Background parallax}}">' +
+			'<div class="pv4 min-h-7 dt w-100 center-mid-children {{Dim image}}{{Full height}}">' +
+			'<div class="tc white ph3 ph4-l{{Text position}}">' +
+			'<h2 style="color:{{Title color}};font-size:{{Title size}}px">{{Title}}</h2>' +
+			'<div style="margin: 0 1em 1em;color:{{Sub-title color}};font-size:{{Sub-title size}}px">{{Sub-title}}</div>' +
+			'<a href="{{Button Link}}" class="no-underline tc {{Buttons style}} pa2" ' +
+			'style="color:{{Button text color}};background:{{Button background color}};font-size:{{Button size}}px">' +
+			'{{Call to action button}}</a></div></div></div>',
 			fields: {
-				'Background image': {
-					type: 'image',
-					default: ''
-				},
+				'Background image': 'image',
 				'Dim image': {
 					type: 'radio',
 					options: [
@@ -50,15 +47,15 @@
 					default: ' mva',
 				},
 				'Background parallax': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: 'background-attachment:fixed;',
 				},
 				'Full width': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: ' vw-100',
 				},
 				'Full height': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: ' min-vh-100',
 				},
 				'Title': {
@@ -113,19 +110,16 @@
 			title: 'Hero - 2 columns',
 			icon: '<svg enable-background="new 0 0 475.082 475.082" version="1.1" viewBox="0 0 475.08 475.08" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m461.67 31.691c-8.949-8.945-19.698-13.417-32.265-13.417h-383.72c-12.562 0-23.317 4.471-32.264 13.417-8.945 8.947-13.418 19.698-13.418 32.261v347.17c0 12.566 4.473 23.318 13.418 32.264 8.947 8.946 19.701 13.419 32.264 13.419h383.72c12.566 0 23.315-4.473 32.265-13.419 8.945-8.945 13.415-19.697 13.415-32.264v-347.17c0-12.563-4.47-23.314-13.415-32.261zm-242.4 388.58h-173.59c-2.474 0-4.615-0.907-6.423-2.707-1.809-1.811-2.712-3.949-2.712-6.427v-319.76h182.72v328.9zm219.26-9.141c0 2.478-0.903 4.62-2.71 6.427-1.813 1.807-3.949 2.71-6.427 2.71h-173.59v-328.9h182.73v319.76h-6e-3z"/></svg>',
 			tpl:
-			'<div class="cover bg-center [Full width]" style="background-image:url([Background image]);[Background parallax]">' +
+			'<div class="cover bg-center {{Full width}}" style="background-image:url({{Background image}});{{Background parallax}}">' +
 			'<div class="dt w-100 center-mid-children">' +
-			'<div class="min-h-7 p4 tc white ph3 ph4-l center-mid-children [Content width][Content position][Dim image behind content][Full height]">' +
-			'<h2 style="color:[Title color];font-size:[Title size]px">[Title]</h2>' +
-			'<div style="margin: 1em 0;color:[Sub-title color];font-size:[Sub-title size]px">[Sub-title]</div>' +
-			'<a href="[Button Link]" class="no-underline tc [Buttons style] pa2" ' +
-			'style="color:[Button text color];background:[Button background color];font-size:[Button size]px">' +
-			'[Call to action button]</a></div></div></div>',
+			'<div class="min-h-7 p4 tc white ph3 ph4-l center-mid-children {{Content width}}{{Content position}}{{Dim image behind content}}{{Full height}}">' +
+			'<h2 style="color:{{Title color}};font-size:{{Title size}}px">{{Title}}</h2>' +
+			'<div style="margin: 1em 0;color:{{Sub-title color}};font-size:{{Sub-title size}}px">{{Sub-title}}</div>' +
+			'<a href="{{Button Link}}" class="no-underline tc {{Buttons style}} pa2" ' +
+			'style="color:{{Button text color}};background:{{Button background color}};font-size:{{Button size}}px">' +
+			'{{Call to action button}}</a></div></div></div>',
 			fields: {
-				'Background image': {
-					type: 'image',
-					default: ''
-				},
+				'Background image': 'image',
 				'Dim image behind content': {
 					type: 'radio',
 					options: [
@@ -155,15 +149,15 @@
 					default: 'w-100 w-auto-l w-auto-m',
 				},
 				'Background parallax': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: 'background-attachment:fixed;',
 				},
 				'Full width': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: ' vw-100',
 				},
 				'Full height': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: ' min-vh-100',
 				},
 				'Title': {
@@ -227,20 +221,20 @@
 			title: 'Social share icons',
 			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M15.117 0H.883C.395 0 0 .395 0 .883v14.234c0 .488.395.883.883.883h7.663V9.804H6.46V7.39h2.086V5.607c0-2.066 1.262-3.19 3.106-3.19.883 0 1.642.064 1.863.094v2.16h-1.28c-1 0-1.195.476-1.195 1.176v1.54h2.39l-.31 2.416h-2.08V16h4.077c.488 0 .883-.395.883-.883V.883C16 .395 15.605 0 15.117 0" fill-rule="nonzero"/></svg>',
 			tpl:
-			'<div class="pv4 ph2 [All caps] tc-l">\n' +
-			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc [Buttons style] pa2" href="https://www.facebook.com/sharer/sharer.php?u=[Share URL]" title="Facebook" style="background-color:#3b5998">' +
+			'<div class="pv4 ph2 {{All caps}} tc-l">\n' +
+			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc {{Buttons style}} pa2" href="https://www.facebook.com/sharer/sharer.php?u={{Share URL}}" title="Facebook" style="background-color:#3b5998">' +
 			'<svg class="dib h2 w2" fill="currentColor" enable-background="new 0 0 470.513 470.513" version="1.1" viewBox="0 0 470.51 470.51" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m271.52 154.17v-40.541c0-6.086 0.28-10.8 0.849-14.13 0.567-3.335 1.857-6.615 3.859-9.853 1.999-3.236 5.236-5.47 9.706-6.708 4.476-1.24 10.424-1.858 17.85-1.858h40.539v-81.08h-64.809c-37.5 0-64.433 8.897-80.803 26.691-16.368 17.798-24.551 44.014-24.551 78.658v48.82h-48.542v81.086h48.539v235.26h97.362v-235.26h64.805l8.566-81.086h-73.37z"/></svg>' +
 			'<span class="f6 ml2">Facebook</span>' +
 			'</a>' +
-			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc [Buttons style] [All caps] pa2" href="http://pinterest.com/pin/create/bookmarklet/?media=&url=[Share URL]" title="Pinterest" style="background-color:#bd081c">' +
+			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc {{Buttons style}} {{All caps}} pa2" href="http://pinterest.com/pin/create/bookmarklet/?media=&url={{Share URL}}" title="Pinterest" style="background-color:#bd081c">' +
 			'<svg class="dib h2 w2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24"><title id="simpleicons-pinterest-icon">Pinterest icon</title><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>' +
 			'<span class="f6 ml2">Pinterest</span>' +
 			'</a>' +
-			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc [Buttons style] [All caps] pa2" href="http://twitter.com/share?url=[Share URL]" title="Twitter" style="background-color:#1da1f2">' +
+			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc {{Buttons style}} {{All caps}} pa2" href="http://twitter.com/share?url={{Share URL}}" title="Twitter" style="background-color:#1da1f2">' +
 			'<svg class="dib h2 w2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M16 3.038c-.59.26-1.22.437-1.885.517.677-.407 1.198-1.05 1.443-1.816-.634.375-1.337.648-2.085.795-.598-.638-1.45-1.036-2.396-1.036-1.812 0-3.282 1.468-3.282 3.28 0 .258.03.51.085.75C5.152 5.39 2.733 4.084 1.114 2.1.83 2.583.67 3.147.67 3.75c0 1.14.58 2.143 1.46 2.732-.538-.017-1.045-.165-1.487-.41v.04c0 1.59 1.13 2.918 2.633 3.22-.276.074-.566.114-.865.114-.21 0-.416-.02-.617-.058.418 1.304 1.63 2.253 3.067 2.28-1.124.88-2.54 1.404-4.077 1.404-.265 0-.526-.015-.783-.045 1.453.93 3.178 1.474 5.032 1.474 6.038 0 9.34-5 9.34-9.338 0-.143-.004-.284-.01-.425.64-.463 1.198-1.04 1.638-1.7z" fill-rule="nonzero"/></svg>' +
 			'<span class="f6 ml2">Twitter</span>' +
 			'</a>' +
-			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc [Buttons style] [All caps] pa2" href="mailto:?body=[Share URL]" title="Mail" style="background-color:#ea4335">' +
+			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc {{Buttons style}} {{All caps}} pa2" href="mailto:?body={{Share URL}}" title="Mail" style="background-color:#ea4335">' +
 			'<svg class="dib h2 w2" fill="currentColor" enable-background="new 0 0 511.626 511.626" version="1.1" viewBox="0 0 511.63 511.63" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m49.106 178.73c6.472 4.567 25.981 18.131 58.528 40.685 32.548 22.554 57.482 39.92 74.803 52.099 1.903 1.335 5.946 4.237 12.131 8.71 6.186 4.476 11.326 8.093 15.416 10.852 4.093 2.758 9.041 5.852 14.849 9.277 5.806 3.422 11.279 5.996 16.418 7.7 5.14 1.718 9.898 2.569 14.275 2.569h0.575c4.377 0 9.137-0.852 14.277-2.569 5.137-1.704 10.615-4.281 16.416-7.7 5.804-3.429 10.752-6.52 14.845-9.277 4.093-2.759 9.229-6.376 15.417-10.852 6.184-4.477 10.232-7.375 12.135-8.71 17.508-12.179 62.051-43.11 133.62-92.79 13.894-9.703 25.502-21.411 34.827-35.116 9.332-13.699 13.993-28.07 13.993-43.105 0-12.564-4.523-23.319-13.565-32.264-9.041-8.947-19.749-13.418-32.117-13.418h-420.26c-14.655 0-25.933 4.948-33.832 14.844-7.898 9.898-11.847 22.27-11.847 37.115 0 11.991 5.236 24.985 15.703 38.974 10.466 13.99 21.604 24.983 33.403 32.976z"/><path d="m483.07 209.28c-62.424 42.251-109.82 75.087-142.18 98.501-10.849 7.991-19.65 14.229-26.409 18.699-6.759 4.473-15.748 9.041-26.98 13.702-11.228 4.668-21.692 6.995-31.401 6.995h-0.578c-9.707 0-20.177-2.327-31.405-6.995-11.228-4.661-20.223-9.229-26.98-13.702-6.755-4.47-15.559-10.708-26.407-18.699-25.697-18.842-72.995-51.68-141.9-98.501-10.852-7.228-20.464-15.513-28.839-24.838v226.68c0 12.57 4.471 23.319 13.418 32.265 8.945 8.949 19.701 13.422 32.264 13.422h420.27c12.56 0 23.315-4.473 32.261-13.422 8.949-8.949 13.418-19.694 13.418-32.265v-226.68c-8.186 9.132-17.7 17.417-28.555 24.838z"/></svg>' +
 			'<span class="f6 ml2">Mail</span>' +
 			'</a>' +
@@ -251,7 +245,7 @@
 					default: ''
 				},
 				'All caps': {
-					type: 'checkbox',
+					type: 'toggle',
 					value: 'ttu',
 				},
 				'Buttons style': {
@@ -264,6 +258,351 @@
 					default: 'br2',
 				},
 			},
+		} );
+
+		CaxtonBlock( {
+			id: 'super-text',
+			title: 'Super Text',
+			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="0" width="20" height="20" fill="#e74c3c"/><g><path fill="#fff" d="M18 3v2H2V3h16zm-6 4v2H2V7h10zm6 0v2h-4V7h4zM8 11v2H2v-2h6zm10 0v2h-8v-2h8zm-4 4v2H2v-2h12z"/></g></svg>',
+			tpl: '<{{Element Tag}} class="{{Alignment}}{{Glow/Shadow}}" ' +
+					 'style="{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}" ' +
+					 'data-mobile-css="{{Font size}}" ' +
+					 'data-tablet-css="{{Font size tablet}}" ' +
+					 'data-desktop-css="{{Font size desktop}}">' +
+					 '{{Overline}}{{Text}}{{Underline}}</{{Element Tag}}>' +
+					 '</h2>',
+			fields: {
+				'Text': {
+					type: 'editable',
+					default: 'Click here to edit text'
+				},
+				'Element Tag': {
+					type: 'radio',
+					section: 'Layout',
+					options: [
+						{value: 'p', label: 'Paragraph',},
+						{value: 'h1', label: 'Heading 1',},
+						{value: 'h2', label: 'Heading 2',},
+						{value: 'h3', label: 'Heading 3',},
+						{value: 'h4', label: 'Heading 4',},
+						{value: 'h5', label: 'Heading 5',},
+						{value: 'h6', label: 'Heading 6',},
+						{value: 'div', label: 'Normal div',},
+					],
+					default: 'p',
+
+				},
+				'Margin top': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
+				},
+				'Font' : {
+					type: 'font',
+					section: 'Typography',
+				},
+				'Font size' : {
+					type: 'range',
+					min: 5,
+					max: 250,
+					default: 16,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size tablet' : {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size desktop' : {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Alignment': {
+					type: 'radio',
+					options: [
+						{value: ' tl', label: 'Left',},
+						{value: ' tc', label: 'Center',},
+						{value: ' tr', label: 'Right',},
+					],
+					default: ' tl',
+					section: 'Typography',
+				},
+				'Weight': {
+					type: 'range',
+					min: 100,
+					max: 800,
+					step: 100,
+					default: 400,
+					help: 'Effect of weight depends on support by selected font.',
+					tpl: 'font-weight:%s;',
+					section: 'Typography',
+				},
+				'Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Color and decoration',
+				},
+				'Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Color and decoration',
+				},
+				'Underline': {
+					type: 'select',
+					options: [
+						{value: '', label: 'None',},
+						{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
+						{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
+						{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
+						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
+						{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
+						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
+						{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
+					],
+					section: 'Color and decoration',
+				},
+				'Overline': {
+					type: 'select',
+					options: [
+						{value: '', label: 'None',},
+						{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
+						{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
+						{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
+						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
+						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
+						{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
+						{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
+					],
+					section: 'Color and decoration',
+				},
+				'Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'None',},
+						{value: ' text-glow', label: 'Glow',},
+						{value: ' text-shadow', label: 'Shadow',},
+					],
+					section: 'Color and decoration',
+				},
+
+				/*
+				Style
+				Case: None, Caps, Title, Lower, Sentence
+		Alignment
+		Shadow or Glow
+		*/
+			},
+		} );
+
+		CaxtonBlock( {
+			id: 'super-hero',
+			title: 'Super Hero',
+			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="0" y="0" fill="#e74c3c" width="20" height="20"/><g><path fill="#fff" d="M19 4v2H1V4h18zM2 7h16v10H2V7zm11 3V9H7v1h6z"/></g></svg>',
+			fields: {
+				'Background image': {
+					type: 'image',
+					section: 'Background',
+					tpl: 'background-image:url(%s);',
+				},
+				'Background image parallax': {
+					type: 'toggle',
+					section: 'Background',
+					tpl: '',
+				},
+				'Background color': {
+					type: 'color',
+					section: 'Background',
+				},
+				'Second Background color': {
+					type: 'color',
+					help: 'Second background color adds Gradient',
+					section: 'Background',
+					tpl: ', %s',
+				},
+				'Gradient type': {
+					type: 'select',
+					options: [
+						{value: 'linear-gradient( ', label: 'Linear vertical',},
+						{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
+						{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
+						{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
+						{value: 'radial-gradient( ', label: 'Radial gradient',},
+					],
+					default: 'linear-gradient( ',
+					section: 'Background',
+				},
+				'Background colors opacity': {
+					type: 'range',
+					min: 0,
+					max: 1,
+					step: .05,
+					help: 'Reduce opacity to have transparent colors over image',
+					default: '.9',
+					section: 'Background',
+					tpl: 'opacity:%s;',
+				},
+				'Full width': {
+					type: 'toggle',
+					value: ' vw-100',
+					section: 'Layout',
+				},
+				'Columns': {
+					type: 'range',
+					max: 5,
+					section: 'Layout',
+					default: 1,
+				},
+				'Padding top': {
+					type: 'range',
+					section: 'Layout',
+					default: 5,
+				},
+				'Padding left': {
+					type: 'range',
+					max: 70,
+					section: 'Layout',
+					default: 0,
+				},
+				'Padding bottom': {
+					type: 'range',
+					section: 'Layout',
+					default: 5,
+				},
+				'Padding right': {
+					type: 'range',
+					max: 70,
+					section: 'Layout',
+					default: 0,
+				},
+				'Padding unit': {
+					type: 'select',
+					options: [
+						{value: '%', label: 'Responsive',},
+						{value: 'px', label: 'Pixels',},
+					],
+					default: '%',
+					section: 'Layout',
+				},
+			},
+			edit: function( props, block ) {
+				function getColumnLayouts( cols ) {
+					var n, colsInfo = [];
+					for ( var i = 0; i < cols; i ++ ) {
+						n = i + 1;
+						colsInfo.push( {
+							name: 'caxton-col caxton-col-' + n,
+							label: __( 'Column %d' ).replace( '%d', n ),
+							icon: 'columns'
+						} );
+					}
+					return colsInfo;
+				}
+
+				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR, columns;
+
+				padUnit = block.attrs['Padding unit'];
+				padT = block.attrs['Padding top'];
+				padL = block.attrs['Padding left'];
+				padB = block.attrs['Padding bottom'];
+				padR = block.attrs['Padding right'];
+				columns = block.attrs['Columns'];
+
+				if ( 'px' == padUnit ) {
+					padT *= 5;
+					padL *= 5;
+					padB *= 5;
+					padR *= 5;
+				}
+
+				padT = padT ? padT + padUnit : 0;
+				padL = padL ? padL + padUnit : 0;
+				padB = padB ? padB + padUnit : 0;
+				padR = padR ? padR + padUnit : 0;
+
+				cls += ' ' + block.attrs['Full width'];
+
+				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background parallax}}"></div>' +
+								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
+
+				return el(
+					// Element
+					'div', { className: cls, style: {
+						'padding-top': padT,
+						'padding-left': padL,
+						'padding-bottom': padB,
+						'padding-right': padR,
+					} },
+					// Background div
+					el( 'div', { className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML ) } ),
+					// Blocks inserter
+					el(
+						'div', { className: 'relative caxton-columns caxton-' + columns + '-columns', },
+						el( wp.blocks.InnerBlocks, { layouts: getColumnLayouts( block.attrs['Columns'] ) } )
+					)
+				);
+			},
+			save: function( props, block ) {
+				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR, columns;
+
+				padUnit = block.attrs['Padding unit'];
+				padT = block.attrs['Padding top'];
+				padL = block.attrs['Padding left'];
+				padB = block.attrs['Padding bottom'];
+				padR = block.attrs['Padding right'];
+				columns = block.attrs['Columns'];
+
+				if ( 'px' == padUnit ) {
+					padT *= 5;
+					padL *= 5;
+					padB *= 5;
+					padR *= 5;
+				}
+
+				padT = padT ? padT + padUnit : 0;
+				padL = padL ? padL + padUnit : 0;
+				padB = padB ? padB + padUnit : 0;
+				padR = padR ? padR + padUnit : 0;
+
+				cls += ' ' + block.attrs['Full width'];
+
+				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background parallax}}"></div>' +
+								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
+
+				return el(
+					// Element
+					'div', { className: cls, style: {
+						'padding-top': padT,
+						'padding-left': padL,
+						'padding-bottom': padB,
+						'padding-right': padR,
+					} },
+					// Background div
+					el( 'div', { className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML ) } ),
+					// Blocks inserter
+					el(
+						'div', { className: 'relative caxton-columns caxton-' + columns + '-columns', },
+						el( wp.blocks.InnerBlocks.Content )
+					)
+				);
+			}
 		} );
 
 		registerBlockType(

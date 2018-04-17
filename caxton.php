@@ -10,6 +10,8 @@
  * TACHYONS v4.9.0 | http://tachyons.io - MIT License
  */
 
+/** Plugin variables */
+require 'inc/vars.php';
 /** Plugin admin class */
 require 'inc/class-admin.php';
 /** Plugin public class */

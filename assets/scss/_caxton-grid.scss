@@ -1,3 +1,20 @@
+.caxton-columns {
+	display: grid;
+	grid-auto-flow: dense;
+
+	@for $i from 2 through 6 {
+		&.caxton-col-#{ $i } {
+			grid-auto-columns: #{ 100% / $i };
+		}
+	}
+
+	@for $i from 1 through 6 {
+		.caxton-col-#{ $i } {
+			grid-column: #{ $i };
+		}
+	}
+}
+
 .caxton-grid {
 	display: flex;
 	flex-wrap: wrap;

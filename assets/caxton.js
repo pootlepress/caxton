@@ -74,7 +74,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		fieldProps.onChange = function ( val, moreValues ) {
 			var attrs = {};
 			attrs[ id ] = val;
-			if ( field.type === 'checkbox' && val ) {
+			if ( field.type === 'checkbox' || field.type === 'toggle' && val ) {
 				attrs[ id ] = field.value;
 			}
 			that.props.setAttributes( attrs );
@@ -157,6 +157,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			this.fieldProps( field )
 		)
 	};
+	CxB.prototype.fontFieldInit = function( field ) {
+		if ( ! field.tpl ) {
+			field.tpl = 'font-family: %s;';
+		}
+		var props = this.fieldProps( field );
+		props.options = caxton.fonts;
+		return el(
+			components.SelectControl,
+			props
+		)
+	};
 	CxB.prototype.textFieldInit = function( field ) {
 		return el(
 			components.TextControl,
@@ -170,10 +181,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		)
 	};
 	CxB.prototype.toggleFieldInit = function( field ) {
-		return el(
-			components.ToggleControl,
-			this.fieldProps( field )
-		)
+		var fieldProps = this.fieldProps( field );
+		fieldProps.checked = !! this.attrs[ field.id ];
+		return el( components.ToggleControl, fieldProps );
 	};
 
 	// endregion
@@ -211,7 +221,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 		}
 
-		els.concat( this.renderFields( fields, id ) );
+		els = els.concat( this.renderFields( fields ) );
 
 		if ( els ) {
 			return el(
@@ -239,9 +249,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return el( tag, _props );
 	};
 
-	CxB.prototype.outputHTML = function ( edit ) {
-		var html = this.tpl, c2e, tag;
-
+	CxB.prototype.populateFields = function ( html, edit ) {
+		var c2e, tag;
 		for ( let f in this.fields ) {
 			if ( this.fields.hasOwnProperty( f ) ) {
 				var
@@ -267,50 +276,53 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					val = fld.tpl.replace( '%s', val );
 				}
 				html = html.split( '[' + fld.id + ']' ).join( val );
+				html = html.split( '{{' + fld.id + '}}' ).join( val );
 			}
 		}
 
+		return html;
+	};
+
+	CxB.prototype.outputHTML = function ( html, edit ) {
+		html = this.populateFields( html, edit );
+		html = this.populateFields( html, edit ); // Twice to allow using dynamic fields in
 		return { __html: html };
 	};
 	CxB.prototype.edit = function ( props ) {
-		var
-			id = 'Unknown',
-			that = this;
+		var that = this;
 		if ( this.block ) {
 			if ( typeof this.block.edit === 'function' ) {
-				return this.block.edit();
+				return this.block.edit( props, this );
 			}
-			id = this.block.id;
+			return el( 'div', {
+				dangerouslySetInnerHTML: this.outputHTML( this.tpl, 'edit' ),
+				onClick: function ( e ) {
+					e.preventDefault();
+				},
+				onKeyDown: function ( e ) {
+					var $def = $( e.target ).find( '.default' );
+					if ( $def.length ) $def.remove();
+				},
+				onBlur: function ( e ) {
+					var
+						$t = $( e.target ),
+						attrs = {},
+						prop = $t.data( 'editableproperty' );
+					attrs[prop] = $t.html();
+					that.props.setAttributes( attrs );
+				},
+			} );
 		}
-		return el( 'div', {
-			dangerouslySetInnerHTML: this.outputHTML( 'edit' ),
-			onClick: function ( e ) {
-				e.preventDefault();
-			},
-			onKeyDown: function ( e ) {
-				var $def = $( e.target ).find( '.default' );
-				if ($def.length ) $def.remove();
-			},
-			onBlur: function ( e ) {
-				var
-					$t = $( e.target ),
-					attrs = {},
-					prop = $t.data( 'editableproperty' );
-				attrs[ prop ] = $t.html();
-				that.props.setAttributes( attrs );
-			},
-		} );
 	};
 
 	CxB.prototype.save = function ( props ) {
-		var id = 'Unknown';
+		var id = this.block.id;
 		if ( this.block ) {
 			if ( typeof this.block.save === 'function' ) {
-				return this.block.save();
+				return this.block.save( props, this );
 			}
-			id = this.block.id;
+			return el( 'div', {dangerouslySetInnerHTML: this.outputHTML( this.tpl )} );
 		}
-		return el( 'div', {dangerouslySetInnerHTML: this.outputHTML()} );
 	};
 
 	CxB.prototype.saveBlockProperties = function ( props ) {

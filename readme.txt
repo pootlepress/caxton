@@ -55,7 +55,8 @@ Version 0.7.0
 * 2018-04-20
 * New - Field section supported
 * New - Field template supported, %s in tpl replaced with value
-* New - 
+* New - Super hero block
+* New - Super text block
 
 Version 0.5.0
 * 2018-04-10

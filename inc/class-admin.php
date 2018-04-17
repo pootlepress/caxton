@@ -61,7 +61,7 @@ class Caxton_Admin {
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( "$token-blocks", $url . 'assets/block.js', array( $token ) );
 
-		$categories = [
+		$caxton_fonts = $categories = [
 			[
 				'label' => 'Please choose...',
 				'value' => '',
@@ -78,9 +78,19 @@ class Caxton_Admin {
 			];
 		}
 
+		$fonts = caxton_fonts();
+		foreach ( $fonts as $val => $label ) {
+			/** @var WP_Term $cat */
+			$caxton_fonts[] = [
+				'label' => $label,
+				'value' => $val,
+			];
+		}
+
 		wp_localize_script( $token, 'caxton', [
 			'post' => filter_input( INPUT_GET, 'post' ),
 			'postCategories' => $categories,
+			'fonts' => $caxton_fonts,
 		] );
 	}
 
