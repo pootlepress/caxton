@@ -51,6 +51,19 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 3. Block preview
 
 == Changelog ==
+Version 0.7.0
+* 2018-04-20
+* New - Field section supported
+* New - Field template supported, %s in tpl replaced with value
+* New - 
+
+Version 0.5.0
+* 2018-04-10
+* New - Hero template
+* New - 2 col hero template
+* New - Social share icons
+* Fix - Posts grid not working
+
 Version 0.1.2.1
 * 02-02-2018
 * Tweak - Query only public posts in posts endpoint, Thanks again Ov3rfly :)
