@@ -6,7 +6,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 	function CxB( block ) {
 		if ( ! block.id ) {
-			console.log( 'Parameter `id` is required for CaxtonBlock' )
+			console.error( 'Parameter `id` is required for CaxtonBlock' )
 		}
 		this.block = $.extend( {
 			title: block.id,
@@ -18,6 +18,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		this.tpl = block.tpl;
 		this.fields = this.processFields( block.fields );
+		this.sections = this.processSections( this.fields );
 		this.registerBlock();
 	};
 
@@ -46,23 +47,42 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return ret;
 	};
 
+	CxB.prototype.processSections = function( fields ) {
+		var sections = {};
+
+		for ( var i = 0; i < fields.length; i ++ ) {
+			var section = fields[i].section;
+			if ( section ) {
+				if ( ! sections[ section ] ) {
+					sections[ section ] = [];
+				}
+				sections[ section ].push( fields[i] )
+			}
+		}
+		return sections;
+	};
+
 	// region Inspector Fields
 
 	CxB.prototype.fieldProps = function( field ) {
 		var
 			id = field.id,
 			that = this,
-			fieldProps = $.extend( {
-				value: that.attrs[ id ],
-				onChange: function ( val ) {
-					var attrs = {};
-					attrs[ id ] = val;
-					if ( field.type === 'checkbox' && val ) {
-						attrs[ id ] = field.value;
-					}
-					that.props.setAttributes( attrs );
-				},
-			}, field );
+			fieldProps = $.extend( {}, field );
+
+		fieldProps.value = that.attrs[ id ];
+		fieldProps.onChange = function ( val, moreValues ) {
+			var attrs = {};
+			attrs[ id ] = val;
+			if ( field.type === 'checkbox' && val ) {
+				attrs[ id ] = field.value;
+			}
+			that.props.setAttributes( attrs );
+
+			if ( typeof field.onChange === 'function' ) {
+				field.onChange( val, that, moreValues );
+			}
+		};
 
 		delete fieldProps.id;
 		delete fieldProps.type;
@@ -78,7 +98,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				blocks.MediaUpload,
 				{
 					onSelect: function ( media ) {
-						props.onChange( media.url );
+						props.onChange( media.url, media );
 					},
 					type: 'image',
 					value: props.value,
@@ -90,7 +110,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							},
 							! props.value ?
 								__( 'Select image' ) :
-								[el( 'img', {src: props.value} ), __( 'Click the image to edit or update' )]
+								[
+									el( 'img', {src: props.value} ),
+									__( 'Click the image to edit or update' ),
+								]
 						);
 					},
 				}
@@ -103,16 +126,18 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return el(
 			components.PanelColor,
 			props,
-			el(
-				wp.blocks.ColorPalette,
-				props,
-			)
+			[
+				el(
+					wp.blocks.ColorPalette,
+					props,
+				),
+				field.help ? field.help : ''
+			]
 		)
 	};
 	CxB.prototype.checkboxFieldInit = function( field ) {
 		var fieldProps = this.fieldProps( field );
 		fieldProps.checked = !! this.attrs[ field.id ];
-		console.log( fieldProps );
 		return el( components.CheckboxControl, fieldProps );
 	};
 	CxB.prototype.radioFieldInit = function( field ) {
@@ -153,18 +178,41 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 	// endregion
 
-	CxB.prototype.inspectorFields = function () {
-		var
-			fields = this.fields,
-			els = [];
+	CxB.prototype.renderFields = function ( fields, section ) {
+		var els = [];
 		for ( var i = 0; i < fields.length; i ++ ) {
 			var
 				f = fields[i],
 				func = f['type'] + 'FieldInit';
-			if ( typeof this[ func ] === 'function' ) {
+			if ( typeof this[ func ] === 'function' && ! f.hide && f.section == section ) {
 				els.push( this[func]( f ) );
 			}
 		}
+		return els;
+	};
+
+	CxB.prototype.inspectorFields = function () {
+		var
+			fields = this.fields,
+			els = [];
+
+		for ( var id in this.sections ) {
+			if ( this.sections.hasOwnProperty( id ) ) {
+				els.push(
+					el(
+						components.PanelBody,
+						{
+							title: id,
+							className: 'caxton-section caxton-section-' + id.toLowerCase().replace( /[^0-z]/g, '-' ),
+						},
+						this.renderFields( this.sections[ id ], id )
+					)
+				);
+			}
+		}
+
+		els.concat( this.renderFields( fields, id ) );
+
 		if ( els ) {
 			return el(
 				blocks.InspectorControls,
@@ -184,7 +232,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			tag = 'div'
 		}
 
-		var _props = jQuery.extend( {
+		var _props = $.extend( {
 			dangerouslySetInnerHTML: { __html: html },
 		}, props );
 
@@ -203,7 +251,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					tag = fld.tag ? fld.tag : 'span';
 					if ( edit ) {
 						if ( val === fld.default ) {
-							val = '<span class="default">' + val + '</span>';
+							val = '<' + tag + ' class="default">' + val + '</' + tag + '>';
 						}
 						c2e = __( 'Click to Edit' );
 						val =
@@ -214,6 +262,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							val = '<' + tag + '>' + val + '</' + tag + '>';
 						}
 					}
+				}
+				if ( val && fld.tpl ) {
+					val = fld.tpl.replace( '%s', val );
 				}
 				html = html.split( '[' + fld.id + ']' ).join( val );
 			}

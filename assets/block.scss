@@ -17,6 +17,16 @@
 	}
 }
 
+.edit-post-block-inspector-panel .components-panel__body.caxton-section {
+	margin-bottom: 16px;
+	padding-bottom: 0;
+	box-shadow: 0 0 0 1px #ddd, 0 2px 3px #eee;
+}
+
+.caxton-section .components-panel__body .components-panel__body-toggle {
+	font-weight: 400;
+}
+
 div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	> span[contentEditable] {
 		display: block;
