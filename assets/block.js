@@ -4,8 +4,7 @@
  * @package Caxton
  * @version 1.0.0
  */
-(
-	function ( $, blocks, el, withAPIData, i18n, components ) {
+( function ( $, blocks, el, withAPIData, i18n, components ) {
 		var
 			registerBlockType = blocks.registerBlockType,
 			InspectorControls = blocks.InspectorControls,
@@ -260,157 +259,350 @@
 			},
 		} );
 
-		CaxtonBlock( {
-			id: 'super-text',
-			title: 'Super Text',
-			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="0" width="20" height="20" fill="#e74c3c"/><g><path fill="#fff" d="M18 3v2H2V3h16zm-6 4v2H2V7h10zm6 0v2h-4V7h4zM8 11v2H2v-2h6zm10 0v2h-8v-2h8zm-4 4v2H2v-2h12z"/></g></svg>',
-			tpl: '<{{Element Tag}} class="{{Alignment}}{{Glow/Shadow}}" ' +
-					 'style="{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}" ' +
-					 'data-mobile-css="{{Font size}}" ' +
-					 'data-tablet-css="{{Font size tablet}}" ' +
-					 'data-desktop-css="{{Font size desktop}}">' +
-					 '{{Overline}}{{Text}}{{Underline}}</{{Element Tag}}>' +
-					 '</h2>',
-			fields: {
-				'Text': {
-					type: 'editable',
-					default: 'Click here to edit text'
-				},
-				'Element Tag': {
-					type: 'radio',
-					section: 'Layout',
-					options: [
-						{value: 'p', label: 'Paragraph',},
-						{value: 'h1', label: 'Heading 1',},
-						{value: 'h2', label: 'Heading 2',},
-						{value: 'h3', label: 'Heading 3',},
-						{value: 'h4', label: 'Heading 4',},
-						{value: 'h5', label: 'Heading 5',},
-						{value: 'h6', label: 'Heading 6',},
-						{value: 'div', label: 'Normal div',},
-					],
-					default: 'p',
-
-				},
-				'Margin top': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-top:%sem;',
-				},
-				'Margin bottom': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-bottom:%sem;',
-				},
-				'Font' : {
-					type: 'font',
-					section: 'Typography',
-				},
-				'Font size' : {
-					type: 'range',
-					min: 5,
-					max: 250,
-					default: 16,
-					tpl: 'font-size:%spx;',
-					section: 'Typography',
-				},
-				'Font size tablet' : {
-					type: 'range',
-					min: 5,
-					max: 250,
-					tpl: 'font-size:%spx;',
-					section: 'Typography',
-				},
-				'Font size desktop' : {
-					type: 'range',
-					min: 5,
-					max: 250,
-					tpl: 'font-size:%spx;',
-					section: 'Typography',
-				},
-				'Alignment': {
-					type: 'radio',
-					options: [
-						{value: ' tl', label: 'Left',},
-						{value: ' tc', label: 'Center',},
-						{value: ' tr', label: 'Right',},
-					],
-					default: ' tl',
-					section: 'Typography',
-				},
-				'Weight': {
-					type: 'range',
-					min: 100,
-					max: 800,
-					step: 100,
-					default: 400,
-					help: 'Effect of weight depends on support by selected font.',
-					tpl: 'font-weight:%s;',
-					section: 'Typography',
-				},
-				'Text color': {
-					type: 'color',
-					default: '#555',
-					tpl: 'color:%s;',
-					section: 'Color and decoration',
-				},
-				'Background color': {
-					type: 'color',
-					tpl: 'background-color:%s;',
-					section: 'Color and decoration',
-				},
-				'Underline': {
-					type: 'select',
-					options: [
-						{value: '', label: 'None',},
-						{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
-						{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
-						{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
-						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
-						{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
-						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
-						{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
-					],
-					section: 'Color and decoration',
-				},
-				'Overline': {
-					type: 'select',
-					options: [
-						{value: '', label: 'None',},
-						{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
-						{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
-						{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
-						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
-						{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
-						{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
-						{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
-					],
-					section: 'Color and decoration',
-				},
-				'Glow/Shadow': {
-					type: 'select',
-					options: [
-						{value: '', label: 'None',},
-						{value: ' text-glow', label: 'Glow',},
-						{value: ' text-shadow', label: 'Shadow',},
-					],
-					section: 'Color and decoration',
-				},
-
-				/*
-				Style
-				Case: None, Caps, Title, Lower, Sentence
-		Alignment
-		Shadow or Glow
-		*/
+	CaxtonBlock( {
+		id: 'super-text',
+		title: 'Super Text',
+		icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="0" width="20" height="20" fill="#e74c3c"/><g><path fill="#fff" d="M18 3v2H2V3h16zm-6 4v2H2V7h10zm6 0v2h-4V7h4zM8 11v2H2v-2h6zm10 0v2h-8v-2h8zm-4 4v2H2v-2h12z"/></g></svg>',
+		tpl: '<{{Element Tag}} class="{{Alignment}}{{Glow/Shadow}}" ' +
+				 'style="{{Letter Spacing}}{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}" ' +
+				 'data-mobile-css="{{Font size}}" ' +
+				 'data-tablet-css="{{Font size tablet}}" ' +
+				 'data-desktop-css="{{Font size desktop}}">' +
+				 '{{Overline}}{{Text}}{{Underline}}' +
+				 '</{{Element Tag}}>',
+		fields: {
+			'Text': {
+				type: 'editable',
+				default: 'Click here to edit text'
 			},
-		} );
+			'Element Tag': {
+				type: 'radio',
+				section: 'Layout',
+				options: [
+					{value: 'p', label: 'Paragraph',},
+					{value: 'h1', label: 'Heading 1',},
+					{value: 'h2', label: 'Heading 2',},
+					{value: 'h3', label: 'Heading 3',},
+					{value: 'h4', label: 'Heading 4',},
+					{value: 'h5', label: 'Heading 5',},
+					{value: 'h6', label: 'Heading 6',},
+					{value: 'div', label: 'Normal div',},
+				],
+				default: 'p',
+
+			},
+			'Margin top': {
+				type: 'range',
+				section: 'Layout',
+				min: 0,
+				max: 10,
+				step: 0.5,
+				tpl: 'margin-top:%sem;',
+			},
+			'Margin bottom': {
+				type: 'range',
+				section: 'Layout',
+				min: 0,
+				max: 10,
+				step: 0.5,
+				tpl: 'margin-bottom:%sem;',
+			},
+			'Font' : {
+				type: 'font',
+				tpl: 'font-family:%s;',
+				section: 'Typography',
+			},
+			'Letter Spacing' : {
+				type: 'range',
+				tpl: 'letter-spacing:%spx;',
+				section: 'Typography',
+			},
+			'Font size' : {
+				type: 'range',
+				min: 5,
+				max: 250,
+				default: 16,
+				tpl: 'font-size:%spx;',
+				section: 'Typography',
+			},
+			'Font size tablet' : {
+				type: 'range',
+				min: 5,
+				max: 250,
+				tpl: 'font-size:%spx;',
+				section: 'Typography',
+			},
+			'Font size desktop' : {
+				type: 'range',
+				min: 5,
+				max: 250,
+				tpl: 'font-size:%spx;',
+				section: 'Typography',
+			},
+			'Alignment': {
+				type: 'radio',
+				options: [
+					{value: ' tl', label: 'Left',},
+					{value: ' tc', label: 'Center',},
+					{value: ' tr', label: 'Right',},
+				],
+				default: ' tl',
+				section: 'Typography',
+			},
+			'Weight': {
+				type: 'range',
+				min: 100,
+				max: 800,
+				step: 100,
+				default: 400,
+				help: 'Effect of weight depends on support by selected font.',
+				tpl: 'font-weight:%s;',
+				section: 'Typography',
+			},
+			'Text color': {
+				type: 'color',
+				default: '#555',
+				tpl: 'color:%s;',
+				section: 'Color and decoration',
+			},
+			'Background color': {
+				type: 'color',
+				tpl: 'background-color:%s;',
+				section: 'Color and decoration',
+			},
+			'Underline': {
+				type: 'select',
+				options: [
+					{value: '', label: 'None',},
+					{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
+					{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
+					{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
+					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
+					{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
+					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
+					{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
+				],
+				section: 'Color and decoration',
+			},
+			'Overline': {
+				type: 'select',
+				options: [
+					{value: '', label: 'None',},
+					{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
+					{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
+					{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
+					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
+					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
+					{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
+					{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
+				],
+				section: 'Color and decoration',
+			},
+			'Glow/Shadow': {
+				type: 'select',
+				options: [
+					{value: '', label: 'None',},
+					{value: ' text-glow', label: 'Glow',},
+					{value: ' text-shadow', label: 'Shadow',},
+				],
+				section: 'Color and decoration',
+			},
+		},
+	} );
+
+	CaxtonBlock( {
+		id: 'super-button',
+		title: 'Super Button',
+		icon: '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#e74c3c" d="M17 5H3c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm1 7c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h14c.6 0 1 .4 1 1v5z"></path></svg>',
+		tpl: '<div class="{{Alignment}}" style="{{Margin top}}{{Margin bottom}}padding:{{Padding top/bottom}} {{Padding left/right}};">' +
+				 '<a class="caxton-btn no-underline dib {{Glow/Shadow}}" href="{{URL}}" ' +
+				 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
+				 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
+				 'border:{{Border weight}} solid {{Border color}};' +
+				 'padding:{{Padding top/bottom}} {{Padding left/right}};' +
+				 'box-shadow:{{Shadow horizontal offset}}{{Shadow vertical offset}}{{Shadow blur}}{{Shadow strength}};" ' +
+				 'data-mobile-css="{{Font size}}" ' +
+				 'data-tablet-css="{{Font size tablet}}" ' +
+				 'data-desktop-css="{{Font size desktop}}">' +
+				 '{{Text}}' +
+				 '</a></div>',
+		fields: {
+			'Text': {
+				type: 'editable',
+				default: 'Click here to edit text'
+			},
+			'URL': {
+				section: 'Layout',
+				type: 'text',
+				default: '#'
+			},
+			'Padding top/bottom': {
+				type: 'range',
+				section: 'Layout',
+				min: 0,
+				default: .5,
+				max: 5,
+				step: 0.05,
+				tpl: '%sem',
+			},
+			'Padding left/right': {
+				type: 'range',
+				section: 'Layout',
+				min: 0,
+				default: .7,
+				max: 5,
+				step: 0.05,
+				tpl: '%sem',
+			},
+			'Margin top': {
+				type: 'range',
+				section: 'Layout',
+				min: 0,
+				max: 10,
+				step: 0.5,
+				tpl: 'margin-top:%sem;',
+			},
+			'Margin bottom': {
+				type: 'range',
+				section: 'Layout',
+				min: 0,
+				max: 10,
+				step: 0.5,
+				tpl: 'margin-bottom:%sem;',
+			},
+
+			'Font' : {
+				type: 'font',
+				tpl: 'font-family:%s;',
+				section: 'Typography',
+			},
+			'Letter Spacing' : {
+				type: 'range',
+				tpl: 'letter-spacing:%spx;',
+				section: 'Typography',
+			},
+			'Font size' : {
+				type: 'range',
+				min: 5,
+				max: 250,
+				default: 16,
+				tpl: 'font-size:%spx;',
+				section: 'Typography',
+			},
+			'Font size tablet' : {
+				type: 'range',
+				min: 5,
+				max: 250,
+				tpl: 'font-size:%spx;',
+				section: 'Typography',
+			},
+			'Font size desktop' : {
+				type: 'range',
+				min: 5,
+				max: 250,
+				tpl: 'font-size:%spx;',
+				section: 'Typography',
+			},
+			'Alignment': {
+				type: 'radio',
+				options: [
+					{value: ' tl', label: 'Left',},
+					{value: ' tc', label: 'Center',},
+					{value: ' tr', label: 'Right',},
+				],
+				default: ' tl',
+				section: 'Typography',
+			},
+			'Weight': {
+				type: 'range',
+				min: 100,
+				max: 800,
+				step: 100,
+				default: 400,
+				help: 'Effect of weight depends on support by selected font.',
+				tpl: 'font-weight:%s;',
+				section: 'Typography',
+			},
+
+			'Text color': {
+				type: 'color',
+				default: '#555',
+				tpl: 'color:%s;',
+				section: 'Color and decoration',
+			},
+			'Background color': {
+				type: 'color',
+				tpl: 'background-color:%s;',
+				section: 'Color and decoration',
+			},
+			'Border weight': {
+				type: 'range',
+				min: 0,
+				default: 2,
+				max: 50,
+				tpl: '%spx ',
+				section: 'Color and decoration',
+			},
+			'Border color': {
+				type: 'color',
+				section: 'Color and decoration',
+			},
+			'Glow/Shadow': {
+				type: 'select',
+				options: [
+					{value: '', label: 'None',},
+					{value: ' text-glow', label: 'Glow',},
+					{value: ' text-shadow', label: 'Shadow',},
+				],
+				section: 'Color and decoration',
+			},
+
+			'Shadow horizontal offset': {
+				type: 'range',
+				tpl: '%spx ',
+				default: 0,
+				section: 'Button shadow',
+			},
+			'Shadow vertical offset': {
+				type: 'range',
+				tpl: '%spx ',
+				default: 0,
+				section: 'Button shadow',
+			},
+			'Shadow blur': {
+				type: 'range',
+				tpl: '%spx ',
+				default: 0,
+				section: 'Button shadow',
+			},
+			'Shadow strength': {
+				type: 'range',
+				min: .1,
+				step: .1,
+				default: .1,
+				max: 1,
+				section: 'Button shadow',
+				tpl: 'rgba(0,0,0,%s)',
+			},
+
+			'Hover Text color': {
+				type: 'color',
+				default: '#555',
+				tpl: 'color:%s;',
+				section: 'Hover Colors',
+			},
+			'Hover Background color': {
+				type: 'color',
+				tpl: 'background-color:%s;',
+				section: 'Hover Colors',
+			},
+			'Hover Border color': {
+				type: 'color',
+				section: 'Hover Colors',
+				tpl: 'border-color:%s;',
+			},
+		},
+	} );
 
 		CaxtonBlock( {
 			id: 'super-hero',
@@ -684,6 +876,7 @@
 
 					className += ' caxton-'+ attrs.imagesType + '-images';
 
+					console.log( attrs.rows * attrs.columns );
 					if ( attrs.titleBelowImage ) {
 						className += ' caxton-title-below-image';
 					}
@@ -898,6 +1091,4 @@
 				},
 			}
 		);
-
-	}
-)( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n, wp.components );
+} )( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n, wp.components );
