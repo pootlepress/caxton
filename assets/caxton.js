@@ -77,7 +77,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			if ( field.type === 'checkbox' || field.type === 'toggle' && val ) {
 				attrs[ id ] = field.value;
 			}
-			that.props.setAttributes( attrs );
+			that.focussedProps.setAttributes( attrs );
 
 			if ( typeof field.onChange === 'function' ) {
 				field.onChange( val, that, moreValues );
@@ -202,9 +202,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	CxB.prototype.inspectorFields = function () {
+
 		var
 			fields = this.fields,
 			els = [];
+
+		this.focussedProps = this.props;
 
 		for ( var id in this.sections ) {
 			if ( this.sections.hasOwnProperty( id ) ) {
@@ -273,7 +276,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					}
 				}
 				if ( val && fld.tpl ) {
-					val = fld.tpl.replace( '%s', val );
+					val = fld.tpl.replace( /%s/g, val );
 				}
 				html = html.split( '[' + fld.id + ']' ).join( val );
 				html = html.split( '{{' + fld.id + '}}' ).join( val );
@@ -288,6 +291,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		html = this.populateFields( html, edit ); // Twice to allow using dynamic fields in
 		return { __html: html };
 	};
+
 	CxB.prototype.edit = function ( props ) {
 		var that = this;
 		if ( this.block ) {
@@ -309,7 +313,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						attrs = {},
 						prop = $t.data( 'editableproperty' );
 					attrs[prop] = $t.html();
-					that.props.setAttributes( attrs );
+					that.focussedProps.setAttributes( attrs );
 				},
 			} );
 		}
@@ -327,7 +331,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 	CxB.prototype.saveBlockProperties = function ( props ) {
 		this.props = props;
-		this.attrs = props.attributes;
+		this.attrs = this.props.attributes;
 		for ( let f in this.fields ) {
 			if ( this.fields.hasOwnProperty( f ) ) {
 				var fld = this.fields[ f ];
