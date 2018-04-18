@@ -57,6 +57,7 @@ Version 0.7.0
 * New - Field template supported, %s in tpl replaced with value
 * New - Super hero block
 * New - Super text block
+* New - Super button block
 
 Version 0.5.0
 * 2018-04-10
