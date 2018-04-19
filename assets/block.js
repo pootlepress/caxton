@@ -480,9 +480,9 @@
 					 'border:{{Border weight}} solid {{Border color}};' +
 					 'padding:{{Padding top/bottom}} {{Padding left/right}};' +
 					 '{{Button Glow/Shadow}};" ' +
-					 'data-mobile-css="{{Font size}}" ' +
+					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
-					 'data-desktop-css="{{Font size desktop}}">' +
+					 'data-desktop-css="{{Font size}}">' +
 					 '{{Text}}' +
 					 '</a></div>',
 			fields: {
@@ -556,7 +556,7 @@
 					tpl: 'font-size:%spx;',
 					section: 'Typography',
 				},
-				'Font size desktop': {
+				'Font size mobile': {
 					type: 'range',
 					min: 5,
 					max: 250,
