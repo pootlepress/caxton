@@ -58,6 +58,9 @@ Version 0.7.0
 * New - Super hero block
 * New - Super text block
 * New - Super button block
+* New - Super icon block
+* New - Improved editor support for `Full width`
+* Fix - Bug which causes issues while editing multiple blocks
 
 Version 0.5.0
 * 2018-04-10

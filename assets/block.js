@@ -4,7 +4,8 @@
  * @package Caxton
  * @version 1.0.0
  */
-( function ( $, blocks, el, withAPIData, i18n, components ) {
+(
+	function ( $, blocks, el, withAPIData, i18n, components ) {
 		var
 			registerBlockType = blocks.registerBlockType,
 			InspectorControls = blocks.InspectorControls,
@@ -100,6 +101,15 @@
 				'Button background color': {
 					type: 'color',
 					default: '#eee'
+				},
+				'Buttons style': {
+					type: 'radio',
+					options: [
+						{value: 'br0', label: 'Boxed corners',},
+						{value: 'br3', label: "Rounded corners",},
+						{value: 'ph3 br-pill', label: 'Pill',},
+					],
+					default: 'br2',
 				},
 			},
 		} );
@@ -259,365 +269,436 @@
 			},
 		} );
 
-	CaxtonBlock( {
-		id: 'super-text',
-		title: 'Super Text',
-		icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="0" width="20" height="20" fill="#e74c3c"/><g><path fill="#fff" d="M18 3v2H2V3h16zm-6 4v2H2V7h10zm6 0v2h-4V7h4zM8 11v2H2v-2h6zm10 0v2h-8v-2h8zm-4 4v2H2v-2h12z"/></g></svg>',
-		tpl: '<{{Element Tag}} class="{{Alignment}}{{Glow/Shadow}}" ' +
-				 'style="{{Letter Spacing}}{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}" ' +
-				 'data-mobile-css="{{Font size}}" ' +
-				 'data-tablet-css="{{Font size tablet}}" ' +
-				 'data-desktop-css="{{Font size desktop}}">' +
-				 '{{Overline}}{{Text}}{{Underline}}' +
-				 '</{{Element Tag}}>',
-		fields: {
-			'Text': {
-				type: 'editable',
-				default: 'Click here to edit text'
-			},
-			'Element Tag': {
-				type: 'radio',
-				section: 'Layout',
-				options: [
-					{value: 'p', label: 'Paragraph',},
-					{value: 'h1', label: 'Heading 1',},
-					{value: 'h2', label: 'Heading 2',},
-					{value: 'h3', label: 'Heading 3',},
-					{value: 'h4', label: 'Heading 4',},
-					{value: 'h5', label: 'Heading 5',},
-					{value: 'h6', label: 'Heading 6',},
-					{value: 'div', label: 'Normal div',},
-				],
-				default: 'p',
+		CaxtonBlock( {
+			id: 'super-text',
+			title: 'Super Text',
+			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><g><path fill="#e74c3c" d="M18 3v2H2V3h16zm-6 4v2H2V7h10zm6 0v2h-4V7h4zM8 11v2H2v-2h6zm10 0v2h-8v-2h8zm-4 4v2H2v-2h12z"/></g></svg>',
+			tpl: '<{{Element Tag}} class="{{Alignment}}{{Text Glow/Shadow}}" ' +
+					 'style="{{Letter Spacing}}{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}" ' +
+					 'data-mobile-css="{{Font size mobile}}" ' +
+					 'data-tablet-css="{{Font size tablet}}" ' +
+					 'data-desktop-css="{{Font size}}">' +
+					 '<span class="dib">{{Overline}}{{Text}}{{Underline}}</span>' +
+					 '</{{Element Tag}}>',
+			fields: {
+				'Text': {
+					type: 'editable',
+					default: 'Click here to edit text'
+				},
+				'Element Tag': {
+					type: 'radio',
+					section: 'Layout',
+					options: [
+						{value: 'p', label: 'Paragraph',},
+						{value: 'h1', label: 'Heading 1',},
+						{value: 'h2', label: 'Heading 2',},
+						{value: 'h3', label: 'Heading 3',},
+						{value: 'h4', label: 'Heading 4',},
+						{value: 'h5', label: 'Heading 5',},
+						{value: 'h6', label: 'Heading 6',},
+						{value: 'div', label: 'Normal div',},
+					],
+					default: 'p',
 
+				},
+				'Margin top': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
+				},
+				'Font': {
+					type: 'font',
+					tpl: 'font-family:%s;',
+					section: 'Typography',
+				},
+				'Letter Spacing': {
+					type: 'range',
+					max: 25,
+					tpl: 'letter-spacing:%spx;',
+					section: 'Typography',
+				},
+				'Font size': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					default: 16,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size tablet': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size mobile': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Alignment': {
+					type: 'radio',
+					options: [
+						{value: ' tl', label: 'Left',},
+						{value: ' tc', label: 'Center',},
+						{value: ' tr', label: 'Right',},
+					],
+					default: ' tl',
+					section: 'Typography',
+				},
+				'Weight': {
+					type: 'range',
+					min: 100,
+					max: 800,
+					step: 100,
+					default: 400,
+					help: 'Effect of weight depends on support by selected font.',
+					tpl: 'font-weight:%s;',
+					section: 'Typography',
+				},
+				'Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Color and decoration',
+				},
+				'Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Color and decoration',
+				},
+				'Underline': {
+					type: 'select',
+					options: [
+						{
+							value: '',
+							label: 'None',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em dotted"></div>',
+							label: 'Dotted',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em dashed"></div>',
+							label: 'Dashed',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em solid"></div>',
+							label: 'Thin',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							label: 'Thin + Thin',
+						},
+						{
+							value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							label: 'Thick + Thin',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>',
+							label: 'Thin + Thick',
+						},
+						{
+							value: '<div style="border: 0.05em solid"></div>',
+							label: 'Thick',
+						},
+					],
+					section: 'Color and decoration',
+				},
+				'Overline': {
+					type: 'select',
+					options: [
+						{
+							value: '',
+							label: 'None',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em dotted"></div>',
+							label: 'Dotted',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em dashed"></div>',
+							label: 'Dashed',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em solid"></div>',
+							label: 'Thin',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							label: 'Thin + Thin',
+						},
+						{
+							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>',
+							label: 'Thin + Thick',
+						},
+						{
+							value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							label: 'Thick + Thin',
+						},
+						{
+							value: '<div style="border: 0.05em solid"></div>',
+							label: 'Thick',
+						},
+					],
+					section: 'Color and decoration',
+				},
+				'Text Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'None',},
+						{value: ' text-glow', label: 'Glow',},
+						{value: ' text-shadow', label: 'Shadow',},
+					],
+					section: 'Color and decoration',
+				},
 			},
-			'Margin top': {
-				type: 'range',
-				section: 'Layout',
-				min: 0,
-				max: 10,
-				step: 0.5,
-				tpl: 'margin-top:%sem;',
-			},
-			'Margin bottom': {
-				type: 'range',
-				section: 'Layout',
-				min: 0,
-				max: 10,
-				step: 0.5,
-				tpl: 'margin-bottom:%sem;',
-			},
-			'Font' : {
-				type: 'font',
-				tpl: 'font-family:%s;',
-				section: 'Typography',
-			},
-			'Letter Spacing' : {
-				type: 'range',
-				tpl: 'letter-spacing:%spx;',
-				section: 'Typography',
-			},
-			'Font size' : {
-				type: 'range',
-				min: 5,
-				max: 250,
-				default: 16,
-				tpl: 'font-size:%spx;',
-				section: 'Typography',
-			},
-			'Font size tablet' : {
-				type: 'range',
-				min: 5,
-				max: 250,
-				tpl: 'font-size:%spx;',
-				section: 'Typography',
-			},
-			'Font size desktop' : {
-				type: 'range',
-				min: 5,
-				max: 250,
-				tpl: 'font-size:%spx;',
-				section: 'Typography',
-			},
-			'Alignment': {
-				type: 'radio',
-				options: [
-					{value: ' tl', label: 'Left',},
-					{value: ' tc', label: 'Center',},
-					{value: ' tr', label: 'Right',},
-				],
-				default: ' tl',
-				section: 'Typography',
-			},
-			'Weight': {
-				type: 'range',
-				min: 100,
-				max: 800,
-				step: 100,
-				default: 400,
-				help: 'Effect of weight depends on support by selected font.',
-				tpl: 'font-weight:%s;',
-				section: 'Typography',
-			},
-			'Text color': {
-				type: 'color',
-				default: '#555',
-				tpl: 'color:%s;',
-				section: 'Color and decoration',
-			},
-			'Background color': {
-				type: 'color',
-				tpl: 'background-color:%s;',
-				section: 'Color and decoration',
-			},
-			'Underline': {
-				type: 'select',
-				options: [
-					{value: '', label: 'None',},
-					{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
-					{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
-					{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
-					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
-					{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
-					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
-					{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
-				],
-				section: 'Color and decoration',
-			},
-			'Overline': {
-				type: 'select',
-				options: [
-					{value: '', label: 'None',},
-					{value: '<div style="border-bottom: 0.05em dotted"></div>', label: 'Dotted',},
-					{value: '<div style="border-bottom: 0.05em dashed"></div>', label: 'Dashed',},
-					{value: '<div style="border-bottom: 0.05em solid"></div>', label: 'Thin',},
-					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thin + Thin',},
-					{value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>', label: 'Thin + Thick',},
-					{value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>', label: 'Thick + Thin',},
-					{value: '<div style="border: 0.05em solid"></div>', label: 'Thick',},
-				],
-				section: 'Color and decoration',
-			},
-			'Glow/Shadow': {
-				type: 'select',
-				options: [
-					{value: '', label: 'None',},
-					{value: ' text-glow', label: 'Glow',},
-					{value: ' text-shadow', label: 'Shadow',},
-				],
-				section: 'Color and decoration',
-			},
-		},
-	} );
+		} );
 
-	CaxtonBlock( {
-		id: 'super-button',
-		title: 'Super Button',
-		icon: '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#e74c3c" d="M17 5H3c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm1 7c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h14c.6 0 1 .4 1 1v5z"></path></svg>',
-		tpl: '<div class="{{Alignment}}" style="{{Margin top}}{{Margin bottom}}padding:{{Padding top/bottom}} {{Padding left/right}};">' +
-				 '<a class="caxton-btn no-underline dib {{Glow/Shadow}}" href="{{URL}}" ' +
-				 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
-				 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
-				 'border:{{Border weight}} solid {{Border color}};' +
-				 'padding:{{Padding top/bottom}} {{Padding left/right}};' +
-				 'box-shadow:{{Shadow horizontal offset}}{{Shadow vertical offset}}{{Shadow blur}}{{Shadow strength}};" ' +
-				 'data-mobile-css="{{Font size}}" ' +
-				 'data-tablet-css="{{Font size tablet}}" ' +
-				 'data-desktop-css="{{Font size desktop}}">' +
-				 '{{Text}}' +
-				 '</a></div>',
-		fields: {
-			'Text': {
-				type: 'editable',
-				default: 'Click here to edit text'
-			},
-			'URL': {
-				section: 'Layout',
-				type: 'text',
-				default: '#'
-			},
-			'Padding top/bottom': {
-				type: 'range',
-				section: 'Layout',
-				min: 0,
-				default: .5,
-				max: 5,
-				step: 0.05,
-				tpl: '%sem',
-			},
-			'Padding left/right': {
-				type: 'range',
-				section: 'Layout',
-				min: 0,
-				default: .7,
-				max: 5,
-				step: 0.05,
-				tpl: '%sem',
-			},
-			'Margin top': {
-				type: 'range',
-				section: 'Layout',
-				min: 0,
-				max: 10,
-				step: 0.5,
-				tpl: 'margin-top:%sem;',
-			},
-			'Margin bottom': {
-				type: 'range',
-				section: 'Layout',
-				min: 0,
-				max: 10,
-				step: 0.5,
-				tpl: 'margin-bottom:%sem;',
-			},
+		CaxtonBlock( {
+			id: 'super-button',
+			title: 'Super Button',
+			icon: '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#e74c3c" d="M17 5H3c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm1 7c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h14c.6 0 1 .4 1 1v5z"></path></svg>',
+			tpl: '<div class="{{Alignment}}" style="{{Margin top}}{{Margin bottom}}">' +
+					 '<a class="caxton-btn no-underline dib {{Text Glow/Shadow}}" href="{{URL}}" ' +
+					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
+					 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
+					 'border:{{Border weight}} solid {{Border color}};' +
+					 'padding:{{Padding top/bottom}} {{Padding left/right}};' +
+					 '{{Button Glow/Shadow}};" ' +
+					 'data-mobile-css="{{Font size}}" ' +
+					 'data-tablet-css="{{Font size tablet}}" ' +
+					 'data-desktop-css="{{Font size desktop}}">' +
+					 '{{Text}}' +
+					 '</a></div>',
+			fields: {
+				'Text': {
+					type: 'editable',
+					default: 'Click here to edit text'
+				},
+				'URL': {
+					section: 'Layout',
+					type: 'text',
+					default: '#'
+				},
+				'Padding top/bottom': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					default: .5,
+					max: 5,
+					step: 0.05,
+					tpl: '%sem',
+				},
+				'Padding left/right': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					default: .7,
+					max: 5,
+					step: 0.05,
+					tpl: '%sem',
+				},
+				'Margin top': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
+				},
 
-			'Font' : {
-				type: 'font',
-				tpl: 'font-family:%s;',
-				section: 'Typography',
-			},
-			'Letter Spacing' : {
-				type: 'range',
-				tpl: 'letter-spacing:%spx;',
-				section: 'Typography',
-			},
-			'Font size' : {
-				type: 'range',
-				min: 5,
-				max: 250,
-				default: 16,
-				tpl: 'font-size:%spx;',
-				section: 'Typography',
-			},
-			'Font size tablet' : {
-				type: 'range',
-				min: 5,
-				max: 250,
-				tpl: 'font-size:%spx;',
-				section: 'Typography',
-			},
-			'Font size desktop' : {
-				type: 'range',
-				min: 5,
-				max: 250,
-				tpl: 'font-size:%spx;',
-				section: 'Typography',
-			},
-			'Alignment': {
-				type: 'radio',
-				options: [
-					{value: ' tl', label: 'Left',},
-					{value: ' tc', label: 'Center',},
-					{value: ' tr', label: 'Right',},
-				],
-				default: ' tl',
-				section: 'Typography',
-			},
-			'Weight': {
-				type: 'range',
-				min: 100,
-				max: 800,
-				step: 100,
-				default: 400,
-				help: 'Effect of weight depends on support by selected font.',
-				tpl: 'font-weight:%s;',
-				section: 'Typography',
-			},
+				'Font': {
+					type: 'font',
+					tpl: 'font-family:%s;',
+					section: 'Typography',
+				},
+				'Letter Spacing': {
+					type: 'range',
+					max: 25,
+					tpl: 'letter-spacing:%spx;',
+					section: 'Typography',
+				},
+				'Font size': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					default: 16,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size tablet': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size desktop': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Alignment': {
+					type: 'radio',
+					options: [
+						{value: ' tl', label: 'Left',},
+						{value: ' tc', label: 'Center',},
+						{value: ' tr', label: 'Right',},
+					],
+					default: ' tl',
+					section: 'Typography',
+				},
+				'Weight': {
+					type: 'range',
+					min: 100,
+					max: 800,
+					step: 100,
+					default: 400,
+					help: 'Effect of weight depends on support by selected font.',
+					tpl: 'font-weight:%s;',
+					section: 'Typography',
+				},
 
-			'Text color': {
-				type: 'color',
-				default: '#555',
-				tpl: 'color:%s;',
-				section: 'Color and decoration',
-			},
-			'Background color': {
-				type: 'color',
-				tpl: 'background-color:%s;',
-				section: 'Color and decoration',
-			},
-			'Border weight': {
-				type: 'range',
-				min: 0,
-				default: 2,
-				max: 50,
-				tpl: '%spx ',
-				section: 'Color and decoration',
-			},
-			'Border color': {
-				type: 'color',
-				section: 'Color and decoration',
-			},
-			'Glow/Shadow': {
-				type: 'select',
-				options: [
-					{value: '', label: 'None',},
-					{value: ' text-glow', label: 'Glow',},
-					{value: ' text-shadow', label: 'Shadow',},
-				],
-				section: 'Color and decoration',
-			},
+				'Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Color and decoration',
+				},
+				'Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Color and decoration',
+				},
+				'Border weight': {
+					type: 'range',
+					min: 0,
+					default: 2,
+					max: 50,
+					tpl: '%spx ',
+					section: 'Color and decoration',
+				},
+				'Border color': {
+					type: 'color',
+					section: 'Color and decoration',
+				},
+				'Text Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'None',},
+						{value: ' text-glow', label: 'Glow',},
+						{value: ' text-shadow', label: 'Shadow',},
+					],
+					section: 'Color and decoration',
+				},
 
-			'Shadow horizontal offset': {
-				type: 'range',
-				tpl: '%spx ',
-				default: 0,
-				section: 'Button shadow',
-			},
-			'Shadow vertical offset': {
-				type: 'range',
-				tpl: '%spx ',
-				default: 0,
-				section: 'Button shadow',
-			},
-			'Shadow blur': {
-				type: 'range',
-				tpl: '%spx ',
-				default: 0,
-				section: 'Button shadow',
-			},
-			'Shadow strength': {
-				type: 'range',
-				min: .1,
-				step: .1,
-				default: .1,
-				max: 1,
-				section: 'Button shadow',
-				tpl: 'rgba(0,0,0,%s)',
-			},
+				'Button Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'No shadow/glow',},
+						{value: '255,255,255', label: 'Glow',},
+						{value: '0,0,0', label: 'Shadow',},
+					],
+					section: 'Button Glow/Shadow',
+					tpl: 'box-shadow:{{Horizontal Offset}} {{Vertical Offset}} {{Blur}} {{Spread}} rgba(%s,{{Strength}});',
+				},
+				'Horizontal Offset': {
+					type: 'range',
+					tpl: '%spx ',
+					default: 0,
+					min: - 25,
+					max: 25,
+					section: 'Button Glow/Shadow',
+				},
+				'Vertical Offset': {
+					type: 'range',
+					tpl: '%spx ',
+					default: 0,
+					min: - 25,
+					max: 25,
+					section: 'Button Glow/Shadow',
+				},
+				'Spread': {
+					type: 'range',
+					tpl: '%spx',
+					default: 0,
+					max: 25,
+					section: 'Button Glow/Shadow',
+				},
+				'Blur': {
+					type: 'range',
+					tpl: '%spx',
+					default: 3,
+					max: 25,
+					section: 'Button Glow/Shadow',
+				},
+				'Strength': {
+					type: 'range',
+					min: .1,
+					step: .1,
+					default: .1,
+					max: 1,
+					section: 'Button Glow/Shadow',
+				},
 
-			'Hover Text color': {
-				type: 'color',
-				default: '#555',
-				tpl: 'color:%s;',
-				section: 'Hover Colors',
+				'Hover Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Hover Colors',
+				},
+				'Hover Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Hover Colors',
+				},
+				'Hover Border color': {
+					type: 'color',
+					section: 'Hover Colors',
+					tpl: 'border-color:%s;',
+				},
 			},
-			'Hover Background color': {
-				type: 'color',
-				tpl: 'background-color:%s;',
-				section: 'Hover Colors',
-			},
-			'Hover Border color': {
-				type: 'color',
-				section: 'Hover Colors',
-				tpl: 'border-color:%s;',
-			},
-		},
-	} );
+		} );
 
 		CaxtonBlock( {
 			id: 'super-hero',
 			title: 'Super Hero',
-			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="0" y="0" fill="#e74c3c" width="20" height="20"/><g><path fill="#fff" d="M19 4v2H1V4h18zM2 7h16v10H2V7zm11 3V9H7v1h6z"/></g></svg>',
+			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><g><path fill="#e74c3c" d="M19 4v2H1V4h18zM2 7h16v10H2V7zm11 3V9H7v1h6z"/></g></svg>',
 			fields: {
 				'Background image': {
 					type: 'image',
 					section: 'Background',
 					tpl: 'background-image:url(%s);',
 				},
-				'Background image parallax': {
+				'Background parallax': {
 					type: 'toggle',
+					value: 'background-attachment:fixed;',
 					section: 'Background',
-					tpl: '',
 				},
 				'Background color': {
 					type: 'color',
@@ -694,7 +775,7 @@
 					section: 'Layout',
 				},
 			},
-			edit: function( props, block ) {
+			edit: function ( props, block ) {
 				function getColumnLayouts( cols ) {
 					var n, colsInfo = [];
 					for ( var i = 0; i < cols; i ++ ) {
@@ -717,7 +798,7 @@
 				padR = block.attrs['Padding right'];
 				columns = block.attrs['Columns'];
 
-				if ( 'px' == padUnit ) {
+				if ( 'px' === padUnit ) {
 					padT *= 5;
 					padL *= 5;
 					padB *= 5;
@@ -736,22 +817,24 @@
 
 				return el(
 					// Element
-					'div', { className: cls, style: {
-						'padding-top': padT,
-						'padding-left': padL,
-						'padding-bottom': padB,
-						'padding-right': padR,
-					} },
+					'div', {
+						className: cls, style: {
+							'paddingTop': padT,
+							'paddingLeft': padL,
+							'paddingBottom': padB,
+							'paddingRight': padR,
+						}
+					},
 					// Background div
-					el( 'div', { className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML ) } ),
+					el( 'div', {className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
 					el(
-						'div', { className: 'relative caxton-columns caxton-' + columns + '-columns', },
-						el( wp.blocks.InnerBlocks, { layouts: getColumnLayouts( block.attrs['Columns'] ) } )
+						'div', {className: 'relative caxton-columns caxton-' + columns + '-columns',},
+						el( wp.blocks.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] )} )
 					)
 				);
 			},
-			save: function( props, block ) {
+			save: function ( props, block ) {
 				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR, columns;
 
 				padUnit = block.attrs['Padding unit'];
@@ -780,21 +863,220 @@
 
 				return el(
 					// Element
-					'div', { className: cls, style: {
-						'padding-top': padT,
-						'padding-left': padL,
-						'padding-bottom': padB,
-						'padding-right': padR,
-					} },
+					'div', {
+						className: cls, style: {
+							'paddingTop': padT,
+							'paddingLeft': padL,
+							'paddingBottom': padB,
+							'paddingRight': padR,
+						}
+					},
 					// Background div
-					el( 'div', { className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML ) } ),
+					el( 'div', {className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
 					el(
-						'div', { className: 'relative caxton-columns caxton-' + columns + '-columns', },
+						'div', {className: 'relative caxton-columns caxton-' + columns + '-columns',},
 						el( wp.blocks.InnerBlocks.Content )
 					)
 				);
 			}
+		} );
+
+		CaxtonBlock( {
+			id: 'super-icon',
+			title: 'Super icon',
+			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#e74c3c" d="M211.7 241.1v51.7c0 2.1-1.6 3.7-3.7 3.7h-22.2c-2.1 0-3.7-1.6-3.7-3.7v-51.7c0-2.1 1.6-3.7 3.7-3.7H208c2.1 0 3.7 1.6 3.7 3.7zm114.5-3.7H304c-2.1 0-3.7 1.6-3.7 3.7v51.7c0 2.1 1.6 3.7 3.7 3.7h22.2c2.1 0 3.7-1.6 3.7-3.7v-51.7c-.1-2.1-1.7-3.7-3.7-3.7zm-29.1 263.2c-.9.1-1.7.3-2.6.4-1 .2-2.1.3-3.1.5-.9.1-1.8.3-2.8.4-1 .1-2 .3-3 .4-1 .1-2 .2-2.9.3-1 .1-1.9.2-2.9.3-1 .1-2.1.2-3.1.3-.9.1-1.8.2-2.7.2-1.1.1-2.3.1-3.4.2-.8 0-1.7.1-2.5.1-1.3.1-2.6.1-3.9.1-.7 0-1.4.1-2.1.1-2 0-4 .1-6 .1s-4 0-6-.1c-.7 0-1.4 0-2.1-.1-1.3 0-2.6-.1-3.9-.1-.8 0-1.7-.1-2.5-.1-1.1-.1-2.3-.1-3.4-.2-.9-.1-1.8-.1-2.7-.2-1-.1-2.1-.2-3.1-.3-1-.1-1.9-.2-2.9-.3-1-.1-2-.2-2.9-.3-1-.1-2-.2-3-.4-.9-.1-1.8-.3-2.8-.4-1-.1-2.1-.3-3.1-.5-.9-.1-1.7-.3-2.6-.4-65.6-10.9-122.5-47.7-160-99.4-.2-.2-.3-.5-.5-.7-.8-1.1-1.6-2.2-2.3-3.3-.3-.4-.6-.8-.8-1.2-.7-1.1-1.4-2.1-2.1-3.2-.3-.5-.6-.9-.9-1.4-.7-1.1-1.4-2.1-2-3.2-.3-.5-.6-.9-.9-1.4-.7-1.1-1.3-2.2-2-3.3-.2-.4-.5-.8-.7-1.2-2.4-4-4.6-8.1-6.8-12.2-.1-.2-.2-.3-.3-.5-.6-1.1-1.1-2.2-1.7-3.3-.3-.6-.6-1.1-.8-1.7-.5-1-1-2.1-1.5-3.1-.3-.7-.6-1.3-.9-2-.5-1-.9-2-1.4-3l-.9-2.1c-.4-1-.9-2-1.3-3-.3-.7-.6-1.5-.9-2.2l-1.2-3c-.3-.8-.6-1.5-.9-2.3-.4-1-.8-2-1.1-3-.3-.9-.6-1.8-1-2.8-.6-1.6-1.1-3.3-1.7-4.9-.3-.9-.6-1.8-.9-2.8-.3-.9-.5-1.8-.8-2.7-.3-.9-.6-1.9-.8-2.8-.3-.9-.5-1.8-.8-2.7-.3-1-.5-1.9-.8-2.9-.2-.9-.5-1.8-.7-2.7-.3-1-.5-2-.7-3-.2-.9-.4-1.7-.6-2.6-.2-1.1-.5-2.2-.7-3.2-.2-.8-.3-1.6-.5-2.4-.3-1.3-.5-2.7-.8-4-.1-.6-.2-1.1-.3-1.7l-.9-5.7c-.1-.6-.2-1.3-.3-1.9-.2-1.3-.4-2.6-.5-3.9-.1-.8-.2-1.5-.3-2.3-.1-1.2-.3-2.4-.4-3.6-.1-.8-.2-1.6-.2-2.4-.1-1.2-.2-2.4-.3-3.5-.1-.8-.1-1.6-.2-2.4-.1-1.2-.2-2.4-.2-3.7 0-.8-.1-1.5-.1-2.3-.1-1.3-.1-2.7-.2-4 0-.7 0-1.3-.1-2 0-2-.1-4-.1-6 0-53.5 16.9-103 45.8-143.6 2.3-3.2 4.7-6.4 7.1-9.5 4.9-6.2 10.1-12.3 15.6-18 2.7-2.9 5.5-5.7 8.4-8.4 2.9-2.7 5.8-5.4 8.8-8 4.5-3.9 9.1-7.6 13.9-11.2 1.6-1.2 3.2-2.4 4.8-3.5C140 34.2 171.7 20.1 206 13c16.1-3.3 32.9-5 50-5s33.8 1.7 50 5c34.3 7 66 21.1 93.6 40.7 1.6 1.2 3.2 2.3 4.8 3.5 4.8 3.6 9.4 7.3 13.9 11.2 12 10.4 23 21.9 32.8 34.4 2.5 3.1 4.8 6.3 7.1 9.5C487.1 153 504 202.5 504 256c0 2 0 4-.1 6 0 .7 0 1.3-.1 2 0 1.3-.1 2.7-.2 4 0 .8-.1 1.5-.1 2.3-.1 1.2-.1 2.4-.2.7-.1.8-.1 1.6-.2 2.4-.1 1.2-.2 2.4-.3 3.5-.1.8-.2 1.6-.2 2.4-.1 1.2-.3 2.4-.4 3.6-.1.8-.2 1.5-.3 2.3-.2 1.3-.4 2.6-.5 3.9-.1.6-.2 1.3-.3 1.9l-.9 5.7c-.1.6-.2 1.1-.3 1.7-.2 1.3-.5 2.7-.8 4-.2.8-.3 1.6-.5 2.4-.2 1.1-.5 2.2-.7 3.2-.2.9-.4 1.7-.6 2.6-.2 1-.5 2-.7 3-.2.9-.5 1.8-.7 2.7-.3 1-.5 1.9-.8 2.9-.2.9-.5 1.8-.8 2.7-.3.9-.6 1.9-.8 2.8-.3.9-.5 1.8-.8 2.7-.3.9-.6 1.8-.9 2.8-.5 1.6-1.1 3.3-1.7 4.9-.3.9-.6 1.8-1 2.8-.4 1-.7 2-1.1 3-.3.8-.6 1.5-.9 2.3l-1.2 3c-.3.7-.6 1.5-.9 2.2-.4 1-.8 2-1.3 3l-.9 2.1c-.4 1-.9 2-1.4 3-.3.7-.6 1.3-.9 2-.5 1-1 2.1-1.5 3.1-.3.6-.6 1.1-.8 1.7-.6 1.1-1.1 2.2-1.7 3.3-.1.2-.2.3-.3.5-2.2 4.1-4.4 8.2-6.8 12.2-.2.4-.5.8-.7 1.2-.7 1.1-1.3 2.2-2 3.3-.3.5-.6.9-.9 1.4-.7 1.1-1.4 2.1-2 3.2-.3.5-.6.9-.9 1.4-.7 1.1-1.4 2.1-2.1 3.2-.3.4-.6.8-.8 1.2-.8 1.1-1.5 2.2-2.3 3.3-.2.2-.3.5-.5.7-37.6 54.7-94.5 91.4-160.1 102.4zm117.3-86.2c13-13 24.2-27.4 33.6-42.9v-71.3c0-2.1-1.6-3.7-3.7-3.7h-22.2c-2.1 0-3.7 1.6-3.7 3.7V326h-29.5V182c0-2.1-1.6-3.7-3.7-3.7h-22.1c-2.1 0-3.7 1.6-3.7 3.7v25.9h-29.5V182c0-2.1-1.6-3.7-3.7-3.7H304c-2.1 0-3.7 1.6-3.7 3.7v25.9h-29.5V182c0-4.8-6.5-3.7-9.5-3.7v-30.7c6.7-1.6 13.8-2.8 20.8-2.8 8.8 0 16.8 3.5 25.4 3.5 3.7 0 22.4-.9 22.4-6.5V93.4c0-2.1-1.6-3.7-3.7-3.7-4.2 0-12.2 3.5-19.4 3.5-7.9 0-16.9-3.5-26.3-3.5-6.5 0-12.9.9-19.2 2.3v-3.9c4.4-2.1 7.4-6.7 7.4-11.5 0-16.8-25.4-16.8-25.4 0 0 4.8 3 9.5 7.4 11.5v90.2c-3 0-9.5-1.1-9.5 3.7v25.9h-29.5V182c0-2.1-1.6-3.7-3.7-3.7h-22.2c-2.1 0-3.7 1.6-3.7 3.7v25.9h-29.5V182c0-2.1-1.6-3.7-3.7-3.7h-22.1c-2.1 0-3.7 1.6-3.7 3.7v144H93.5v-25.8c0-2.1-1.6-3.7-3.7-3.7H67.7c-2.1 0-3.7 1.6-3.7 3.7v71.3c9.4 15.5 20.6 29.9 33.6 42.9 20.6 20.6 44.5 36.7 71.2 48 13.9 5.9 28.2 10.3 42.9 13.2v-75.8c0-58.6 88.6-58.6 88.6 0v75.8c14.7-2.9 29-7.4 42.9-13.2 26.7-11.3 50.6-27.4 71.2-48"/></svg>',
+			tpl: '<div class="{{Alignment}}" style="{{Margin top}}{{Margin bottom}}">' +
+					 '<a {{URL}} class="caxton-icon {{Glow/Shadow}}{{Icon}}" ' +
+					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
+					 'style="{{Icon color}}{{Background color}}{{Icon size}}{{Icon variant}}' +
+					 'border:{{Border weight}} solid {{Border color}};' +
+					 '{{Padding}}{{Border radius}};' +
+					 '{{Icon Glow/Shadow}};" ' +
+					 'data-mobile-css="{{Icon size mobile}}" ' +
+					 'data-tablet-css="{{Icon size tablet}}" ' +
+					 'data-desktop-css="{{Icon size}}">' +
+					 '</a></div>',
+			fields: {
+				'Icon': {
+					section: 'Layout',
+					type: 'icon',
+					default: 'fab fa-font-awesome-flag'
+				},
+				'URL': {
+					section: 'Layout',
+					type: 'text',
+					tpl: 'href="%s"',
+				},
+				'Padding': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					default: .25,
+					max: 5,
+					step: 0.05,
+					tpl: 'padding:%sem;',
+				},
+				'Margin top': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
+				},
+				'Border radius': {
+					type: 'range',
+					section: 'Layout',
+					min: 0,
+					max: 50,
+					tpl: 'border-radius:%s%;',
+				},
+
+				'Icon size': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					default: 16,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Icon size tablet': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Icon size mobile': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Alignment': {
+					type: 'radio',
+					options: [
+						{value: ' tl', label: 'Left',},
+						{value: ' tc', label: 'Center',},
+						{value: ' tr', label: 'Right',},
+					],
+					default: ' tl',
+					section: 'Typography',
+				},
+				'Icon variant': {
+					type: 'select',
+					default: 900,
+					option: [
+						{value: '100', label: 'Light',},
+						{value: '400', label: 'Regular',},
+						{value: '900', label: 'Solid',},
+					],
+					help: 'Depends on availability of icon in style.',
+					tpl: 'font-weight:%s;',
+					section: 'Typography',
+				},
+
+				'Icon color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Color and decoration',
+				},
+				'Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Color and decoration',
+				},
+				'Border weight': {
+					type: 'range',
+					min: 0,
+					default: 2,
+					max: 50,
+					tpl: '%spx ',
+					section: 'Color and decoration',
+				},
+				'Border color': {
+					type: 'color',
+					section: 'Color and decoration',
+				},
+				'Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'None',},
+						{value: ' glow', label: 'Glow',},
+						{value: ' shadow', label: 'Shadow',},
+					],
+					section: 'Color and decoration',
+				},
+
+				'Icon Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'No shadow/glow',},
+						{value: '255,255,255', label: 'Glow',},
+						{value: '0,0,0', label: 'Shadow',},
+					],
+					section: 'Icon Glow/Shadow',
+					tpl: 'text-shadow:{{Shadow Horizontal Offset}} {{Shadow Vertical Offset}} {{Shadow Blur}} rgba(%s,{{Shadow Strength}});',
+				},
+				'Shadow Horizontal Offset': {
+					type: 'range',
+					tpl: '%spx ',
+					default: 0,
+					min: - 25,
+					max: 25,
+					section: 'Icon Glow/Shadow',
+				},
+				'Shadow Vertical Offset': {
+					type: 'range',
+					tpl: '%spx ',
+					default: 0,
+					min: - 25,
+					max: 25,
+					section: 'Icon Glow/Shadow',
+				},
+				'Shadow Blur': {
+					type: 'range',
+					tpl: '%spx ',
+					default: 3,
+					max: 25,
+					section: 'Icon Glow/Shadow',
+				},
+				'Shadow Strength': {
+					type: 'range',
+					min: .1,
+					step: .1,
+					default: .1,
+					max: 1,
+					section: 'Icon Glow/Shadow',
+				},
+				'Hover Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Hover Colors',
+				},
+				'Hover Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Hover Colors',
+				},
+				'Hover Border color': {
+					type: 'color',
+					section: 'Hover Colors',
+					tpl: 'border-color:%s;',
+				},
+			},
 		} );
 
 		registerBlockType(
@@ -851,10 +1133,14 @@
 						order = attrs.order.split( '/' ),
 						url =
 							'/caxton/v1/posts' +
-							'?posts_per_page=' + (attrs.rows * attrs.columns) +
+							'?posts_per_page=' + (
+								attrs.rows * attrs.columns
+							) +
 							'&post__not_in=' + caxton.post +
 							'&cat=' + attrs.cat +
-							( attrs.displayPostWithoutImages ? '&meta_key=' : '' ) +
+							(
+								attrs.displayPostWithoutImages ? '&meta_key=' : ''
+							) +
 							'&orderby=' + order[0] +
 							'&order=' + order[1];
 					return {posts: url};
@@ -874,7 +1160,7 @@
 						focus = props.focus,
 						className = props.className + ' ' + props.name.replace( '/', '-' ) + ' caxton-grid';
 
-					className += ' caxton-'+ attrs.imagesType + '-images';
+					className += ' caxton-' + attrs.imagesType + '-images';
 
 					console.log( attrs.rows * attrs.columns );
 					if ( attrs.titleBelowImage ) {
@@ -888,22 +1174,23 @@
 					} else {
 						for ( var i = 0; i < props.posts.data.length; i ++ ) {
 							post = props.posts.data[i];
+
 							function postMetaMarkup() {
 								if ( attrs.displayMeta ) {
-									return { __html: '<span class="author">' + authorIcon + post.author + '</span><span class="comments">' + commentIcon + ' ' + post.comments + '</span>' };
+									return {__html: '<span class="author">' + authorIcon + post.author + '</span><span class="comments">' + commentIcon + ' ' + post.comments + '</span>'};
 								} else {
-									return { __html: '' };
+									return {__html: ''};
 								}
 							};
 							gridInfo = [
 								el( 'a', {className: 'grid-link', href: '#',},
 									el( 'div', {className: 'grid-image', style: {backgroundImage: 'url(' + post.thumb_ml + ')'},},
-										el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize}, }, post.title ),
+										el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize},}, post.title ),
 									),
 								)
 							];
 
-							gridInfo.push( el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize}, }, post.title ) );
+							gridInfo.push( el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize},}, post.title ) );
 
 							if ( attrs.displayDate ) {
 								gridInfo.push( el( 'time', {}, post.date ) );
@@ -913,14 +1200,18 @@
 								gridInfo.push( el( 'p', {}, post.excerpt ) );
 							}
 
-							gridInfo.push( el( 'div', {className: 'grid-meta', dangerouslySetInnerHTML: postMetaMarkup() }, ), );
+							gridInfo.push( el( 'div', {className: 'grid-meta', dangerouslySetInnerHTML: postMetaMarkup()}, ), );
 
 							grids.push(
 								el(
 									'div',
 									{
 										className: 'grid-item',
-										style: { width: ( 100 / attrs.columns - 2 ) + '%'}
+										style: {
+											width: (
+															 100 / attrs.columns - 2
+														 ) + '%'
+										}
 									},
 									gridInfo
 								)
@@ -1091,4 +1382,6 @@
 				},
 			}
 		);
-} )( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n, wp.components );
+
+	}
+)( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n, wp.components );
