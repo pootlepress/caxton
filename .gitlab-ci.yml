@@ -80,7 +80,7 @@ deploy:aws:s3:
 deploy:cloudways:development:waves:
   stage: deploy
   only:
-    - master
+    - develop
   tags:
     - docker
   environment:
