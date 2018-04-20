@@ -325,6 +325,7 @@
 				'Letter Spacing': {
 					type: 'range',
 					max: 25,
+					min: -5,
 					tpl: 'letter-spacing:%spx;',
 					section: 'Typography',
 				},
@@ -363,7 +364,7 @@
 				'Weight': {
 					type: 'range',
 					min: 100,
-					max: 800,
+					max: 900,
 					step: 100,
 					default: 400,
 					help: 'Effect of weight depends on support by selected font.',
@@ -478,13 +479,16 @@
 					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
 					 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
 					 'border:{{Border weight}} solid {{Border color}};' +
-					 'padding:{{Padding top/bottom}} {{Padding left/right}};' +
+					 'padding:{{Inner Padding top/bottom}}{{Rounded Corners}} {{Inner Padding left/right}};' +
 					 '{{Button Glow/Shadow}};" ' +
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
 					 'data-desktop-css="{{Font size}}">' +
-					 '{{Text}}' +
+					 '{{Icon before text}}{{Text}}{{Icon after text}}' +
 					 '</a></div>',
+			toolbars: {
+				Alignment: 'AlignmentToolbar',
+			},
 			fields: {
 				'Text': {
 					type: 'editable',
@@ -495,7 +499,7 @@
 					type: 'text',
 					default: '#'
 				},
-				'Padding top/bottom': {
+				'Inner Padding top/bottom': {
 					type: 'range',
 					section: 'Layout',
 					min: 0,
@@ -504,7 +508,7 @@
 					step: 0.05,
 					tpl: '%sem',
 				},
-				'Padding left/right': {
+				'Inner Padding left/right': {
 					type: 'range',
 					section: 'Layout',
 					min: 0,
@@ -538,6 +542,8 @@
 				'Letter Spacing': {
 					type: 'range',
 					max: 25,
+					min: -5,
+					default: 2,
 					tpl: 'letter-spacing:%spx;',
 					section: 'Typography',
 				},
@@ -563,16 +569,6 @@
 					tpl: 'font-size:%spx;',
 					section: 'Typography',
 				},
-				'Alignment': {
-					type: 'radio',
-					options: [
-						{value: ' tl', label: 'Left',},
-						{value: ' tc', label: 'Center',},
-						{value: ' tr', label: 'Right',},
-					],
-					default: ' tl',
-					section: 'Typography',
-				},
 				'Weight': {
 					type: 'range',
 					min: 100,
@@ -595,6 +591,10 @@
 					tpl: 'background-color:%s;',
 					section: 'Color and decoration',
 				},
+				'Border color': {
+					type: 'color',
+					section: 'Color and decoration',
+				},
 				'Border weight': {
 					type: 'range',
 					min: 0,
@@ -603,10 +603,37 @@
 					tpl: '%spx ',
 					section: 'Color and decoration',
 				},
-				'Border color': {
+				'Rounded Corners': {
+					type: 'range',
+					section: 'Color and decoration',
+					min: 0,
+					max: 50,
+					tpl: 'border-radius:%spx;',
+				},
+				'Icons color': {
 					type: 'color',
+					tpl: 'color:%s;',
 					section: 'Color and decoration',
 				},
+				'Icons size': {
+					type: 'slider',
+					min: 0.2,
+					max: 5,
+					step: 0.2,
+					tpl: 'font-size:%sem;',
+					section: 'Color and decoration',
+				},
+				'Icon before text': {
+					type: 'icon',
+					tpl: '<i class="%s" class="{{Icons size}}{{Icons color}}"></i>',
+					section: 'Color and decoration',
+				},
+				'Icon after text': {
+					type: 'icon',
+					tpl: '<i class="%s" class="{{Icons size}}{{Icons color}}"></i>',
+					section: 'Color and decoration',
+				},
+
 				'Text Glow/Shadow': {
 					type: 'select',
 					options: [
@@ -625,22 +652,18 @@
 						{value: '0,0,0', label: 'Shadow',},
 					],
 					section: 'Button Glow/Shadow',
-					tpl: 'box-shadow:{{Horizontal Offset}} {{Vertical Offset}} {{Blur}} {{Spread}} rgba(%s,{{Strength}});',
+					tpl: 'box-shadow:{{Shadow position}} {{Blur}} {{Spread}} rgba(%s,{{Strength}});',
 				},
-				'Horizontal Offset': {
-					type: 'range',
-					tpl: '%spx ',
-					default: 0,
-					min: - 25,
-					max: 25,
-					section: 'Button Glow/Shadow',
-				},
-				'Vertical Offset': {
-					type: 'range',
-					tpl: '%spx ',
-					default: 0,
-					min: - 25,
-					max: 25,
+				'Shadow position': {
+					type: 'select',
+					options: [
+						{value: '-0.09em 0.07em', label: 'Far Left',},
+						{value: '-0.05em 0.05em', label: 'Left',},
+						{value: '0 0', label: 'Center',},
+						{value: '0.05em 0.05em', label: 'Right',},
+						{value: '0.09em 0.07em', label: 'Far Right',},
+					],
+					default: '0 0',
 					section: 'Button Glow/Shadow',
 				},
 				'Spread': {
@@ -689,11 +712,19 @@
 			id: 'super-hero',
 			title: 'Super Hero',
 			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><g><path fill="#e74c3c" d="M19 4v2H1V4h18zM2 7h16v10H2V7zm11 3V9H7v1h6z"/></g></svg>',
+			toolbars: {
+				Layout: 'BlockWidthToolbar',
+			},
 			fields: {
 				'Background image': {
 					type: 'image',
 					section: 'Background',
 					tpl: 'background-image:url(%s);',
+				},
+				'Background image position': {
+					type: 'position',
+					section: 'Background',
+					tpl: 'background-position:%s;',
 				},
 				'Background parallax': {
 					type: 'toggle',
@@ -732,44 +763,40 @@
 					section: 'Background',
 					tpl: 'opacity:%s;',
 				},
-				'Full width': {
-					type: 'toggle',
-					value: ' vw-100',
-					section: 'Layout',
-				},
 				'Columns': {
 					type: 'range',
-					max: 5,
+					min: 1,
+					max: 8,
 					section: 'Layout',
 					default: 1,
 				},
-				'Padding top': {
+				'Inner Padding top': {
 					type: 'range',
 					section: 'Layout',
 					default: 5,
 				},
-				'Padding left': {
+				'Inner Padding left': {
 					type: 'range',
 					max: 70,
 					section: 'Layout',
-					default: 0,
+					default: 5,
 				},
-				'Padding bottom': {
+				'Inner Padding bottom': {
 					type: 'range',
 					section: 'Layout',
 					default: 5,
 				},
-				'Padding right': {
+				'Inner Padding right': {
 					type: 'range',
 					max: 70,
 					section: 'Layout',
-					default: 0,
+					default: 5,
 				},
-				'Padding unit': {
+				'Inner Padding unit': {
 					type: 'select',
 					options: [
 						{value: '%', label: 'Responsive',},
-						{value: 'px', label: 'Pixels',},
+						{value: 'px', label: 'Pixels x 5',},
 					],
 					default: '%',
 					section: 'Layout',
@@ -791,11 +818,11 @@
 
 				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR, columns;
 
-				padUnit = block.attrs['Padding unit'];
-				padT = block.attrs['Padding top'];
-				padL = block.attrs['Padding left'];
-				padB = block.attrs['Padding bottom'];
-				padR = block.attrs['Padding right'];
+				padUnit = block.attrs['Inner Padding unit'];
+				padT = block.attrs['Inner Padding top'];
+				padL = block.attrs['Inner Padding left'];
+				padB = block.attrs['Inner Padding bottom'];
+				padR = block.attrs['Inner Padding right'];
 				columns = block.attrs['Columns'];
 
 				if ( 'px' === padUnit ) {
@@ -810,38 +837,40 @@
 				padB = padB ? padB + padUnit : 0;
 				padR = padR ? padR + padUnit : 0;
 
-				cls += ' ' + block.attrs['Full width'];
+				if ( block.attrs['Layout'] ) {
+					cls += ' ' + block.attrs['Layout'];
+				}
 
-				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background parallax}}"></div>' +
+				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
 
 				return el(
 					// Element
-					'div', {
-						className: cls, style: {
-							'paddingTop': padT,
-							'paddingLeft': padL,
-							'paddingBottom': padB,
-							'paddingRight': padR,
-						}
-					},
+					'div', { className: cls, },
 					// Background div
 					el( 'div', {className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
-					el(
-						'div', {className: 'relative caxton-columns caxton-' + columns + '-columns',},
+					el( 'div', {
+							className: 'relative caxton-columns caxton-' + columns + '-columns',
+							style: {
+								'paddingTop': padT,
+								'paddingLeft': padL,
+								'paddingBottom': padB,
+								'paddingRight': padR,
+							}
+						},
 						el( wp.blocks.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] )} )
 					)
 				);
 			},
 			save: function ( props, block ) {
-				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR, columns;
+				var cls = 'relative', bgHTML, padUnit, padT, padL, padB, padR, columns;
 
-				padUnit = block.attrs['Padding unit'];
-				padT = block.attrs['Padding top'];
-				padL = block.attrs['Padding left'];
-				padB = block.attrs['Padding bottom'];
-				padR = block.attrs['Padding right'];
+				padUnit = block.attrs['Inner Padding unit'];
+				padT = block.attrs['Inner Padding top'];
+				padL = block.attrs['Inner Padding left'];
+				padB = block.attrs['Inner Padding bottom'];
+				padR = block.attrs['Inner Padding right'];
 				columns = block.attrs['Columns'];
 
 				if ( 'px' == padUnit ) {
@@ -856,26 +885,28 @@
 				padB = padB ? padB + padUnit : 0;
 				padR = padR ? padR + padUnit : 0;
 
-				cls += ' ' + block.attrs['Full width'];
+				if ( block.attrs['Layout'] ) {
+					cls += ' ' + block.attrs['Layout'];
+				}
 
 				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background parallax}}"></div>' +
 								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
 
 				return el(
 					// Element
-					'div', {
-						className: cls, style: {
-							'paddingTop': padT,
-							'paddingLeft': padL,
-							'paddingBottom': padB,
-							'paddingRight': padR,
-						}
-					},
+					'div', { className: cls },
 					// Background div
 					el( 'div', {className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
-					el(
-						'div', {className: 'relative caxton-columns caxton-' + columns + '-columns',},
+					el( 'div', {
+							className: 'relative caxton-columns caxton-' + columns + '-columns',
+							style: {
+								'paddingTop': padT,
+								'paddingLeft': padL,
+								'paddingBottom': padB,
+								'paddingRight': padR,
+							}
+						},
 						el( wp.blocks.InnerBlocks.Content )
 					)
 				);
@@ -891,7 +922,7 @@
 					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
 					 'style="{{Icon color}}{{Background color}}{{Icon size}}{{Icon variant}}' +
 					 'border:{{Border weight}} solid {{Border color}};' +
-					 '{{Padding}}{{Border radius}};' +
+					 '{{Inner Padding}}{{Rounded Corners}};' +
 					 '{{Icon Glow/Shadow}};" ' +
 					 'data-mobile-css="{{Icon size mobile}}" ' +
 					 'data-tablet-css="{{Icon size tablet}}" ' +
@@ -908,7 +939,7 @@
 					type: 'text',
 					tpl: 'href="%s"',
 				},
-				'Padding': {
+				'Inner Padding': {
 					type: 'range',
 					section: 'Layout',
 					min: 0,
@@ -932,13 +963,6 @@
 					max: 10,
 					step: 0.5,
 					tpl: 'margin-bottom:%sem;',
-				},
-				'Border radius': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 50,
-					tpl: 'border-radius:%s%;',
 				},
 
 				'Icon size': {
@@ -997,6 +1021,10 @@
 					tpl: 'background-color:%s;',
 					section: 'Color and decoration',
 				},
+				'Border color': {
+					type: 'color',
+					section: 'Color and decoration',
+				},
 				'Border weight': {
 					type: 'range',
 					min: 0,
@@ -1005,8 +1033,11 @@
 					tpl: '%spx ',
 					section: 'Color and decoration',
 				},
-				'Border color': {
-					type: 'color',
+				'Rounded Corners': {
+					type: 'range',
+					min: 0,
+					max: 50,
+					tpl: 'border-radius:%spx;',
 					section: 'Color and decoration',
 				},
 				'Glow/Shadow': {
@@ -1027,23 +1058,19 @@
 						{value: '0,0,0', label: 'Shadow',},
 					],
 					section: 'Icon Glow/Shadow',
-					tpl: 'text-shadow:{{Shadow Horizontal Offset}} {{Shadow Vertical Offset}} {{Shadow Blur}} rgba(%s,{{Shadow Strength}});',
+					tpl: 'text-shadow:{{Shadow position}} {{Shadow Blur}} rgba(%s,{{Shadow Strength}});',
 				},
-				'Shadow Horizontal Offset': {
-					type: 'range',
-					tpl: '%spx ',
-					default: 0,
-					min: - 25,
-					max: 25,
-					section: 'Icon Glow/Shadow',
-				},
-				'Shadow Vertical Offset': {
-					type: 'range',
-					tpl: '%spx ',
-					default: 0,
-					min: - 25,
-					max: 25,
-					section: 'Icon Glow/Shadow',
+				'Shadow position': {
+					type: 'select',
+					options: [
+						{value: '-0.11em 0.1em', label: 'Far Left',},
+						{value: '-0.07em 0.07em', label: 'Left',},
+						{value: '0 0', label: 'Center',},
+						{value: '0.07em 0.07em', label: 'Right',},
+						{value: '0.11em 0.1em', label: 'Far Right',},
+					],
+					default: '0 0',
+					section: 'Button Glow/Shadow',
 				},
 				'Shadow Blur': {
 					type: 'range',
@@ -1168,9 +1195,9 @@
 					}
 
 					if ( ! props.posts.data ) {
-						grids.push( el( 'div', {className: 'caxton-notification',}, 'Loading posts...' ) );
+						grids.push( el( 'div', {className: 'caxton-notification', key: 'notice'}, 'Loading posts...' ) );
 					} else if ( props.posts.data.length === 0 ) {
-						grids.push( el( 'div', {className: 'caxton-notification',}, 'No posts match criteria.' ) );
+						grids.push( el( 'div', {className: 'caxton-notification', key: 'notice'}, 'No posts match criteria.' ) );
 					} else {
 						for ( var i = 0; i < props.posts.data.length; i ++ ) {
 							post = props.posts.data[i];
@@ -1183,35 +1210,32 @@
 								}
 							};
 							gridInfo = [
-								el( 'a', {className: 'grid-link', href: '#',},
+								el( 'a', {className: 'grid-link', href: '#',key: 'anchor'},
 									el( 'div', {className: 'grid-image', style: {backgroundImage: 'url(' + post.thumb_ml + ')'},},
 										el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize},}, post.title ),
 									),
 								)
 							];
 
-							gridInfo.push( el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize},}, post.title ) );
+							gridInfo.push( el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize},key: 'title'}, post.title ) );
 
 							if ( attrs.displayDate ) {
-								gridInfo.push( el( 'time', {}, post.date ) );
+								gridInfo.push( el( 'time', {key: 'date'}, post.date ) );
 							}
 
 							if ( attrs.displayExcerpt ) {
-								gridInfo.push( el( 'p', {}, post.excerpt ) );
+								gridInfo.push( el( 'p', {key: 'excerpt'}, post.excerpt ) );
 							}
 
-							gridInfo.push( el( 'div', {className: 'grid-meta', dangerouslySetInnerHTML: postMetaMarkup()}, ), );
+							gridInfo.push( el( 'div', {className: 'grid-meta', dangerouslySetInnerHTML: postMetaMarkup(),key: 'meta'}, ), );
 
 							grids.push(
 								el(
 									'div',
 									{
 										className: 'grid-item',
-										style: {
-											width: (
-															 100 / attrs.columns - 2
-														 ) + '%'
-										}
+										style: { width: ( 100 / attrs.columns - 2 ) + '%' },
+										key: 'post-' + post.id
 									},
 									gridInfo
 								)
@@ -1372,7 +1396,7 @@
 								}
 							)
 						),
-						el( 'div', {className: className}, grids )
+						el( 'div', {className: className, key: 'grid'}, grids )
 					];
 				} ),
 

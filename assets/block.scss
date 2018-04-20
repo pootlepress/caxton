@@ -53,9 +53,14 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		left: 0;
 		right: 0;
 	}
-	.vw-100 {
+	.vw-100, .vw-100-bg {
 		width: auto;
 		margin: auto;
+		padding: 0;
+	}
+	.vw-100-bg {
+		padding-left: 5%;
+		padding-right: 5%;
 	}
 }
 
@@ -81,12 +86,21 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		order: 1;
 	}
 
-	&:before {
+	.dashicons-no,
+	.dashicons-search {
 		content: "\f002";
 		font: 900 16px 'Font Awesome 5 Free';
 		position: absolute;
-		top: 59px;
-		left: 25px;
+		top: 58px;
+		left: 23px;
+		width: auto;
+		height: auto;
+	}
+	.dashicons-no {
+		left: auto;
+		right: 16px;
+		top: 52px;
+		padding: 5px;
 	}
 
 	i[class*='fa-'] {

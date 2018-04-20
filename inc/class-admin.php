@@ -159,6 +159,7 @@ class Caxton_Admin {
 		while ( $qry->have_posts() ) {
 			$qry->the_post();
 			$output[] = [
+				'id'       => get_the_ID(),
 				'title'    => get_the_title(),
 				'date'     => the_date( '', '', '', false ),
 				'author'   => get_the_author_posts_link(),
