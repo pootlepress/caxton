@@ -1,0 +1,110 @@
+# Template for GitLab CI configuration for AgentDesign WordPress Themes/Plugins.
+# (Revision 1.1)
+
+
+# The standard stages for a CI/CD pipeline
+stages:
+  - build
+  - test
+  - deploy
+
+# The Docker image we use that contains our custom CI scripts
+image: registry.gitlab.com/agentdesign/sysadmin/docker/docker-agentdesign-wordpress-ci
+
+# Copy our private SSH key and known hosts keys into place for SFTP deployments
+before_script:
+  - aws s3 sync s3://agentdesign-gitlab-ci/ssh /root/.ssh && chmod 400 /root/.ssh/id_rsa
+
+
+#########
+# BUILD #
+#########
+
+# Build all branches using the 'build-wp-plugin' script to obtain a ZIP file
+build:
+  stage: build
+  tags:
+    - docker
+  script:
+    - build-wp-plugin -v
+  artifacts:
+    paths:
+    - build/*.zip
+
+
+########
+# TEST #
+########
+
+# Remove leading dot to enable test stage if/when there are plugin unit tests
+# (in most cases, plugins do not have test suites)
+.test:
+  stage: test
+  tags:
+    - docker
+  script:
+    - test-wp-plugin -v
+
+
+##########
+# DEPLOY #
+##########
+
+# The 'deploy-wp-plugin' script determines the deployment target by parsing
+# the 'environment_name' tag below.
+#
+#
+# The deployment module to be used will be determined from the <platform> part, with the
+# remaining parts being passed as arguments to that module.
+#
+# For 'cloudways', the <host> and <environment> arguments are based on the tags as assigned in the CW control panel.
+#
+
+# For 'master' branch builds, put the latest copy in our S3 archive for subsequently run site builds.
+deploy:aws:s3:
+  stage: deploy
+  only:
+    - master
+  tags:
+    - docker
+  environment:
+    name: aws-s3-production-plugins-bucket
+    url: https://s3-eu-west-1.amazonaws.com/plugins.agentdesign.co.uk/production/${CI_PROJECT_NAME}.zip
+  variables:
+    WPCD_PLATFORM: "s3"
+  script:
+    - deploy-wp-plugin -v
+
+
+# The main 'waves' development is now on 'development2', so 'develop' branches get deployed there.
+deploy:cloudways:development:waves:
+  stage: deploy
+  only:
+    - develop
+  tags:
+    - docker
+  environment:
+    name: cloudways-development-waves
+    url: https://dev.waves.agentdesign.co.uk
+  variables:
+    WPCD_PLATFORM: "cloudways"
+  script:
+    - deploy-wp-plugin -v
+
+
+# This rule uses a regexp to allow 'develop-<arbitraryid>' branches to be deployed, but requires that
+# the host and DNS settings for that <arbitraryid> to have been set up in advance.
+deploy:cloudways:development:waves:developer:
+  stage: deploy
+  only:
+    - /^develop-.*$/
+  tags:
+    - docker
+  environment:
+    name: cloudways-development-waves-developer
+    url: https://{0}.dev.waves.agentdesign.co.uk
+  variables:
+    WPCD_PLATFORM: "cloudways-agentdesign"
+  script:
+    - deploy-wp-plugin -v
+
