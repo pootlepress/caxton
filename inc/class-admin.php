@@ -55,7 +55,7 @@ class Caxton_Admin {
 		$url   = $this->url;
 
 		wp_enqueue_style( $token . '-css', $url . '/assets/front.css' );
-
+		wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.0.10/css/all.css' );
 		wp_enqueue_style( $token . '-gb', $url . '/assets/block.css' );
 
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );

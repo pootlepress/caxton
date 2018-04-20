@@ -6,7 +6,7 @@
  */
 jQuery(function ($) {
 
-	function processResponsiveCSS( css, $t ) {
+	function applyStylesFromCSS( css, $t, saveCurrentStyles ) {
 		var styles = {},
 			attributes = css.split(';');
 
@@ -14,7 +14,20 @@ jQuery(function ($) {
 			var entry = attributes[i].split(':');
 			styles[entry.splice(0,1)[0]] = entry.join(':');
 		}
-		$t.css( styles );
+		if ( $t ) {
+			if ( saveCurrentStyles ) {
+				var presetStyles = {};
+				for ( var prop in styles ) {
+					if ( styles.hasOwnProperty( prop ) ) {
+						presetStyles[prop] = $t.css( prop );
+					}
+				}
+				$t.data( 'defaultCss', presetStyles );
+			}
+			$t.css( styles );
+		}
+
+		return styles;
 	}
 
 	$( window ).resize( function() {
@@ -22,21 +35,29 @@ jQuery(function ($) {
 			// Desktop
 			$( '[data-desktop-css]' ).each( function () {
 				var $t = $(this );
-				processResponsiveCSS( $t.data( 'desktop-css' ), $t )
+				applyStylesFromCSS( $t.data( 'desktop-css' ), $t )
 			} );
 		} else if ( window.innerWidth > 700 ) {
 			// Tab
 			$( '[data-tablet-css]' ).each( function () {
 				var $t = $(this );
-				processResponsiveCSS( $t.data( 'tablet-css' ), $t )
+				applyStylesFromCSS( $t.data( 'tablet-css' ), $t )
 			} );
 		}  else {
 			// Mobile
 			$( '[data-mobile-css]' ).each( function () {
 				var $t = $(this );
-				processResponsiveCSS( $t.data( 'mobile-css' ), $t )
+				applyStylesFromCSS( $t.data( 'mobile-css' ), $t )
 			} );
 		}
+	} );
+
+	$( '[data-hover-css]' ).hover( function () {
+		var $t = $(this );
+		applyStylesFromCSS( $t.data( 'hover-css' ), $t, 'saveCurrentStyles' )
+	}, function () {
+		var $t = $(this );
+		$t.css( $t.data( 'defaultCss' ) );
 	} );
 
 	$( '.caxton-posts-slider' ).each( function() {
