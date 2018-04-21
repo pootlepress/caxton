@@ -280,6 +280,9 @@
 					 'data-desktop-css="{{Font size}}">' +
 					 '<span class="dib">{{Overline}}{{Text}}{{Underline}}</span>' +
 					 '</{{Element Tag}}>',
+			toolbars: {
+				Alignment: 'AlignmentToolbar',
+			},
 			fields: {
 				'Text': {
 					type: 'editable',
@@ -349,16 +352,6 @@
 					min: 5,
 					max: 250,
 					tpl: 'font-size:%spx;',
-					section: 'Typography',
-				},
-				'Alignment': {
-					type: 'radio',
-					options: [
-						{value: ' tl', label: 'Left',},
-						{value: ' tc', label: 'Center',},
-						{value: ' tr', label: 'Right',},
-					],
-					default: ' tl',
 					section: 'Typography',
 				},
 				'Weight': {
@@ -928,6 +921,9 @@
 					 'data-tablet-css="{{Icon size tablet}}" ' +
 					 'data-desktop-css="{{Icon size}}">' +
 					 '</a></div>',
+			toolbars: {
+				Alignment: 'AlignmentToolbar',
+			},
 			fields: {
 				'Icon': {
 					section: 'Layout',
@@ -985,16 +981,6 @@
 					min: 5,
 					max: 250,
 					tpl: 'font-size:%spx;',
-					section: 'Typography',
-				},
-				'Alignment': {
-					type: 'radio',
-					options: [
-						{value: ' tl', label: 'Left',},
-						{value: ' tc', label: 'Center',},
-						{value: ' tr', label: 'Right',},
-					],
-					default: ' tl',
 					section: 'Typography',
 				},
 				'Icon variant': {

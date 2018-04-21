@@ -284,9 +284,39 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	CxB.prototype.AlignmentToolbarInit = function( field, index ) {
+		var props = this.fieldProps( field, index );
+
+		props.controls = [
+			{
+				icon: 'editor-alignleft',
+				title: __( 'Default' ),
+				isActive: props.value === ' tl',
+				onClick: function () {
+					props.onChange( ' tl' );
+				}
+			},
+			{
+				icon: 'editor-aligncenter',
+				title: __( 'Wide width' ),
+				isActive: props.value === ' tc',
+				onClick: function () {
+					props.onChange( ' tc' );
+				}
+			},
+			{
+				icon: 'editor-alignright',
+				title: __( 'Full width' ),
+				isActive: props.value === ' tr',
+				onClick: function () {
+					props.onChange( ' tr' );
+				}
+			},
+		];
+		props.wideControlsEnabled = true;
+
 		return el(
-			blocks.AlignmentToolbar,
-			this.fieldProps( field, index )
+			components.Toolbar,
+			props
 		)
 	}
 	CxB.prototype.BlockWidthToolbarInit = function( field, index ) {
