@@ -273,8 +273,8 @@
 			id: 'super-text',
 			title: 'Super Text',
 			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><g><path fill="#e74c3c" d="M18 3v2H2V3h16zm-6 4v2H2V7h10zm6 0v2h-4V7h4zM8 11v2H2v-2h6zm10 0v2h-8v-2h8zm-4 4v2H2v-2h12z"/></g></svg>',
-			tpl: '<{{Element Tag}} class="{{Alignment}}{{Text Glow/Shadow}}" ' +
-					 'style="{{Letter Spacing}}{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}" ' +
+			tpl: '<{{Element Tag}} class="{{Alignment}}" ' +
+					 'style="{{Letter Spacing}}{{Margin top}}{{Margin bottom}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}{{Line height}}{{Text Glow/Shadow}}" ' +
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
 					 'data-desktop-css="{{Font size}}">' +
@@ -340,6 +340,14 @@
 					tpl: 'font-size:%spx;',
 					section: 'Typography',
 				},
+				'Line height': {
+					type: 'range',
+					min: .5,
+					max: 5,
+					step: .1,
+					tpl: 'line-height:%s;',
+					section: 'Typography',
+				},
 				'Font size tablet': {
 					type: 'range',
 					min: 5,
@@ -383,31 +391,31 @@
 							label: 'None',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em dotted"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em dotted"></div>',
 							label: 'Dotted',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em dashed"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em dashed"></div>',
 							label: 'Dashed',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em solid"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em solid"></div>',
 							label: 'Thin',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid"></div>',
 							label: 'Thin + Thin',
 						},
 						{
-							value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .1em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid"></div>',
 							label: 'Thick + Thin',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .1em solid"></div>',
 							label: 'Thin + Thick',
 						},
 						{
-							value: '<div style="border: 0.05em solid"></div>',
+							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .1em solid"></div>',
 							label: 'Thick',
 						},
 					],
@@ -421,45 +429,82 @@
 							label: 'None',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em dotted"></div>',
+							value: '<div style="border-bottom: .05em dotted;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Dotted',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em dashed"></div>',
+							value: '<div style="border-bottom: .05em dashed;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Dashed',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em solid"></div>',
+							value: '<div style="border-bottom: .05em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Thin',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							value: '<div style="border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Thin + Thin',
 						},
 						{
-							value: '<div style="border-bottom: 0.05em solid; margin-bottom:0.1em"></div><div style="border: 0.05em solid"></div>',
+							value: '<div style="border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .1em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Thin + Thick',
 						},
 						{
-							value: '<div style="border: 0.05em solid; margin-bottom:0.1em"></div><div style="border-bottom: 0.05em solid"></div>',
+							value: '<div style="border-bottom: .1em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Thick + Thin',
 						},
 						{
-							value: '<div style="border: 0.05em solid"></div>',
+							value: '<div style="border-bottom: .1em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
 							label: 'Thick',
 						},
 					],
 					section: 'Color and decoration',
 				},
+				'Underline & Overline spacing': {
+					type: 'range',
+					max: 2.5,
+					step: .1,
+					tpl: '%sem;',
+					section: 'Typography',
+				},
+
 				'Text Glow/Shadow': {
 					type: 'select',
 					options: [
-						{value: '', label: 'None',},
-						{value: ' text-glow', label: 'Glow',},
-						{value: ' text-shadow', label: 'Shadow',},
+						{value: '', label: 'No shadow/glow',},
+						{value: '255,255,255', label: 'Glow',},
+						{value: '0,0,0', label: 'Shadow',},
 					],
-					section: 'Color and decoration',
+					section: 'Glow/Shadow',
+					tpl: 'text-shadow:{{Shadow position}} {{Shadow Blur}} rgba(%s,{{Shadow Strength}});',
 				},
+				'Shadow position': {
+					type: 'select',
+					options: [
+						{value: '-0.11em 0.1em', label: 'Far Left',},
+						{value: '-0.07em 0.07em', label: 'Left',},
+						{value: '0 0', label: 'Center',},
+						{value: '0.07em 0.07em', label: 'Right',},
+						{value: '0.11em 0.1em', label: 'Far Right',},
+					],
+					default: '0 0',
+					section: 'Glow/Shadow',
+				},
+				'Shadow Blur': {
+					type: 'range',
+					tpl: '%spx ',
+					default: 3,
+					max: 25,
+					section: 'Glow/Shadow',
+				},
+				'Shadow Strength': {
+					type: 'range',
+					min: .1,
+					step: .1,
+					default: .1,
+					max: 1,
+					section: 'Glow/Shadow',
+				},
+
 			},
 		} );
 
@@ -1055,7 +1100,7 @@
 						{value: '0.11em 0.1em', label: 'Far Right',},
 					],
 					default: '0 0',
-					section: 'Button Glow/Shadow',
+					section: 'Icon Glow/Shadow',
 				},
 				'Shadow Blur': {
 					type: 'range',
