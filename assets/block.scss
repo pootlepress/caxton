@@ -39,31 +39,49 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		outline: 1px dotted #ddd;
 	}
 }
-.edit-post-visual-editor .editor-block-list__block[caxton-layout*='vw-100'] {
-	max-width:none;
-	margin-left: -36px;
-	margin-right: -36px;
-	clear: both;
-	z-index: 20;
-	>.editor-block-list__block-edit {
-		margin-left: -50px;
-		margin-right: -50px;
+
+.edit-post-visual-editor .editor-block-list__block {
+	&[caxton-float=" fl"], &[caxton-float=" fr"] {
+		z-index: 20;
+		width: 100%;
+		margin-bottom: 0;
+		&:before {
+			content: none;
+		}
+
 	}
-	.editor-block-list__block-draggable {
-		left: 0;
-		right: 0;
+	&[caxton-float=" fl"] .editor-block-list__block-edit {
+		float: left;
 	}
-	.vw-100, .vw-100-bg {
-		width: auto;
-		margin: auto;
-		padding: 0;
+	&[caxton-float=" fr"] .editor-block-list__block-edit {
+		float: right;
 	}
-	.vw-100-bg {
-		padding-left: 5%;
-		padding-right: 5%;
+
+	&[caxton-layout*='vw-100'] {
+		max-width: none;
+		margin-left: -36px;
+		margin-right: -36px;
+		clear: both;
+		z-index: 20;
+		> .editor-block-list__block-edit {
+			margin-left: -50px;
+			margin-right: -50px;
+		}
+		.editor-block-list__block-draggable {
+			left: 0;
+			right: 0;
+		}
+		.vw-100, .vw-100-bg {
+			width: auto;
+			margin: auto;
+			padding: 0;
+		}
+		.vw-100-bg {
+			padding-left: 5%;
+			padding-right: 5%;
+		}
 	}
 }
-
 .edit-post-block-sidebar__panel .components-panel__body.caxton-section {
 	box-shadow: inset 0 -1px 0 #ddd;
 }

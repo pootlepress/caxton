@@ -289,7 +289,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		props.controls = [
 			{
 				icon: 'editor-alignleft',
-				title: __( 'Default' ),
+				title: __( 'Align left' ),
 				isActive: props.value === ' tl',
 				onClick: function () {
 					props.onChange( ' tl' );
@@ -297,7 +297,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			},
 			{
 				icon: 'editor-aligncenter',
-				title: __( 'Wide width' ),
+				title: __( 'Align center' ),
 				isActive: props.value === ' tc',
 				onClick: function () {
 					props.onChange( ' tc' );
@@ -305,7 +305,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			},
 			{
 				icon: 'editor-alignright',
-				title: __( 'Full width' ),
+				title: __( 'Align right' ),
 				isActive: props.value === ' tr',
 				onClick: function () {
 					props.onChange( ' tr' );
@@ -345,6 +345,42 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				isActive: props.value === ' vw-100',
 				onClick: function() {
 					props.onChange( ' vw-100' );
+				}
+			},
+		];
+		props.wideControlsEnabled = true;
+
+		return el(
+			components.Toolbar,
+			props
+		)
+	}
+	CxB.prototype.BlockAlignToolbarInit = function( field, index ) {
+		var props = this.fieldProps( field, index );
+
+		props.controls = [
+			{
+				icon: 'align-left',
+				title: __( 'Align left' ),
+				isActive: props.value === ' fl',
+				onClick: function () {
+					props.onChange( ' fl' );
+				}
+			},
+			{
+				icon: 'align-center',
+				title: __( 'Align center' ),
+				isActive: ! props.value,
+				onClick: function() {
+					props.onChange( '' );
+				}
+			},
+			{
+				icon: 'align-right',
+				title: __( 'Align right' ),
+				isActive: props.value === ' fr',
+				onClick: function () {
+					props.onChange( ' fr' );
 				}
 			},
 		];
@@ -455,7 +491,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						}
 					}
 				}
-				if ( val && fld.tpl ) {
+				if ( ( val || typeof val === 'number' ) && fld.tpl ) {
 					val = fld.tpl.replace( /%s/g, val );
 				}
 //				html = html.split( '[' + fld.id + ']' ).join( val );
@@ -556,10 +592,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		};
 
 		registerBlockProps.getEditWrapperProps = function( attributes ) {
-			var attrs = {}, fullWidth = attributes['Layout'];
+			var attrs = {}, layout = attributes.Layout, float = attributes.BlockAlignment;
 
-			if ( fullWidth ) {
-				attrs['caxton-layout'] = fullWidth;
+			if ( layout ) {
+				attrs['caxton-layout'] = layout;
+			}
+			if ( float ) {
+				attrs['caxton-float'] = float;
 			}
 
 			if ( typeof block.registerBlockProps === 'function' ) {
