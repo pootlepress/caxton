@@ -479,7 +479,7 @@
 					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
 					 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
 					 'border:{{Border weight}} solid {{Border color}};' +
-					 'padding:{{Inner Padding top/bottom}}{{Rounded Corners}} {{Inner Padding left/right}};' +
+					 'padding:{{Inner Padding top/bottom}} {{Inner Padding left/right}};{{Rounded Corners}}' +
 					 '{{Button Glow/Shadow}};" ' +
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
@@ -669,14 +669,14 @@
 				'Spread': {
 					type: 'range',
 					tpl: '%spx',
-					default: 0,
+					default: 2,
 					max: 25,
 					section: 'Button Glow/Shadow',
 				},
 				'Blur': {
 					type: 'range',
 					tpl: '%spx',
-					default: 3,
+					default: 8,
 					max: 25,
 					section: 'Button Glow/Shadow',
 				},
@@ -684,7 +684,7 @@
 					type: 'range',
 					min: .1,
 					step: .1,
-					default: .1,
+					default: .2,
 					max: 1,
 					section: 'Button Glow/Shadow',
 				},
@@ -889,7 +889,7 @@
 					cls += ' ' + block.attrs['Layout'];
 				}
 
-				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background parallax}}"></div>' +
+				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
 
 				return el(
