@@ -342,7 +342,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 
 			if ( typeof this[ func ] === 'function' ) {
-				if ( ! f.hide && ( ! section || f.section == section ) ) {
+				if ( ! f.hide && ( ! section && ! f.section || f.section == section ) ) {
 					els.push( this[func]( f, i ) );
 				}
 			} else {
@@ -524,6 +524,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				that.edit( props )
 			]
 		};
+
 		registerBlockProps.getEditWrapperProps = function( attributes ) {
 			var attrs = {}, fullWidth = attributes['Layout'];
 
@@ -537,12 +538,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 			return attrs;
 		};
+
 		registerBlockProps.save = function ( props ) {
 			that.saveBlockProperties( props );
 			return that.save( props )
 		};
 
-		console.log( block.title );
 		blocks.registerBlockType( 'caxton/' + block.id, registerBlockProps );
 	};
 
