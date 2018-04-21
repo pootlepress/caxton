@@ -91,48 +91,54 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	background: #eee;
 }
 
-.caxton-icon-picker {
-	position: relative;
-	overflow: hidden;
+.caxton-icon-picker-panel {
+	.caxton-icon-picker {
+		border: 1px solid #ccc;
+		position: relative;
+		overflow: hidden;
+		margin: 0 -3px 0 -1px;
 
-	.caxton-matching-icons {
-		display: flex;
-		flex-wrap: wrap;
-	}
+		.caxton-matching-icons {
+			display: flex;
+			flex-wrap: wrap;
+			max-height: 200px;
+			overflow: auto;
+		}
 
-	.caxton-matching-icons .o-70 {
-		order: 1;
-	}
+		.caxton-matching-icons .o-70 {
+			order: 1;
+		}
 
-	.dashicons-no,
-	.dashicons-search {
-		content: "\f002";
-		font: 900 16px 'Font Awesome 5 Free';
-		position: absolute;
-		top: 58px;
-		left: 23px;
-		width: auto;
-		height: auto;
-	}
-	.dashicons-no {
-		left: auto;
-		right: 16px;
-		top: 52px;
-		padding: 5px;
-	}
+		.dashicons-no,
+		.dashicons-search {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			width: auto;
+			height: auto;
+		}
+		.dashicons-no {
+			left: auto;
+			right: 0;
+			top: 0;
+			padding: 5px;
+		}
 
-	i[class*='fa-'] {
-		margin: 0.5em;
-		width: 1.25em;
-		line-height: 1.25;
-		font-size: 20px;
-		text-align: center;
-		box-sizing: content-box;
-		cursor: pointer;
-	}
+		i[class*='fa-'] {
+			margin: 0.4em;
+			width: 1.25em;
+			line-height: 1.25;
+			font-size: 20px;
+			text-align: center;
+			box-sizing: content-box;
+			cursor: pointer;
+		}
 
-	input {
-		width: 100%;
-		padding-left: 2.5em !important;
+		input {
+			width: 100%;
+			padding-left: 2.5em !important;
+			border: none;
+			border-bottom: 1px solid #ccc;
+		}
 	}
 }

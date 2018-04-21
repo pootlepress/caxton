@@ -212,58 +212,74 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return el( components.ToggleControl, fieldProps );
 	};
 	CxB.prototype.iconFieldInit = function( field, index ) {
-		var props = this.fieldProps( field, index ), that = this, searchTerms = [];
+		var
+			props = this.fieldProps( field, index ),
+			that = this,
+			defaultIcons = [];
 		props.title = props.label;
 
-		props.className = 'caxton-icon-picker';
+		props.className = 'caxton-icon-picker-panel';
+
+		for ( var i = 0; i < 50; i ++ ) {
+			var ico = caxton.fontAwesome[i];
+			defaultIcons.push( el( 'i', {className: 'fas fa-' + ico.n, key: ico.n, title: __( 'Search', 'caxton' )} ) );
+		}
 
 		return el(
 			components.PanelBody,
 			props,
-			el( 'input', {
-				type: 'text',
-				onKeyUp: function( e ) {
-					var searchTerm = e.target.value, iconsMatched = 0, $wrp;
-					if ( searchTerm ) {
+			el( 'div', {
+					className: 'caxton-icon-picker',
+					onClick: function ( e ) {
+						if ( e.target.tagName === 'I' ) {
+							props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+						}
+					}
+				},
+				el( 'input', {
+					type: 'text',
+					placeholder: __( 'Search icons', 'caxton' ),
+					onKeyUp: function ( e ) {
+						var searchTerm = e.target.value, iconsMatched = 0, $wrp;
 						searchTerm = searchTerm.toLowerCase();
 						$wrp = $( e.target ).siblings( '.caxton-matching-icons' );
 						$wrp.html( '' );
 						for ( var i = 0; iconsMatched < 50 && i < caxton.fontAwesome.length; i ++ ) {
 							var ico = caxton.fontAwesome[i];
-							if ( -1 < ico.n.indexOf( searchTerm ) ) {
+							if ( - 1 < ico.n.indexOf( searchTerm ) ) {
 								iconsMatched ++;
 								$wrp.append( '<i class="fas fa-' + ico.n + '"></i>' )
-							} else if ( iconsMatched < 34 && -1 < ico.s.indexOf( searchTerm ) ) {
-								iconsMatched++;
+							} else if ( iconsMatched < 34 && - 1 < ico.s.indexOf( searchTerm ) ) {
+								iconsMatched ++;
 								$wrp.append( '<i class="fas fa-' + ico.n + ' o-70"></i>' )
 							}
 						}
 					}
-				}
-			} ),
-			el( 'span', {
-				className: 'dashicons dashicons-search',
-				title: __( 'Search', 'caxton' ),
-			} ),
-			el( 'span', {
-				className: 'dashicons dashicons-no',
-				title: __( 'Remove icon', 'caxton' ),
-				style: {
-					cursor: 'pointer',
-					display: props.value ? 'block' : 'none',
-				},
-				onClick: function() {
-					props.onChange( '' );
-				}
-			} ),
-			el( 'div', {
-				className: 'caxton-matching-icons',
-				onClick: function( e ) {
-					if ( e.target.tagName === 'I' ) {
-						props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+				} ),
+				el( 'span', {
+					className: 'dashicons dashicons-search',
+					title: __( 'Search', 'caxton' ),
+				} ),
+				el( 'span', {
+					className: 'dashicons dashicons-no',
+					title: __( 'Remove icon', 'caxton' ),
+					style: {
+						cursor: 'pointer',
+						display: props.value ? 'block' : 'none',
+					},
+					onClick: function () {
+						props.onChange( '' );
 					}
-				}
-			} )
+				} ),
+				el( 'div', {
+					className: 'caxton-matching-icons',
+					onClick: function ( e ) {
+						if ( e.target.tagName === 'I' ) {
+							props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+						}
+					}
+				}, defaultIcons )
+			)
 		);
 	};
 	CxB.prototype.positionFieldInit = function( field, index ) {
