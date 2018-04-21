@@ -212,58 +212,74 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return el( components.ToggleControl, fieldProps );
 	};
 	CxB.prototype.iconFieldInit = function( field, index ) {
-		var props = this.fieldProps( field, index ), that = this, searchTerms = [];
+		var
+			props = this.fieldProps( field, index ),
+			that = this,
+			defaultIcons = [];
 		props.title = props.label;
 
-		props.className = 'caxton-icon-picker';
+		props.className = 'caxton-icon-picker-panel';
+
+		for ( var i = 0; i < 50; i ++ ) {
+			var ico = caxton.fontAwesome[i];
+			defaultIcons.push( el( 'i', {className: 'fas fa-' + ico.n, key: ico.n, title: __( 'Search', 'caxton' )} ) );
+		}
 
 		return el(
 			components.PanelBody,
 			props,
-			el( 'input', {
-				type: 'text',
-				onKeyUp: function( e ) {
-					var searchTerm = e.target.value, iconsMatched = 0, $wrp;
-					if ( searchTerm ) {
+			el( 'div', {
+					className: 'caxton-icon-picker',
+					onClick: function ( e ) {
+						if ( e.target.tagName === 'I' ) {
+							props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+						}
+					}
+				},
+				el( 'input', {
+					type: 'text',
+					placeholder: __( 'Search icons', 'caxton' ),
+					onKeyUp: function ( e ) {
+						var searchTerm = e.target.value, iconsMatched = 0, $wrp;
 						searchTerm = searchTerm.toLowerCase();
 						$wrp = $( e.target ).siblings( '.caxton-matching-icons' );
 						$wrp.html( '' );
 						for ( var i = 0; iconsMatched < 50 && i < caxton.fontAwesome.length; i ++ ) {
 							var ico = caxton.fontAwesome[i];
-							if ( -1 < ico.n.indexOf( searchTerm ) ) {
+							if ( - 1 < ico.n.indexOf( searchTerm ) ) {
 								iconsMatched ++;
 								$wrp.append( '<i class="fas fa-' + ico.n + '"></i>' )
-							} else if ( iconsMatched < 34 && -1 < ico.s.indexOf( searchTerm ) ) {
-								iconsMatched++;
+							} else if ( iconsMatched < 34 && - 1 < ico.s.indexOf( searchTerm ) ) {
+								iconsMatched ++;
 								$wrp.append( '<i class="fas fa-' + ico.n + ' o-70"></i>' )
 							}
 						}
 					}
-				}
-			} ),
-			el( 'span', {
-				className: 'dashicons dashicons-search',
-				title: __( 'Search', 'caxton' ),
-			} ),
-			el( 'span', {
-				className: 'dashicons dashicons-no',
-				title: __( 'Remove icon', 'caxton' ),
-				style: {
-					cursor: 'pointer',
-					display: props.value ? 'block' : 'none',
-				},
-				onClick: function() {
-					props.onChange( '' );
-				}
-			} ),
-			el( 'div', {
-				className: 'caxton-matching-icons',
-				onClick: function( e ) {
-					if ( e.target.tagName === 'I' ) {
-						props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+				} ),
+				el( 'span', {
+					className: 'dashicons dashicons-search',
+					title: __( 'Search', 'caxton' ),
+				} ),
+				el( 'span', {
+					className: 'dashicons dashicons-no',
+					title: __( 'Remove icon', 'caxton' ),
+					style: {
+						cursor: 'pointer',
+						display: props.value ? 'block' : 'none',
+					},
+					onClick: function () {
+						props.onChange( '' );
 					}
-				}
-			} )
+				} ),
+				el( 'div', {
+					className: 'caxton-matching-icons',
+					onClick: function ( e ) {
+						if ( e.target.tagName === 'I' ) {
+							props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+						}
+					}
+				}, defaultIcons )
+			)
 		);
 	};
 	CxB.prototype.positionFieldInit = function( field, index ) {
@@ -289,7 +305,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		props.controls = [
 			{
 				icon: 'editor-alignleft',
-				title: __( 'Default' ),
+				title: __( 'Align left' ),
 				isActive: props.value === ' tl',
 				onClick: function () {
 					props.onChange( ' tl' );
@@ -297,7 +313,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			},
 			{
 				icon: 'editor-aligncenter',
-				title: __( 'Wide width' ),
+				title: __( 'Align center' ),
 				isActive: props.value === ' tc',
 				onClick: function () {
 					props.onChange( ' tc' );
@@ -305,7 +321,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			},
 			{
 				icon: 'editor-alignright',
-				title: __( 'Full width' ),
+				title: __( 'Align right' ),
 				isActive: props.value === ' tr',
 				onClick: function () {
 					props.onChange( ' tr' );
@@ -345,6 +361,42 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				isActive: props.value === ' vw-100',
 				onClick: function() {
 					props.onChange( ' vw-100' );
+				}
+			},
+		];
+		props.wideControlsEnabled = true;
+
+		return el(
+			components.Toolbar,
+			props
+		)
+	}
+	CxB.prototype.BlockAlignToolbarInit = function( field, index ) {
+		var props = this.fieldProps( field, index );
+
+		props.controls = [
+			{
+				icon: 'align-left',
+				title: __( 'Align left' ),
+				isActive: props.value === ' fl',
+				onClick: function () {
+					props.onChange( ' fl' );
+				}
+			},
+			{
+				icon: 'align-center',
+				title: __( 'Align center' ),
+				isActive: ! props.value,
+				onClick: function() {
+					props.onChange( '' );
+				}
+			},
+			{
+				icon: 'align-right',
+				title: __( 'Align right' ),
+				isActive: props.value === ' fr',
+				onClick: function () {
+					props.onChange( ' fr' );
 				}
 			},
 		];
@@ -455,7 +507,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						}
 					}
 				}
-				if ( val && fld.tpl ) {
+				if ( ( val || typeof val === 'number' ) && fld.tpl ) {
 					val = fld.tpl.replace( /%s/g, val );
 				}
 //				html = html.split( '[' + fld.id + ']' ).join( val );
@@ -556,10 +608,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		};
 
 		registerBlockProps.getEditWrapperProps = function( attributes ) {
-			var attrs = {}, fullWidth = attributes['Layout'];
+			var attrs = {}, layout = attributes.Layout, float = attributes.BlockAlignment;
 
-			if ( fullWidth ) {
-				attrs['caxton-layout'] = fullWidth;
+			if ( layout ) {
+				attrs['caxton-layout'] = layout;
+			}
+			if ( float ) {
+				attrs['caxton-float'] = float;
 			}
 
 			if ( typeof block.registerBlockProps === 'function' ) {

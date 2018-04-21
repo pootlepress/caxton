@@ -16,15 +16,19 @@ jQuery(function ($) {
 		}
 		if ( $t ) {
 			if ( saveCurrentStyles ) {
-				var presetStyles = {};
-				for ( var prop in styles ) {
-					if ( styles.hasOwnProperty( prop ) ) {
-						presetStyles[prop] = $t.css( prop );
+				if ( ! $t.data( 'defaultCss' ) ) {
+					var presetStyles = {};
+					for ( var prop in styles ) {
+						if ( styles.hasOwnProperty( prop ) ) {
+							presetStyles[prop] = $t.css( prop );
+						}
 					}
+					$t.data( 'defaultCss', presetStyles );
+					$t.css( styles );
 				}
-				$t.data( 'defaultCss', presetStyles );
+			} else {
+				$t.css( styles );
 			}
-			$t.css( styles );
 		}
 
 		return styles;
@@ -50,15 +54,19 @@ jQuery(function ($) {
 				applyStylesFromCSS( $t.data( 'mobile-css' ), $t )
 			} );
 		}
-	} );
+	} ).resize();
 
-	$( '[data-hover-css]' ).hover( function () {
-		var $t = $(this );
-		applyStylesFromCSS( $t.data( 'hover-css' ), $t, 'saveCurrentStyles' )
-	}, function () {
-		var $t = $(this );
-		$t.css( $t.data( 'defaultCss' ) );
-	} );
+	$( '[data-hover-css]' ).on({
+		mouseenter: function() {
+			var $t = $(this );
+			applyStylesFromCSS( $t.data( 'hover-css' ), $t, 'saveCurrentStyles' )
+		},
+		mouseleave: function() {
+			var $t = $(this );
+			$t.css( $t.data( 'defaultCss' ) );
+			$t.data( 'defaultCss', null );
+		}
+	});
 
 	$( '.caxton-posts-slider' ).each( function() {
 		var $t = $( this );

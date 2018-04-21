@@ -2,7 +2,7 @@
 Contributors: pootlepress, shramee, jamie
 Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
-Tested up to: 4.9.2
+Tested up to: 4.9.5
 Requires PHP: 5.6.0
 Stable tag: 0.5.0
 License: GPLv2 or later
@@ -55,6 +55,8 @@ Version 0.7.0
 * 2018-04-20
 * New - Field section supported
 * New - Field template supported, %s in tpl replaced with value
+* New - Icon picker field
+* New - Alignment toolbars support
 * New - Super hero block
 * New - Super text block
 * New - Super button block

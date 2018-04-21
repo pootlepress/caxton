@@ -60,6 +60,7 @@ class Caxton_Admin {
 
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( "$token-blocks", $url . 'assets/block.js', array( $token ) );
+		wp_enqueue_script( $token . '-js', $url . '/assets/caxton-utils.js', array( 'jquery' ) );
 
 		$caxton_fonts = $categories = [
 			[
