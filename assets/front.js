@@ -50,7 +50,7 @@ jQuery(function ($) {
 				applyStylesFromCSS( $t.data( 'mobile-css' ), $t )
 			} );
 		}
-	} );
+	} ).resize();
 
 	$( '[data-hover-css]' ).hover( function () {
 		var $t = $(this );
