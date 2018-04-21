@@ -711,27 +711,26 @@
 			fields: {
 				'Background image': {
 					type: 'image',
-					section: 'Background',
+					section: 'Background image',
 					tpl: 'background-image:url(%s);',
 				},
 				'Background image position': {
 					type: 'position',
-					section: 'Background',
+					section: 'Background image',
 					tpl: 'background-position:%s;',
 				},
 				'Background parallax': {
 					type: 'toggle',
 					value: 'background-attachment:fixed;',
-					section: 'Background',
+					section: 'Background image',
 				},
 				'Background color': {
 					type: 'color',
-					section: 'Background',
+					section: 'Background colors',
 				},
-				'Second Background color': {
+				'Gradient color': {
 					type: 'color',
-					help: 'Second background color adds Gradient',
-					section: 'Background',
+					section: 'Background colors',
 					tpl: ', %s',
 				},
 				'Gradient type': {
@@ -744,7 +743,7 @@
 						{value: 'radial-gradient( ', label: 'Radial gradient',},
 					],
 					default: 'linear-gradient( ',
-					section: 'Background',
+					section: 'Background colors',
 				},
 				'Background colors opacity': {
 					type: 'range',
@@ -753,7 +752,7 @@
 					step: .05,
 					help: 'Reduce opacity to have transparent colors over image',
 					default: '.9',
-					section: 'Background',
+					section: 'Background colors',
 					tpl: 'opacity:%s;',
 				},
 				'Columns': {
@@ -835,7 +834,7 @@
 				}
 
 				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
-								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
+								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
 				return el(
 					// Element
@@ -883,7 +882,7 @@
 				}
 
 				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
-								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Second Background color}});{{Background colors opacity}}"></div>';
+								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
 				return el(
 					// Element
