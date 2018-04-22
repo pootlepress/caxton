@@ -159,6 +159,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			panelChildren.push( field.help );
 		}
 
+		// Show color preview
+		props.colorValue = props.value;
+
 		return el( components.PanelColor, props, panelChildren )
 	};
 	CxB.prototype.checkboxFieldInit = function( field, index ) {
