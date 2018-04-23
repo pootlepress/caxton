@@ -144,7 +144,7 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 }
 
 [data-type="caxton/super-hero"]:hover:not(.is-selected) .editor-block-list__block-edit > .relative:before {
-	content: 'Click here to focus Super hero block';
+	content: 'Click here to change Super hero settings';
 	background: rgba(255,255,255,.7);
 	font: 14px sans-serif;
 	padding: 0.25em 0.5em;
@@ -153,4 +153,5 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 1;
 }
