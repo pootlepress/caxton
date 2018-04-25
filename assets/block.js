@@ -7,6 +7,7 @@
 (
 	function ( $, blocks, el, withAPIData, i18n, components ) {
 		var
+			createBlock = blocks.createBlock,
 			registerBlockType = blocks.registerBlockType,
 			InspectorControls = blocks.InspectorControls,
 			__ = i18n.__;
@@ -280,6 +281,38 @@
 					 'data-desktop-css="{{Font size}}">' +
 					 '<span class="dib">{{Overline}}{{Text}}{{Underline}}</span>' +
 					 '</{{Element Tag}}>',
+			transforms: {
+				from: [
+					{
+						type: 'block',
+						blocks: ['core/paragraph'],
+						transform: function ( props ) {
+							return createBlock( 'caxton/super-text', {
+								Text: Caxton.el2html( props.content ),
+							} );
+						},
+					},
+					{
+						type: 'block',
+						blocks: ['core/heading'],
+						transform: function ( props ) {
+							return createBlock( 'caxton/super-text', {
+								Text: Caxton.el2html( props.content ),
+								'Element Tag': props.nodeName.toLowerCase(),
+							} );
+						},
+					},
+					{
+						type: 'block',
+						blocks: ['core/subhead'],
+						transform: function ( props ) {
+							return createBlock( 'caxton/super-text', {
+								Text: Caxton.el2html( props.content ),
+							} );
+						},
+					},
+				],
+			},
 			toolbars: {
 				Alignment: 'AlignmentToolbar',
 			},
@@ -336,7 +369,6 @@
 					type: 'range',
 					min: 5,
 					max: 250,
-					default: 16,
 					tpl: 'font-size:%spx;',
 					section: 'Typography',
 				},
@@ -511,8 +543,8 @@
 		CaxtonBlock( {
 			id: 'super-button',
 			title: 'Super Button',
-			icon: '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#e74c3c" d="M17 5H3c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm1 7c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h14c.6 0 1 .4 1 1v5z"></path></svg>',
-			tpl: '<div class="{{Alignment}}" style="{{Margin top}}{{Margin bottom}}">' +
+			icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#e74c3c" d="M17 5H3c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm1 7c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h14c.6 0 1 .4 1 1v5z"></path></svg>',
+			tpl: '<div class="{{Alignment}}{{BlockAlignment}}" style="{{Margin top}}{{Margin bottom}}">' +
 					 '<a class="caxton-btn no-underline dib {{Text Glow/Shadow}}" href="{{URL}}" ' +
 					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
 					 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
@@ -524,8 +556,25 @@
 					 'data-desktop-css="{{Font size}}">' +
 					 '{{Icon before text}}{{Text}}{{Icon after text}}' +
 					 '</a></div>',
+			transforms: {
+				from: [
+					{
+						type: 'block',
+						blocks: ['core/button'],
+						transform: function ( props ) {
+							return createBlock( 'caxton/super-button', {
+								Text: Caxton.el2html( props.text ),
+								URL: props.url,
+								'Text color': props.textColor,
+								'Background color': props.color,
+							} );
+						},
+					},
+				],
+			},
 			toolbars: {
 				Alignment: 'AlignmentToolbar',
+				BlockAlignment: 'BlockAlignToolbar',
 			},
 			fields: {
 				'Text': {
@@ -828,6 +877,18 @@
 					section: 'Layout',
 					default: 5,
 				},
+				'Inner Padding left/right tablet': {
+					type: 'range',
+					max: 70,
+					section: 'Layout',
+					default: 5,
+				},
+				'Inner Padding left/right mobile': {
+					type: 'range',
+					max: 70,
+					section: 'Layout',
+					default: 5,
+				},
 				'Inner Padding unit': {
 					type: 'select',
 					options: [
@@ -852,7 +913,9 @@
 					return colsInfo;
 				}
 
-				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR, columns;
+				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR,
+					padMob = block.attrs['Inner Padding left/right tablet'],
+					padTab = block.attrs['Inner Padding left/right mobile'];
 
 				padUnit = block.attrs['Inner Padding unit'];
 				padT = block.attrs['Inner Padding top'];
@@ -882,9 +945,9 @@
 
 				return el(
 					// Element
-					'div', { className: cls, },
+					'div', { className: cls, key: 'super-hero-block' },
 					// Background div
-					el( 'div', {className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
+					el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
 					el( 'div', {
 							className: 'relative caxton-columns caxton-' + columns + '-columns',
@@ -893,14 +956,19 @@
 								'paddingLeft': padL,
 								'paddingBottom': padB,
 								'paddingRight': padR,
-							}
+							},
+							'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
+							'data-mobile-css' : 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
+							key: 'block',
 						},
-						el( wp.blocks.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] )} )
+						el( wp.blocks.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] ), key: 'innerblockscontent' } )
 					)
 				);
 			},
 			save: function ( props, block ) {
-				var cls = 'relative', bgHTML, padUnit, padT, padL, padB, padR, columns;
+				var cls = 'relative', bgHTML, padUnit, padT, padL, padB, padR, columns,
+					padMob = block.attrs['Inner Padding left/right tablet'],
+					padTab = block.attrs['Inner Padding left/right mobile'];
 
 				padUnit = block.attrs['Inner Padding unit'];
 				padT = block.attrs['Inner Padding top'];
@@ -925,14 +993,14 @@
 					cls += ' ' + block.attrs['Layout'];
 				}
 
-				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
-								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
+				bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
+								 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
 				return el(
 					// Element
-					'div', { className: cls },
+					'div', { className: cls, key: 'super-hero-block' },
 					// Background div
-					el( 'div', {className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
+					el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
 					el( 'div', {
 							className: 'relative caxton-columns caxton-' + columns + '-columns',
@@ -941,9 +1009,12 @@
 								'paddingLeft': padL,
 								'paddingBottom': padB,
 								'paddingRight': padR,
-							}
+							},
+							'data-mobile-css' : 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
+							'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
+							key: 'block',
 						},
-						el( wp.blocks.InnerBlocks.Content )
+						el( wp.blocks.InnerBlocks.Content, { key: 'innerblockscontent' } )
 					)
 				);
 			}
@@ -953,10 +1024,10 @@
 			id: 'super-icon',
 			title: 'Super icon',
 			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#e74c3c" d="M211.7 241.1v51.7c0 2.1-1.6 3.7-3.7 3.7h-22.2c-2.1 0-3.7-1.6-3.7-3.7v-51.7c0-2.1 1.6-3.7 3.7-3.7H208c2.1 0 3.7 1.6 3.7 3.7zm114.5-3.7H304c-2.1 0-3.7 1.6-3.7 3.7v51.7c0 2.1 1.6 3.7 3.7 3.7h22.2c2.1 0 3.7-1.6 3.7-3.7v-51.7c-.1-2.1-1.7-3.7-3.7-3.7zm-29.1 263.2c-.9.1-1.7.3-2.6.4-1 .2-2.1.3-3.1.5-.9.1-1.8.3-2.8.4-1 .1-2 .3-3 .4-1 .1-2 .2-2.9.3-1 .1-1.9.2-2.9.3-1 .1-2.1.2-3.1.3-.9.1-1.8.2-2.7.2-1.1.1-2.3.1-3.4.2-.8 0-1.7.1-2.5.1-1.3.1-2.6.1-3.9.1-.7 0-1.4.1-2.1.1-2 0-4 .1-6 .1s-4 0-6-.1c-.7 0-1.4 0-2.1-.1-1.3 0-2.6-.1-3.9-.1-.8 0-1.7-.1-2.5-.1-1.1-.1-2.3-.1-3.4-.2-.9-.1-1.8-.1-2.7-.2-1-.1-2.1-.2-3.1-.3-1-.1-1.9-.2-2.9-.3-1-.1-2-.2-2.9-.3-1-.1-2-.2-3-.4-.9-.1-1.8-.3-2.8-.4-1-.1-2.1-.3-3.1-.5-.9-.1-1.7-.3-2.6-.4-65.6-10.9-122.5-47.7-160-99.4-.2-.2-.3-.5-.5-.7-.8-1.1-1.6-2.2-2.3-3.3-.3-.4-.6-.8-.8-1.2-.7-1.1-1.4-2.1-2.1-3.2-.3-.5-.6-.9-.9-1.4-.7-1.1-1.4-2.1-2-3.2-.3-.5-.6-.9-.9-1.4-.7-1.1-1.3-2.2-2-3.3-.2-.4-.5-.8-.7-1.2-2.4-4-4.6-8.1-6.8-12.2-.1-.2-.2-.3-.3-.5-.6-1.1-1.1-2.2-1.7-3.3-.3-.6-.6-1.1-.8-1.7-.5-1-1-2.1-1.5-3.1-.3-.7-.6-1.3-.9-2-.5-1-.9-2-1.4-3l-.9-2.1c-.4-1-.9-2-1.3-3-.3-.7-.6-1.5-.9-2.2l-1.2-3c-.3-.8-.6-1.5-.9-2.3-.4-1-.8-2-1.1-3-.3-.9-.6-1.8-1-2.8-.6-1.6-1.1-3.3-1.7-4.9-.3-.9-.6-1.8-.9-2.8-.3-.9-.5-1.8-.8-2.7-.3-.9-.6-1.9-.8-2.8-.3-.9-.5-1.8-.8-2.7-.3-1-.5-1.9-.8-2.9-.2-.9-.5-1.8-.7-2.7-.3-1-.5-2-.7-3-.2-.9-.4-1.7-.6-2.6-.2-1.1-.5-2.2-.7-3.2-.2-.8-.3-1.6-.5-2.4-.3-1.3-.5-2.7-.8-4-.1-.6-.2-1.1-.3-1.7l-.9-5.7c-.1-.6-.2-1.3-.3-1.9-.2-1.3-.4-2.6-.5-3.9-.1-.8-.2-1.5-.3-2.3-.1-1.2-.3-2.4-.4-3.6-.1-.8-.2-1.6-.2-2.4-.1-1.2-.2-2.4-.3-3.5-.1-.8-.1-1.6-.2-2.4-.1-1.2-.2-2.4-.2-3.7 0-.8-.1-1.5-.1-2.3-.1-1.3-.1-2.7-.2-4 0-.7 0-1.3-.1-2 0-2-.1-4-.1-6 0-53.5 16.9-103 45.8-143.6 2.3-3.2 4.7-6.4 7.1-9.5 4.9-6.2 10.1-12.3 15.6-18 2.7-2.9 5.5-5.7 8.4-8.4 2.9-2.7 5.8-5.4 8.8-8 4.5-3.9 9.1-7.6 13.9-11.2 1.6-1.2 3.2-2.4 4.8-3.5C140 34.2 171.7 20.1 206 13c16.1-3.3 32.9-5 50-5s33.8 1.7 50 5c34.3 7 66 21.1 93.6 40.7 1.6 1.2 3.2 2.3 4.8 3.5 4.8 3.6 9.4 7.3 13.9 11.2 12 10.4 23 21.9 32.8 34.4 2.5 3.1 4.8 6.3 7.1 9.5C487.1 153 504 202.5 504 256c0 2 0 4-.1 6 0 .7 0 1.3-.1 2 0 1.3-.1 2.7-.2 4 0 .8-.1 1.5-.1 2.3-.1 1.2-.1 2.4-.2.7-.1.8-.1 1.6-.2 2.4-.1 1.2-.2 2.4-.3 3.5-.1.8-.2 1.6-.2 2.4-.1 1.2-.3 2.4-.4 3.6-.1.8-.2 1.5-.3 2.3-.2 1.3-.4 2.6-.5 3.9-.1.6-.2 1.3-.3 1.9l-.9 5.7c-.1.6-.2 1.1-.3 1.7-.2 1.3-.5 2.7-.8 4-.2.8-.3 1.6-.5 2.4-.2 1.1-.5 2.2-.7 3.2-.2.9-.4 1.7-.6 2.6-.2 1-.5 2-.7 3-.2.9-.5 1.8-.7 2.7-.3 1-.5 1.9-.8 2.9-.2.9-.5 1.8-.8 2.7-.3.9-.6 1.9-.8 2.8-.3.9-.5 1.8-.8 2.7-.3.9-.6 1.8-.9 2.8-.5 1.6-1.1 3.3-1.7 4.9-.3.9-.6 1.8-1 2.8-.4 1-.7 2-1.1 3-.3.8-.6 1.5-.9 2.3l-1.2 3c-.3.7-.6 1.5-.9 2.2-.4 1-.8 2-1.3 3l-.9 2.1c-.4 1-.9 2-1.4 3-.3.7-.6 1.3-.9 2-.5 1-1 2.1-1.5 3.1-.3.6-.6 1.1-.8 1.7-.6 1.1-1.1 2.2-1.7 3.3-.1.2-.2.3-.3.5-2.2 4.1-4.4 8.2-6.8 12.2-.2.4-.5.8-.7 1.2-.7 1.1-1.3 2.2-2 3.3-.3.5-.6.9-.9 1.4-.7 1.1-1.4 2.1-2 3.2-.3.5-.6.9-.9 1.4-.7 1.1-1.4 2.1-2.1 3.2-.3.4-.6.8-.8 1.2-.8 1.1-1.5 2.2-2.3 3.3-.2.2-.3.5-.5.7-37.6 54.7-94.5 91.4-160.1 102.4zm117.3-86.2c13-13 24.2-27.4 33.6-42.9v-71.3c0-2.1-1.6-3.7-3.7-3.7h-22.2c-2.1 0-3.7 1.6-3.7 3.7V326h-29.5V182c0-2.1-1.6-3.7-3.7-3.7h-22.1c-2.1 0-3.7 1.6-3.7 3.7v25.9h-29.5V182c0-2.1-1.6-3.7-3.7-3.7H304c-2.1 0-3.7 1.6-3.7 3.7v25.9h-29.5V182c0-4.8-6.5-3.7-9.5-3.7v-30.7c6.7-1.6 13.8-2.8 20.8-2.8 8.8 0 16.8 3.5 25.4 3.5 3.7 0 22.4-.9 22.4-6.5V93.4c0-2.1-1.6-3.7-3.7-3.7-4.2 0-12.2 3.5-19.4 3.5-7.9 0-16.9-3.5-26.3-3.5-6.5 0-12.9.9-19.2 2.3v-3.9c4.4-2.1 7.4-6.7 7.4-11.5 0-16.8-25.4-16.8-25.4 0 0 4.8 3 9.5 7.4 11.5v90.2c-3 0-9.5-1.1-9.5 3.7v25.9h-29.5V182c0-2.1-1.6-3.7-3.7-3.7h-22.2c-2.1 0-3.7 1.6-3.7 3.7v25.9h-29.5V182c0-2.1-1.6-3.7-3.7-3.7h-22.1c-2.1 0-3.7 1.6-3.7 3.7v144H93.5v-25.8c0-2.1-1.6-3.7-3.7-3.7H67.7c-2.1 0-3.7 1.6-3.7 3.7v71.3c9.4 15.5 20.6 29.9 33.6 42.9 20.6 20.6 44.5 36.7 71.2 48 13.9 5.9 28.2 10.3 42.9 13.2v-75.8c0-58.6 88.6-58.6 88.6 0v75.8c14.7-2.9 29-7.4 42.9-13.2 26.7-11.3 50.6-27.4 71.2-48"/></svg>',
-			tpl: '<div class="{{Alignment}}" style="{{Margin top}}{{Margin bottom}}">' +
-					 '<a {{URL}} class="no-underline caxton-icon {{Glow/Shadow}}{{Icon}}" ' +
+			tpl: '<div class="{{Alignment}}{{BlockAlignment}}" style="{{Margin top}}{{Margin bottom}}">' +
+					 '<a {{URL}} class="no-underline caxton-icon {{Icon variant}}{{Glow/Shadow}}{{Icon}}" ' +
 					 'data-hover-css="{{Hover icon color}}{{Hover Background color}}{{Hover Border color}}" ' +
-					 'style="{{Icon color}}{{Background color}}{{Icon size}}{{Icon variant}}' +
+					 'style="{{Icon color}}{{Background color}}{{Icon size}}' +
 					 'border:{{Border weight}} solid {{Border color}};' +
 					 '{{Inner Padding}}{{Rounded Corners}};' +
 					 '{{Icon Glow/Shadow}};" ' +
@@ -966,12 +1037,13 @@
 					 '</a></div>',
 			toolbars: {
 				Alignment: 'AlignmentToolbar',
+				BlockAlignment: 'BlockAlignToolbar',
 			},
 			fields: {
 				'Icon': {
 					section: 'Layout',
 					type: 'icon',
-					default: 'fab fa-font-awesome-flag'
+					default: ' fab fa-font-awesome-flag'
 				},
 				'URL': {
 					section: 'Layout',
@@ -1028,14 +1100,13 @@
 				},
 				'Icon variant': {
 					type: 'select',
-					default: 900,
+					default: ' fw9',
 					options: [
-						{value: '100', label: 'Light',},
-						{value: '400', label: 'Regular',},
-						{value: '900', label: 'Solid',},
+						{value: ' fw1', label: 'Light',},
+						{value: ' fw4', label: 'Regular',},
+						{value: ' fw9', label: 'Solid',},
 					],
 					help: 'Depends on availability of icon in style.',
-					tpl: 'font-weight:%s;',
 					section: 'Typography',
 				},
 

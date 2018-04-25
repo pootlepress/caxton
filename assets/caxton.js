@@ -19,6 +19,26 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return el( tag, _props );
 	};
 
+	HTMLFromElement = function ( els ) {
+		var content = '';
+		if ( els ) {
+			if ( ! els.length ) {
+				els = [els];
+			}
+			for ( var i = 0; i < els.length; i ++ ) {
+				var node = els[i];
+				switch ( typeof node ) {
+					case 'object':
+						content += wp.element.renderToString( node );
+						break;
+					default:
+						content += node;
+				}
+			}
+		}
+		return content;
+	};
+
 	function CxB( block ) {
 		var th = this;
 		if ( ! block.id ) {
@@ -223,10 +243,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		props.className = 'caxton-icon-picker-panel';
 
-		for ( var i = 0; i < 50; i ++ ) {
+		for ( var i = 0; i < 100; i ++ ) {
 			var ico = caxton.fontAwesome[i];
-			defaultIcons.push( el( 'i', {className: 'fas fa-' + ico.n, key: ico.n, title: __( 'Search', 'caxton' )} ) );
+			defaultIcons.push( el( 'i', {className: 'fas fa-' + ico.n, key: ico.n, title: ico.n.replace( ' fab', '' ) } ) );
 		}
+		defaultIcons.push( el( 'p', {key: 'helptext'} ), 'Search icons for more from all Font Awesome icons' );
 
 		return el(
 			components.PanelBody,
@@ -397,9 +418,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			{
 				icon: 'align-right',
 				title: __( 'Align right' ),
-				isActive: props.value === ' fr',
+				isActive: props.value === ' rl',
 				onClick: function () {
-					props.onChange( ' fr' );
+					props.onChange( ' rl' );
 				}
 			},
 		];
@@ -534,6 +555,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				return this.block.edit( props, this );
 			}
 			return el( 'div', {
+				key: 'block',
 				dangerouslySetInnerHTML: this.outputHTML( this.tpl, 'edit' ),
 				onClick: function ( e ) {
 					e.preventDefault();
@@ -613,11 +635,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		registerBlockProps.getEditWrapperProps = function( attributes ) {
 			var attrs = {}, layout = attributes.Layout, float = attributes.BlockAlignment;
 
+			float = float ? float : attributes['Block Alignment'];
+
 			if ( layout ) {
 				attrs['caxton-layout'] = layout;
 			}
 			if ( float ) {
-				attrs['caxton-float'] = float;
+				var floatMaps = {
+					' fl': 'left',
+					' rl': 'right',
+				};
+				attrs['data-align'] = floatMaps[ float ];
 			}
 
 			if ( typeof block.registerBlockProps === 'function' ) {
@@ -639,6 +667,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 	window.CaxtonBlock = function( block ) {
 		return new CxB( block );
+	};
+
+	window.Caxton = {
+		el2html: HTMLFromElement,
+		html2el: elementFromHTML
 	};
 }
 
