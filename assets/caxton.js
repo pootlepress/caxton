@@ -477,9 +477,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			els = [],
 			th = this;
 
-		th.focussedProps = th.props;
-
-
 		$.each( th.sections, function ( id ) {
 			panelFields = th.renderFields( th.sections[id], id );
 			els.push(
@@ -624,12 +621,15 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		registerBlockProps.icon = block.icon;
 
 		registerBlockProps.edit = function ( props ) {
+			var els = [ that.edit( props ) ];
 			that.saveBlockProperties( props );
-			return [
-				! ! props.focus && that.inspectorFields(),
-				! ! props.focus && that.toolbarElements(),
-				that.edit( props )
-			]
+
+			if ( props.isSelected ) {
+				that.focussedProps = props;
+				els.push( that.inspectorFields() );
+				els.push( that.toolbarElements() );
+			}
+			return els;
 		};
 
 		registerBlockProps.getEditWrapperProps = function( attributes ) {
@@ -660,7 +660,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return that.save( props )
 		};
 
-		blocks.registerBlockType( 'caxton/' + block.id, registerBlockProps );
+		if ( 0 > block.id.indexOf( '/' ) ) {
+			block.id = 'caxton/' + block.id;
+		}
+
+		blocks.registerBlockType( block.id, registerBlockProps );
 	};
 
 	// endregion Register block
