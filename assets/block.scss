@@ -134,6 +134,11 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 			cursor: pointer;
 		}
 
+		p {
+			padding: .7em 1em 1em;
+			margin: 0;
+		}
+
 		input {
 			width: 100%;
 			padding-left: 2.5em !important;

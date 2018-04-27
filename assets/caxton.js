@@ -52,17 +52,18 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			attributes: {},
 		}, block );
 
-		this.tpl = block.tpl;
+		th.tpl = block.tpl;
 		if ( block.toolbars ) {
 			block.fields = jQuery.extend( block.fields, block.toolbars )
 		} else {
 			block.toolbars = {};
 		}
-		this.fields = this.processFields( block.fields );
-		this.sections = this.processSections( this.fields );
-		this.toolbars = this.processFields( block.toolbars );
+		th.fields = th.processFields( block.fields );
+		th.sections = block.sections ? block.sections : {};
+		th.sectionsFields = th.processSections( th.fields );
+		th.toolbars = th.processFields( block.toolbars );
 
-		this.registerBlock();
+		th.registerBlock();
 	};
 
 	CxB.prototype.processFields = function( fields ) {
@@ -170,6 +171,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		var panelChildren = [], props = this.fieldProps( field, index );
 		props.title = props.label;
 
+		if ( props.initialOpen === undefined ) {
+			props.initialOpen = props.value ? false : true;
+		}
+
 		panelChildren.push( el(
 			wp.blocks.ColorPalette,
 			props,
@@ -247,7 +252,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			var ico = caxton.fontAwesome[i];
 			defaultIcons.push( el( 'i', {className: 'fas fa-' + ico.n, key: ico.n, title: ico.n.replace( ' fab', '' ) } ) );
 		}
-		defaultIcons.push( el( 'p', {key: 'helptext'} ), 'Search icons for more from all Font Awesome icons' );
+		defaultIcons.push( el( 'p', {key: 'helptext'}, 'Search icons for more from all Font Awesome icons' ) );
 
 		return el(
 			components.PanelBody,
@@ -433,8 +438,33 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	}
 	// endregion
 
+	CxB.prototype.renderPanel = function ( id ) {
+		var
+			fields = this.fields,
+			panelProps = {},
+			panelFields,
+			th = this;
+
+		if ( th.sections[id] ) {
+			panelProps = th.sections[id];
+		}
+
+		panelProps = $.extend( panelProps, {
+			title: id,
+			className: '',
+			key: 'CaxtonPanel' + id,
+			initialOpen: false,
+		} );
+
+		panelProps.className += 'caxton-section caxton-section-' + id.toLowerCase().replace( /[^0-z]/g, '-' );
+
+		panelFields = th.renderFields( th.sectionsFields[id], id );
+
+		return el( components.PanelBody, panelProps, panelFields );
+	}
+
 	CxB.prototype.renderFields = function ( fields, section, functionSuffix ) {
-		var els = [];
+		var els = [], panelsRenderd = [];
 
 		if ( ! functionSuffix ) {
 			functionSuffix = 'FieldInit';
@@ -448,8 +478,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 
 			if ( typeof this[ func ] === 'function' ) {
-				if ( ! f.hide && ( ! section && ! f.section || f.section == section ) ) {
-					els.push( this[func]( f, i ) );
+				if ( ! f.hide ) {
+					if ( ! section ) {
+						if ( ! f.section ) {
+							els.push( this[func]( f, i ) );
+						} else if ( -1 === panelsRenderd.indexOf( f.section ) ) {
+							panelsRenderd.push( f.section );
+							els.push( this.renderPanel( f.section ) );
+						}
+					} else if ( f.section == section ) {
+						els.push( this[func]( f, i ) );
+					}
 				}
 			} else {
 				console.log( functionSuffix.replace( 'Init', '' ) + ' ' + f['id'] + ' of type ' + f['type'] + ' and callback ' + func + ' not supported.' );
@@ -473,24 +512,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	CxB.prototype.inspectorFields = function () {
 		var
 			fields = this.fields,
+			panelProps = {},
 			panelFields,
 			els = [],
 			th = this;
-
-		$.each( th.sections, function ( id ) {
-			panelFields = th.renderFields( th.sections[id], id );
-			els.push(
-				el(
-					components.PanelBody,
-					{
-						title: id,
-						className: 'caxton-section caxton-section-' + id.toLowerCase().replace( /[^0-z]/g, '-' ),
-						key: 'CaxtonPanel' + els.length,
-					},
-					panelFields
-				)
-			);
-		} );
 
 		els = els.concat( th.renderFields( fields ) );
 
@@ -621,7 +646,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		registerBlockProps.icon = block.icon;
 
 		registerBlockProps.edit = function ( props ) {
-			var els = [ that.edit( props ) ];
+			var els = [];
 			that.saveBlockProperties( props );
 
 			if ( props.isSelected ) {
@@ -629,6 +654,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				els.push( that.inspectorFields() );
 				els.push( that.toolbarElements() );
 			}
+
+			els.push( that.edit( props ) );
+
 			return els;
 		};
 

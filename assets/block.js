@@ -279,7 +279,7 @@
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
 					 'data-desktop-css="{{Font size}}">' +
-					 '<span class="dib">{{Overline}}{{Text}}{{Underline}}</span>' +
+					 '<span class="{{Lines as wide as content}}">{{Overline}}{{Text}}{{Underline}}</span>' +
 					 '</{{Element Tag}}>',
 			transforms: {
 				from: [
@@ -337,22 +337,12 @@
 					default: 'p',
 
 				},
-				'Margin top': {
-					type: 'range',
+				'Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
 					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-top:%sem;',
 				},
-				'Margin bottom': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-bottom:%sem;',
-				},
+
 				'Font': {
 					type: 'font',
 					tpl: 'font-family:%s;',
@@ -408,12 +398,46 @@
 					type: 'color',
 					default: '#555',
 					tpl: 'color:%s;',
-					section: 'Color and decoration',
+					section: 'Typography',
 				},
-				'Background color': {
-					type: 'color',
-					tpl: 'background-color:%s;',
-					section: 'Color and decoration',
+
+				'Overline': {
+					type: 'select',
+					options: [
+						{
+							value: '',
+							label: 'None',
+						},
+						{
+							value: '<div style="border-bottom: 2px dotted {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Dotted',
+						},
+						{
+							value: '<div style="border-bottom: 2px dashed {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Dashed',
+						},
+						{
+							value: '<div style="border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Thin',
+						},
+						{
+							value: '<div style="border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Thin + Thin',
+						},
+						{
+							value: '<div style="border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 2px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Thin + Thick',
+						},
+						{
+							value: '<div style="border-bottom: 2px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Thick + Thin',
+						},
+						{
+							value: '<div style="border-bottom: 2px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							label: 'Thick',
+						},
+					],
+					section: 'Underline & Overline',
 				},
 				'Underline': {
 					type: 'select',
@@ -423,80 +447,51 @@
 							label: 'None',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em dotted"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px dotted {{Line color}}"></div>',
 							label: 'Dotted',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em dashed"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px dashed {{Line color}}"></div>',
 							label: 'Dashed',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em solid"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 1px solid {{Line color}}"></div>',
 							label: 'Thin',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}}"></div>',
 							label: 'Thin + Thin',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .1em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}}"></div>',
 							label: 'Thick + Thin',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .1em solid"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 2px solid {{Line color}}"></div>',
 							label: 'Thin + Thick',
 						},
 						{
-							value: '<div style="margin-top:{{Underline & Overline spacing}};border-bottom: .1em solid"></div>',
+							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px solid {{Line color}}"></div>',
 							label: 'Thick',
 						},
 					],
-					section: 'Color and decoration',
+					section: 'Underline & Overline',
 				},
-				'Overline': {
-					type: 'select',
-					options: [
-						{
-							value: '',
-							label: 'None',
-						},
-						{
-							value: '<div style="border-bottom: .05em dotted;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Dotted',
-						},
-						{
-							value: '<div style="border-bottom: .05em dashed;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Dashed',
-						},
-						{
-							value: '<div style="border-bottom: .05em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Thin',
-						},
-						{
-							value: '<div style="border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Thin + Thin',
-						},
-						{
-							value: '<div style="border-bottom: .05em solid; margin-bottom:0.1em"></div><div style="border-bottom: .1em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Thin + Thick',
-						},
-						{
-							value: '<div style="border-bottom: .1em solid; margin-bottom:0.1em"></div><div style="border-bottom: .05em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Thick + Thin',
-						},
-						{
-							value: '<div style="border-bottom: .1em solid;margin-bottom:{{Underline & Overline spacing}};"></div>',
-							label: 'Thick',
-						},
-					],
-					section: 'Color and decoration',
+				'Lines as wide as content': {
+					type: 'toggle',
+					value: ' dib',
+					section: 'Underline & Overline',
 				},
-				'Underline & Overline spacing': {
+				'Line color': {
+					type: 'color',
+					section: 'Underline & Overline',
+				},
+				'Line spacing': {
 					type: 'range',
 					max: 2.5,
 					step: .1,
 					tpl: '%sem;',
-					section: 'Typography',
+					section: 'Underline & Overline',
 				},
 
 				'Text Glow/Shadow': {
@@ -535,6 +530,23 @@
 					default: .1,
 					max: 1,
 					section: 'Glow/Shadow',
+				},
+
+				'Margin top': {
+					type: 'range',
+					section: 'Margin',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Margin',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
 				},
 
 			},
@@ -582,43 +594,23 @@
 					default: 'Click here to edit text'
 				},
 				'URL': {
-					section: 'Layout',
 					type: 'text',
 					default: '#'
 				},
-				'Inner Padding top/bottom': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					default: .5,
-					max: 5,
-					step: 0.05,
-					tpl: '%sem',
+				'Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
 				},
-				'Inner Padding left/right': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					default: 1,
-					max: 5,
-					step: 0.05,
-					tpl: '%sem',
+				'Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
 				},
-				'Margin top': {
+				'Button size': {
 					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-top:%sem;',
-				},
-				'Margin bottom': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-bottom:%sem;',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
 				},
 
 				'Font': {
@@ -632,13 +624,6 @@
 					min: -5,
 					default: 2,
 					tpl: 'letter-spacing:%spx;',
-					section: 'Typography',
-				},
-				'Font size': {
-					type: 'range',
-					min: 5,
-					max: 250,
-					tpl: 'font-size:%spx;',
 					section: 'Typography',
 				},
 				'Font size tablet': {
@@ -666,20 +651,45 @@
 					section: 'Typography',
 				},
 
-				'Text color': {
-					type: 'color',
-					default: '#555',
-					tpl: 'color:%s;',
-					section: 'Color and decoration',
+				'Inner Padding left/right': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					default: 1,
+					max: 5,
+					step: 0.05,
+					tpl: '%sem',
 				},
-				'Background color': {
-					type: 'color',
-					tpl: 'background-color:%s;',
-					section: 'Color and decoration',
+
+				'Inner Padding top/bottom': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					default: .5,
+					max: 5,
+					step: 0.05,
+					tpl: '%sem',
 				},
+				'Margin top': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
+				},
+
 				'Border color': {
 					type: 'color',
-					section: 'Color and decoration',
+					section: 'Border',
 				},
 				'Border weight': {
 					type: 'range',
@@ -687,19 +697,20 @@
 					default: 2,
 					max: 50,
 					tpl: '%spx ',
-					section: 'Color and decoration',
+					section: 'Border',
 				},
 				'Rounded Corners': {
 					type: 'range',
-					section: 'Color and decoration',
+					section: 'Border',
 					min: 0,
 					max: 50,
 					tpl: 'border-radius:%spx;',
 				},
+
 				'Icons color': {
 					type: 'color',
 					tpl: 'color:%s;',
-					section: 'Color and decoration',
+					section: 'Button icons',
 				},
 				'Icons size': {
 					type: 'slider',
@@ -707,17 +718,17 @@
 					max: 5,
 					step: 0.2,
 					tpl: 'font-size:%sem;',
-					section: 'Color and decoration',
+					section: 'Button icons',
 				},
 				'Icon before text': {
 					type: 'icon',
 					tpl: '<i class="%s" class="{{Icons size}}{{Icons color}}"></i>',
-					section: 'Color and decoration',
+					section: 'Button icons',
 				},
 				'Icon after text': {
 					type: 'icon',
 					tpl: '<i class="%s" class="{{Icons size}}{{Icons color}}"></i>',
-					section: 'Color and decoration',
+					section: 'Button icons',
 				},
 
 				'Text Glow/Shadow': {
@@ -727,9 +738,8 @@
 						{value: ' text-glow', label: 'Glow',},
 						{value: ' text-shadow', label: 'Shadow',},
 					],
-					section: 'Color and decoration',
+					section: 'Button Glow/Shadow',
 				},
-
 				'Button Glow/Shadow': {
 					type: 'select',
 					options: [
@@ -1041,39 +1051,18 @@
 			},
 			fields: {
 				'Icon': {
-					section: 'Layout',
 					type: 'icon',
 					default: ' fab fa-font-awesome-flag'
 				},
 				'URL': {
-					section: 'Layout',
+					help: 'Type in a URL to make icon link to it.',
 					type: 'text',
 					tpl: 'href="%s"',
 				},
-				'Inner Padding': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					default: .25,
-					max: 5,
-					step: 0.05,
-					tpl: 'padding:%sem;',
-				},
-				'Margin top': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-top:%sem;',
-				},
-				'Margin bottom': {
-					type: 'range',
-					section: 'Layout',
-					min: 0,
-					max: 10,
-					step: 0.5,
-					tpl: 'margin-bottom:%sem;',
+				'Icon color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
 				},
 
 				'Icon size': {
@@ -1082,21 +1071,20 @@
 					max: 250,
 					default: 16,
 					tpl: 'font-size:%spx;',
-					section: 'Typography',
 				},
 				'Icon size tablet': {
 					type: 'range',
 					min: 5,
 					max: 250,
 					tpl: 'font-size:%spx;',
-					section: 'Typography',
+					section: 'Additional settings',
 				},
 				'Icon size mobile': {
 					type: 'range',
 					min: 5,
 					max: 250,
 					tpl: 'font-size:%spx;',
-					section: 'Typography',
+					section: 'Additional settings',
 				},
 				'Icon variant': {
 					type: 'select',
@@ -1106,16 +1094,36 @@
 						{value: ' fw4', label: 'Regular',},
 						{value: ' fw9', label: 'Solid',},
 					],
-					help: 'Depends on availability of icon in style.',
-					section: 'Typography',
+					help: 'Icon variant depends on availability of icon. Light or Regular are known to break sometimes.',
+					section: 'Additional settings',
 				},
 
-				'Icon color': {
-					type: 'color',
-					default: '#555',
-					tpl: 'color:%s;',
-					section: 'Color and decoration',
+				'Inner Padding': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					default: .25,
+					max: 5,
+					step: 0.05,
+					tpl: 'padding:%sem;',
 				},
+				'Margin top': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-top:%sem;',
+				},
+				'Margin bottom': {
+					type: 'range',
+					section: 'Margin/Padding',
+					min: 0,
+					max: 10,
+					step: 0.5,
+					tpl: 'margin-bottom:%sem;',
+				},
+
 				'Background color': {
 					type: 'color',
 					tpl: 'background-color:%s;',
@@ -1140,6 +1148,7 @@
 					tpl: 'border-radius:%spx;',
 					section: 'Color and decoration',
 				},
+
 				'Glow/Shadow': {
 					type: 'select',
 					options: [
@@ -1147,9 +1156,8 @@
 						{value: ' glow', label: 'Glow',},
 						{value: ' shadow', label: 'Shadow',},
 					],
-					section: 'Color and decoration',
+					section: 'Icon Glow/Shadow',
 				},
-
 				'Icon Glow/Shadow': {
 					type: 'select',
 					options: [
@@ -1187,6 +1195,7 @@
 					max: 1,
 					section: 'Icon Glow/Shadow',
 				},
+
 				'Hover icon color': {
 					type: 'color',
 					default: '#555',
@@ -1284,7 +1293,7 @@
 						commentIcon = '<span class="fa fa-comments"></span>',
 						authorIcon = '<span class="fa fa-user-circle-o"></span>',
 						grids = [],
-						focus = props.focus,
+						selected = props.isSelected,
 						className = props.className + ' ' + props.name.replace( '/', '-' ) + ' caxton-grid';
 
 					className += ' caxton-' + attrs.imagesType + '-images';
@@ -1343,7 +1352,7 @@
 						}
 					}
 					return [
-						! ! focus && el(
+						! ! selected && el(
 							InspectorControls,
 							{key: 'inspector'},
 							el(

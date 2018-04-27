@@ -2,10 +2,36 @@
 	display: grid;
 	grid-auto-flow: dense;
 
-	@for $i from 2 through 6 {
-		&.caxton-col-#{ $i } {
-			grid-auto-columns: #{ 100% / $i };
-		}
+	&.caxton-1-columns {
+		grid-template-columns: 100% 0 0 0 0 0 0 0;
+	}
+
+	&.caxton-2-columns {
+		grid-template-columns: 50% 50% 0 0 0 0 0 0;
+	}
+
+	&.caxton-3-columns {
+		grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
+	}
+
+	&.caxton-4-columns {
+		grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
+	}
+
+	&.caxton-5-columns {
+		grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
+	}
+
+	&.caxton-6-columns {
+		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
+	}
+
+	&.layout-caxton-col {
+		overflow: hidden;
+	}
+
+	.layout-caxton-col {
+		overflow: hidden;
 	}
 
 	@for $i from 1 through 6 {
