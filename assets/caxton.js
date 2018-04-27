@@ -534,9 +534,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		var c2e, tag;
 		for ( let f in this.fields ) {
 			if ( this.fields.hasOwnProperty( f ) ) {
-				var
+				var _val,
 					fld = this.fields[ f ],
-					val = this.attrs[fld.id];
+					val = _val = this.attrs[fld.id];
 				if ( fld.type === 'editable' ) {
 					tag = fld.tag ? fld.tag : 'span';
 					if ( edit ) {
@@ -556,7 +556,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				if ( ( val || typeof val === 'number' ) && fld.tpl ) {
 					val = fld.tpl.replace( /%s/g, val );
 				}
-//				html = html.split( '[' + fld.id + ']' ).join( val );
+				html = html.split( '{{_' + fld.id + '}}' ).join( _val );
 				html = html.split( '{{' + fld.id + '}}' ).join( val );
 			}
 		}

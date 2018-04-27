@@ -421,15 +421,15 @@
 							label: 'Thin',
 						},
 						{
-							value: '<div style="border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							value: '<div style="padding:1px;border-top: 1px solid {{Line color}};border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
 							label: 'Thin + Thin',
 						},
 						{
-							value: '<div style="border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 2px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							value: '<div style="padding:1px;border-top: 1px solid {{Line color}};border-bottom: 2px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
 							label: 'Thin + Thick',
 						},
 						{
-							value: '<div style="border-bottom: 2px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
+							value: '<div style="padding:1px;border-top: 2px solid {{Line color}};border-bottom: 1px solid {{Line color}};margin-bottom:{{Line spacing}};"></div>',
 							label: 'Thick + Thin',
 						},
 						{
@@ -447,31 +447,31 @@
 							label: 'None',
 						},
 						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px dotted {{Line color}}"></div>',
+							value: '<div style="border-bottom: 2px dotted {{Line color}};margin-top:{{Line spacing}};"></div>',
 							label: 'Dotted',
 						},
 						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px dashed {{Line color}}"></div>',
+							value: '<div style="border-bottom: 2px dashed {{Line color}};margin-top:{{Line spacing}};"></div>',
 							label: 'Dashed',
 						},
 						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 1px solid {{Line color}}"></div>',
+							value: '<div style="border-bottom: 1px solid {{Line color}};margin-top:{{Line spacing}};"></div>',
 							label: 'Thin',
 						},
 						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}}"></div>',
+							value: '<div style="padding:1px;border-top: 1px solid {{Line color}};border-bottom: 1px solid {{Line color}};margin-top:{{Line spacing}};"></div>',
 							label: 'Thin + Thin',
 						},
 						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 1px solid {{Line color}}"></div>',
-							label: 'Thick + Thin',
-						},
-						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 1px solid {{Line color}}; margin-bottom:2px"></div><div style="border-bottom: 2px solid {{Line color}}"></div>',
+							value: '<div style="padding:1px;border-top: 1px solid {{Line color}};border-bottom: 2px solid {{Line color}};margin-top:{{Line spacing}};"></div>',
 							label: 'Thin + Thick',
 						},
 						{
-							value: '<div style="margin-top:{{Line spacing}};border-bottom: 2px solid {{Line color}}"></div>',
+							value: '<div style="padding:1px;border-top: 2px solid {{Line color}};border-bottom: 1px solid {{Line color}};margin-top:{{Line spacing}};"></div>',
+							label: 'Thick + Thin',
+						},
+						{
+							value: '<div style="border-bottom: 2px solid {{Line color}};margin-top:{{Line spacing}};"></div>',
 							label: 'Thick',
 						},
 					],
@@ -488,6 +488,7 @@
 				},
 				'Line spacing': {
 					type: 'range',
+					min: -.5,
 					max: 2.5,
 					step: .1,
 					tpl: '%sem;',
@@ -559,13 +560,13 @@
 			tpl: '<div class="{{Alignment}}{{BlockAlignment}}" style="{{Margin top}}{{Margin bottom}}">' +
 					 '<a class="caxton-btn no-underline dib {{Text Glow/Shadow}}" href="{{URL}}" ' +
 					 'data-hover-css="{{Hover Text color}}{{Hover Background color}}{{Hover Border color}}" ' +
-					 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Font size}}' +
+					 'style="{{Letter Spacing}}{{Weight}}{{Font}}{{Text color}}{{Background color}}{{Button size}}' +
 					 'border:{{Border weight}} solid {{Border color}};' +
 					 'padding:{{Inner Padding top/bottom}} {{Inner Padding left/right}};{{Rounded Corners}}' +
 					 '{{Button Glow/Shadow}};" ' +
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
-					 'data-desktop-css="{{Font size}}">' +
+					 'data-desktop-css="{{Button size}}">' +
 					 '{{Icon before text}}{{Text}}{{Icon after text}}' +
 					 '</a></div>',
 			transforms: {
@@ -731,6 +732,23 @@
 					section: 'Button icons',
 				},
 
+				'Hover Text color': {
+					type: 'color',
+					default: '#555',
+					tpl: 'color:%s;',
+					section: 'Hover Colors',
+				},
+				'Hover Background color': {
+					type: 'color',
+					tpl: 'background-color:%s;',
+					section: 'Hover Colors',
+				},
+				'Hover Border color': {
+					type: 'color',
+					section: 'Hover Colors',
+					tpl: 'border-color:%s;',
+				},
+
 				'Text Glow/Shadow': {
 					type: 'select',
 					options: [
@@ -785,22 +803,6 @@
 					section: 'Button Glow/Shadow',
 				},
 
-				'Hover Text color': {
-					type: 'color',
-					default: '#555',
-					tpl: 'color:%s;',
-					section: 'Hover Colors',
-				},
-				'Hover Background color': {
-					type: 'color',
-					tpl: 'background-color:%s;',
-					section: 'Hover Colors',
-				},
-				'Hover Border color': {
-					type: 'color',
-					section: 'Hover Colors',
-					tpl: 'border-color:%s;',
-				},
 			},
 		} );
 
