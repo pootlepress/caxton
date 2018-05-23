@@ -34,14 +34,15 @@ jQuery(function ($) {
 		return styles;
 	}
 
-	$( window ).resize( function() {
-		if ( window.innerWidth > 1024 ) {
+	window.caxtonResponsiveStyling = function ( width ) {
+		width = isNaN( width ) ? window.innerWidth : width;
+		if ( width > 1024 ) {
 			// Desktop
 			$( '[data-desktop-css]' ).each( function () {
 				var $t = $(this );
 				applyStylesFromCSS( $t.data( 'desktop-css' ), $t )
 			} );
-		} else if ( window.innerWidth > 700 ) {
+		} else if ( width > 700 ) {
 			// Tab
 			$( '[data-tablet-css]' ).each( function () {
 				var $t = $(this );
@@ -54,6 +55,10 @@ jQuery(function ($) {
 				applyStylesFromCSS( $t.data( 'mobile-css' ), $t )
 			} );
 		}
+	}
+
+	$( window ).resize( function() {
+		caxtonResponsiveStyling();
 	} ).resize();
 
 	$( '[data-hover-css]' ).on({
