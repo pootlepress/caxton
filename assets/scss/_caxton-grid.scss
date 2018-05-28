@@ -1,6 +1,23 @@
 .caxton-columns {
 	display: grid;
 	grid-auto-flow: dense;
+	grid-gap: 16px;
+
+	&.grid-gap-none {
+		grid-gap: 0;
+	}
+
+	&.grid-gap-tight {
+		grid-gap: 8px;
+	}
+
+	&.grid-gap-wide {
+		grid-gap: 25px;
+	}
+
+	&.grid-gap-wider {
+		grid-gap: 32px;
+	}
 
 	&.caxton-1-columns {
 		grid-template-columns: 100% 0 0 0 0 0 0 0;
@@ -44,11 +61,19 @@
 .caxton-grid {
 	display: flex;
 	flex-wrap: wrap;
+	margin: 1% -1%;
 	.grid-item {
+		border-color: inherit;
 		box-sizing: border-box;
 		width: 31.33%;
 		margin: 1%;
 		padding: 0;
+		&.ba {
+			padding: 1%;
+		}
+		> a {
+			display: block;
+		}
 	}
 
 	h3.grid-title {
@@ -64,7 +89,7 @@
 		padding-top: 100%;
 		background: center/cover;
 		overflow: hidden;
-		margin: 0 0 1em;
+		margin: 0;
 
 		h3.grid-title,
 		&:before {
@@ -100,23 +125,34 @@
 		}
 	}
 
+	&.caxton-circle-images {
+		.grid-image {
+			border-radius: 999px;
+			overflow: hidden;
+			z-index: 7;
+		}
+		.ba {
+			border-radius: 999px;
+		}
+	}
+
 	&.caxton-title-below-image {
+		.grid-image {
+			margin: 0 0 1em;
+		}
+
 		h3.grid-title {
 			display: block;
 		}
+
 		.grid-image {
 			h3.grid-title,
 			&:before {
 				display: none;
 			}
 		}
-	}
-
-	&.caxton-circle-images {
-		.grid-image {
-			border-radius: 100%;
-			overflow: hidden;
-			z-index: 7;
+		.ba {
+			border-radius: 0;
 		}
 	}
 

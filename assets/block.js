@@ -882,6 +882,17 @@
 					section: 'Layout',
 					default: 1,
 				},
+				'Column gap': {
+					type: 'select',
+					options: [
+						{value: 'grid-gap-none', label: 'None',},
+						{value: 'grid-gap-tight', label: 'Tight',},
+						{value: '', label: 'Normal',},
+						{value: 'grid-gap-wide', label: 'Wide',},
+						{value: 'grid-gap-wider', label: 'Wider',},
+					],
+					section: 'Layout',
+				},
 				'Inner Padding top': {
 					type: 'range',
 					section: 'Layout',
@@ -941,6 +952,7 @@
 				}
 
 				var cls = 'relative ', bgHTML, padUnit, padT, padL, padB, padR,
+					colCls = 'relative caxton-columns',
 					padMob = block.attrs['Inner Padding left/right tablet'],
 					padTab = block.attrs['Inner Padding left/right mobile'];
 
@@ -967,6 +979,10 @@
 					cls += ' ' + block.attrs['Layout'];
 				}
 
+				if ( block.attrs['Column gap'] ) {
+					colCls += ' ' + block.attrs['Column gap'];
+				}
+
 				bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 								 '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
@@ -977,7 +993,7 @@
 					el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
 					el( 'div', {
-							className: 'relative caxton-columns caxton-' + columns + '-columns',
+							className: colCls + ' caxton-' + columns + '-columns',
 							style: {
 								'paddingTop': padT,
 								'paddingLeft': padL,
@@ -988,12 +1004,13 @@
 							'data-mobile-css' : 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
 							key: 'block',
 						},
-						el( wp.blocks.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] ), key: 'innerblockscontent' } )
+						el( wp.editor.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] ), key: 'innerblockscontent' } )
 					)
 				);
 			},
 			save: function ( props, block ) {
 				var cls = 'relative', bgHTML, padUnit, padT, padL, padB, padR, columns,
+					colCls = 'relative caxton-columns',
 					padMob = block.attrs['Inner Padding left/right tablet'],
 					padTab = block.attrs['Inner Padding left/right mobile'];
 
@@ -1020,6 +1037,10 @@
 					cls += ' ' + block.attrs['Layout'];
 				}
 
+				if ( block.attrs['Column gap'] ) {
+					colCls += ' ' + block.attrs['Column gap'];
+				}
+
 				bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 								 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
@@ -1030,7 +1051,7 @@
 					el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
 					el( 'div', {
-							className: 'relative caxton-columns caxton-' + columns + '-columns',
+							className: colCls + ' caxton-' + columns + '-columns',
 							style: {
 								'paddingTop': padT,
 								'paddingLeft': padL,
@@ -1041,7 +1062,7 @@
 							'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
 							key: 'block',
 						},
-						el( wp.blocks.InnerBlocks.Content, { key: 'innerblockscontent' } )
+						el( wp.editor.InnerBlocks.Content, { key: 'innerblockscontent' } )
 					)
 				);
 			}
@@ -1242,6 +1263,9 @@
 					displayPostWithoutImages: {
 						type: 'boolean',
 					},
+					border: {
+						type: 'boolean',
+					},
 					displayDate: {
 						type: 'boolean',
 					},
@@ -1315,6 +1339,11 @@
 					} else if ( props.posts.data.length === 0 ) {
 						grids.push( el( 'div', {className: 'caxton-notification', key: 'notice'}, 'No posts match criteria.' ) );
 					} else {
+						var postClass = 'grid-item';
+						if ( attrs.border ) {
+							postClass += ' ba';
+						}
+
 						for ( var i = 0; i < props.posts.data.length; i ++ ) {
 							post = props.posts.data[i];
 
@@ -1349,7 +1378,7 @@
 								el(
 									'div',
 									{
-										className: 'grid-item',
+										className: postClass,
 										style: { width: ( 100 / attrs.columns - 2 ) + '%' },
 										key: 'post-' + post.id
 									},
@@ -1443,6 +1472,20 @@
 											props.setAttributes( {displayMeta: val.target.checked} );
 										} else {
 											props.setAttributes( {displayMeta: val} );
+										}
+									}
+								}
+							),
+							el(
+								components.ToggleControl,
+								{
+									label: 'Show Border',
+									checked: attrs.border,
+									onChange: function ( val ) {
+										if ( val.target ) {
+											props.setAttributes( {border: val.target.checked} );
+										} else {
+											props.setAttributes( {border: val} );
 										}
 									}
 								}

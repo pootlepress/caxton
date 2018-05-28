@@ -96,6 +96,8 @@ class Caxton {
 
 		//Enqueue admin end JS and CSS
 		add_action( 'enqueue_block_editor_assets', array( $this->admin, 'enqueue' ), 5 );
+		add_action( 'add_meta_boxes', array( $this->admin, 'add_meta_boxes' ), 5 );
+		add_action( 'save_post', array( $this->admin, 'save_post' ), 5 );
 		add_action( 'rest_api_init', array( $this->admin, 'rest_api_init' ) );
 		add_action( 'wp_ajax_caxton_posts', array( $this->admin, 'posts' ) );
 
@@ -114,6 +116,38 @@ class Caxton {
 
 	}
 }
+
+// Create a helper function for easy SDK access.
+function cax_fs() {
+	global $cax_fs;
+
+	if ( ! isset( $cax_fs ) ) {
+		// Include Freemius SDK.
+		require_once dirname(__FILE__) . '/inc/wp-sdk/start.php';
+
+		$cax_fs = fs_dynamic_init( array(
+			'id'                  => '2122',
+			'slug'                => 'caxton',
+			'type'                => 'plugin',
+			'public_key'          => 'pk_73bcf4bddd9d42811d4e755c16fab',
+			'is_premium'          => false,
+			'has_addons'          => false,
+			'has_paid_plans'      => false,
+			'is_org_compliant'    => false,
+			'menu'                => array(
+				'first-path'     => 'plugins.php',
+				'support'        => false,
+			),
+		) );
+	}
+
+	return $cax_fs;
+}
+
+// Init Freemius.
+cax_fs();
+// Signal that SDK was initiated.
+do_action( 'cax_fs_loaded' );
 
 /** Intantiating main plugin class */
 Caxton::instance( __FILE__ );

@@ -111,7 +111,11 @@ class Caxton_Public{
 		$classes = "caxton-posts-grid caxton-grid";
 
 		$classes .= " caxton-$block[imagesType]-images";
+
 		if ( ! empty( $block['titleBelowImage'] ) )	$classes .= ' caxton-title-below-image';
+
+		$postClass = 'grid-item';
+		if ( ! empty( $block['border'] ) )	$postClass .= ' ba';
 
 		echo "<div class='$classes'>";
 		$width = $block['columns'] ? 100 / $block['columns'] - 2 : 48;
@@ -136,7 +140,7 @@ class Caxton_Public{
 					'</div>';
 			}
 			echo <<<HTML
-<div class="grid-item" style="width: {$width}%">
+<div class="$postClass" style="width: {$width}%">
 	<a href="$post[link]">
 		<div class="grid-image" style="background-image: url('$post[thumb_ml]');">
 			$in_image
