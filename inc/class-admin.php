@@ -97,7 +97,7 @@ class Caxton_Admin {
 	}
 
 	public function add_meta_boxes() {
-		add_meta_box( 'caxton', __( 'Caxton', 'caxton' ), [ $this, 'caxton_metabox' ] );
+		add_meta_box( 'caxton', __( 'Caxton Styles', 'caxton' ), [ $this, 'caxton_metabox' ], null, 'side' );
 	}
 
 	public function caxton_metabox( $post ) {
@@ -119,7 +119,9 @@ class Caxton_Admin {
 			caxtonInitStylEditor();" );
 		wp_add_inline_script( 'wp-theme-plugin-editor', sprintf( 'wp.themePluginEditor.themeOrPlugin = "plugin";' ) );
 
-		wp_nonce_field( 'caxton_meta', 'caxton_meta' );
+		wp_nonce_field( 'caxton_meta_nonce', 'caxton_meta_nonce' );
+
+//		var_dump( $caxton_style, $caxton_data );
 		?>
 		<input type="hidden" name="caxton_data" value="<?php echo $caxton_data ?>">
 		<div id="caxton-style">
@@ -134,7 +136,7 @@ class Caxton_Admin {
 		}
 
 		// Validate nonce
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'caxton_meta' ), 'caxton_meta' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'caxton_meta_nonce' ), 'caxton_meta_nonce' ) ) {
 			return;
 		}
 
