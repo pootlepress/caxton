@@ -4,7 +4,7 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 4.9.5
 Requires PHP: 5.6.0
-Stable tag: 0.5.0
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,8 +51,9 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 3. Block preview
 
 == Changelog ==
+
 Version 0.7.0
-* 2018-04-20
+* 2018-06-04
 * New - Field section supported
 * New - Field template supported, %s in tpl replaced with value
 * New - Icon picker field
@@ -62,6 +63,7 @@ Version 0.7.0
 * New - Super button block
 * New - Super icon block
 * New - Improved editor support for `Full width`
+* Tweak - Caxton posts grid responsive
 * Fix - Bug which causes issues while editing multiple blocks
 
 Version 0.5.0
