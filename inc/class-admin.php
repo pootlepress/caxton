@@ -7,20 +7,16 @@ class Caxton_Admin {
 
 	/** @var Caxton_Admin Instance */
 	private static $_instance = null;
-
 	/* @var string $token Plugin token */
-	public $token;
-
+	public $token; // End __construct()
 	/* @var string $url Plugin root dir url */
 	public $url;
-
 	/* @var string $path Plugin root dir path */
 	public $path;
-
 	/* @var string $version Plugin version */
 	public $version;
 
-	/**
+/**
 	 * Constructor function.
 	 * @access  private
 	 * @since  1.0.0
@@ -30,7 +26,7 @@ class Caxton_Admin {
 		$this->url     = Caxton::$url;
 		$this->path    = Caxton::$path;
 		$this->version = Caxton::$version;
-	} // End instance()
+	}
 
 	/**
 	 * Main Caxton - Gutenberg pro Instance
@@ -44,7 +40,19 @@ class Caxton_Admin {
 		}
 
 		return self::$_instance;
-	} // End __construct()
+	} // End instance()
+
+	public function admin_menu() {
+		add_menu_page( 'Caxton', 'Caxton', 'manage_options', 'caxton', [ $this, 'caxton_page' ] );
+	}
+
+	public function admin_init() {
+		register_setting( 'caxton_disabled_block', 'caxton_disabled_block' );
+	}
+
+	public function caxton_page() {
+		include 'tpl.caxton-admin-page.php';
+	}
 
 	/**
 	 * Adds front end stylesheet and js
@@ -54,14 +62,14 @@ class Caxton_Admin {
 		$token = $this->token;
 		$url   = $this->url;
 
-		wp_enqueue_style( $token . '-css', $url . '/assets/front.css' );
+		wp_enqueue_style( $token . '-css', $url . 'assets/front.css' );
 		wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.0.10/css/all.css' );
-		wp_enqueue_style( $token . '-gb', $url . '/assets/block.css' );
+		wp_enqueue_style( $token . '-gb', $url . 'assets/block.css' );
 
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( "$token-blocks", $url . 'assets/block.js', array( $token ) );
-		wp_enqueue_script( $token . '-js', $url . '/assets/caxton-utils.js', array( 'jquery' ) );
+		wp_enqueue_script( $token . '-js', $url . 'assets/caxton-utils.js', array( 'jquery' ) );
 
 		$caxton_fonts = $categories = [
 			[
@@ -90,10 +98,12 @@ class Caxton_Admin {
 		}
 
 		wp_localize_script( $token, 'caxton', [
-			'post' => filter_input( INPUT_GET, 'post' ),
+			'post'           => filter_input( INPUT_GET, 'post' ),
 			'postCategories' => $categories,
-			'fonts' => $caxton_fonts,
+			'fonts'          => $caxton_fonts,
 		] );
+
+		$this->hide_disable_blocks();
 	}
 
 	public function add_meta_boxes() {
@@ -106,7 +116,7 @@ class Caxton_Admin {
 		);
 
 		$caxton_style = get_post_meta( $post->ID, 'caxton_style', true );
-		$caxton_data = get_post_meta( $post->ID, 'caxton_data', true );
+		$caxton_data  = get_post_meta( $post->ID, 'caxton_data', true );
 
 		wp_enqueue_script( 'wp-theme-plugin-editor' );
 		wp_localize_script( 'wp-theme-plugin-editor', 'caxtonCSSEditor', $settings );
@@ -184,12 +194,14 @@ class Caxton_Admin {
 
 	/**
 	 * Returns posts from query args
+	 *
 	 * @param array $args WP_Query args
+	 *
 	 * @return array Posts
 	 */
 	public function posts( $args = [] ) {
 		$output = [];
-		$args = array_merge(
+		$args   = array_merge(
 			[
 				'post_type' => 'post',
 				'meta_key'  => '_thumbnail_id',
@@ -202,9 +214,13 @@ class Caxton_Admin {
 			$args['post__not_in'] = explode( ',', $args['post__not_in'] );
 		}
 
+		if ( ! empty( $args['post__in'] ) && ! is_array( $args['post__in'] ) ) {
+			$args['post__in'] = explode( ',', $args['post__in'] );
+		}
+
 		$args['post__not_in'][] = get_the_ID();
 
-		$qry    = new WP_Query( $args );
+		$qry = new WP_Query( $args );
 
 		while ( $qry->have_posts() ) {
 			$qry->the_post();
@@ -224,5 +240,20 @@ class Caxton_Admin {
 		}
 
 		return $output;
+	}
+
+	public function caxton_save_blocks() {
+		die( update_option( 'caxton_all_locks', $_POST['blocks'], false ) );
+	}
+
+	private function hide_disable_blocks() {
+		$disabled_blocks = get_option( 'caxton_disabled_block' );
+		?>
+		<style id="caxton-hidden-block-styles">
+			.editor-block-list-item-<?php echo str_replace( '/', '-', implode( ', .editor-block-list-item-', $disabled_blocks ) ); ?> {
+				display: none !important;
+			}
+		</style>
+		<?php
 	}
 }

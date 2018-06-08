@@ -95,8 +95,10 @@ class Caxton {
 		$this->admin = Caxton_Admin::instance();
 
 		//Enqueue admin end JS and CSS
+		add_action( 'admin_init', array( $this->admin, 'admin_init' ), 5 );
+		add_action( 'admin_menu', array( $this->admin, 'admin_menu' ), 5 );
 		add_action( 'enqueue_block_editor_assets', array( $this->admin, 'enqueue' ), 5 );
-//		add_action( 'add_meta_boxes', array( $this->admin, 'add_meta_boxes' ), 5 );
+		add_action( 'wp_ajax_caxton_save_blocks', array( $this->admin, 'caxton_save_blocks' ), 5 );
 		add_action( 'save_post', array( $this->admin, 'save_post' ), 5 );
 		add_action( 'rest_api_init', array( $this->admin, 'rest_api_init' ) );
 		add_action( 'wp_ajax_caxton_posts', array( $this->admin, 'posts' ) );

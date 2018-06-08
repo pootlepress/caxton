@@ -229,7 +229,7 @@
 		CaxtonBlock( {
 			id: 'social-share-icons',
 			title: 'Social share icons',
-			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M15.117 0H.883C.395 0 0 .395 0 .883v14.234c0 .488.395.883.883.883h7.663V9.804H6.46V7.39h2.086V5.607c0-2.066 1.262-3.19 3.106-3.19.883 0 1.642.064 1.863.094v2.16h-1.28c-1 0-1.195.476-1.195 1.176v1.54h2.39l-.31 2.416h-2.08V16h4.077c.488 0 .883-.395.883-.883V.883C16 .395 15.605 0 15.117 0" fill-rule="nonzero"/></svg>',
+			icon: 'admin-links',
 			tpl:
 			'<div class="pv4 ph2 {{All caps}} tc-l">\n' +
 			'<a class="no-underline white-80 hover-white inline-flex items-center ma2 tc {{Buttons style}} pa2" href="https://www.facebook.com/sharer/sharer.php?u={{Share URL}}" title="Facebook" style="background-color:#3b5998">' +
@@ -252,6 +252,7 @@
 			fields: {
 				'Share URL': {
 					type: 'text',
+					help: "Please specify a url for users to share",
 					default: ''
 				},
 				'All caps': {
@@ -1251,6 +1252,9 @@
 				category: 'widgets',
 
 				attributes: {
+					postIDs: {
+						type: 'string',
+					},
 					cat: {
 						type: 'string',
 					},
@@ -1305,6 +1309,7 @@
 							) +
 							'&post__not_in=' + caxton.post +
 							'&cat=' + attrs.cat +
+							(attrs.postIDs ? '&post__in=' + attrs.postIDs : '' ) +
 							(
 								attrs.displayPostWithoutImages ? '&meta_key=' : ''
 							) +
@@ -1399,10 +1404,22 @@
 									instanceId: 'caxton-postCats',
 									options: caxton.postCategories,
 									onChange: function ( val ) {
-										props.setAttributes( {cat: val} );
+										props.setAttributes( {postIDs: '', cat: val} );
 									}
 								}
 							),
+							( attrs.cat ? '' : el(
+								components.TextControl,
+								{
+									label: 'Hand picked posts',
+									instanceId: 'caxton-postIDs',
+									options: caxton.postCategories,
+									help: 'Type in the IDs of posts separated by comma',
+									onChange: function ( val ) {
+										props.setAttributes( { postIDs: val } );
+									}
+								}
+							) ),
 							el(
 								components.SelectControl,
 								{
@@ -1565,6 +1582,5 @@
 				},
 			}
 		);
-
 	}
 )( jQuery, wp.blocks, wp.element.createElement, wp.components.withAPIData, window.wp.i18n, wp.components );

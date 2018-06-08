@@ -745,3 +745,36 @@ caxton.fontAwesome = [
 	];
 
 initCaxton( jQuery, wp.blocks, wp.element.createElement, window.wp.i18n, wp.components );
+
+jQuery( function ( $ ) {
+	setTimeout( function () {
+		var blk, icon,
+			blocksData = wp.data.select( 'core/blocks' ).getBlockTypes(),
+			blocks = {};
+		for ( var i = 0; i < blocksData.length; i ++ ) {
+			blk = blocksData[i];
+			icon = blk.icon.src;
+			console.log( blk.name, icon );
+			if ( typeof icon === 'object' ) {
+				icon = Caxton.el2html( icon );
+			} else {
+				icon = '<span class="dashicons dashicons-' + icon + '"></span>';
+			}
+			blocks[blk.name] = {
+				title: blk.title,
+				icon: icon,
+				category: blk.category,
+			};
+		}
+
+		console.log( blocks );
+		$.post(
+			ajaxurl,
+			{
+				action: 'caxton_save_blocks',
+				blocks: JSON.stringify( blocks ),
+			}
+		);
+
+	}, 2500 );
+} );

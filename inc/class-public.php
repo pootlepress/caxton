@@ -51,9 +51,9 @@ class Caxton_Public{
 		$token = $this->token;
 		$url = $this->url;
 
-		wp_enqueue_style( $token . '-css', $url . '/assets/front.css' );
+		wp_enqueue_style( $token . '-css', $url . 'assets/front.css' );
 		wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.0.10/css/all.css' );
-		wp_enqueue_script( $token . '-js', $url . '/assets/caxton-utils.js', array( 'jquery' ) );
+		wp_enqueue_script( $token . '-js', $url . 'assets/caxton-utils.js', array( 'jquery' ) );
 	}
 
 	public function register_blocks() {

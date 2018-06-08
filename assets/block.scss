@@ -63,9 +63,17 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		margin-right: -36px;
 		clear: both;
 		z-index: 20;
-		> .editor-block-list__block-edit {
-			margin-left: -50px;
-			margin-right: -50px;
+		> {
+			.editor-block-contextual-toolbar {
+				margin-left: -25px;
+			}
+			.editor-block-list__block-edit {
+				margin-left: -50px;
+				margin-right: -50px;
+			}
+		}
+		.editor-default-block-appender {
+			max-width: none;
 		}
 		.editor-block-list__block-draggable {
 			left: 0;
@@ -165,18 +173,6 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		}
 	}
 }
-[data-type="caxton/super-hero"]:hover:not(.is-selected) .editor-block-list__block-edit > .relative:before {
-	content: 'Click here to change Super hero settings';
-	background: rgba(255,255,255,.7);
-	font: 14px sans-serif;
-	padding: 0.25em 0.5em;
-	border: 1px solid #ddd;
-	color: #888;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
-}
 .editor-block-list__layout .layout-caxton-col .editor-block-list__block {
 	padding-left: 36px;
 	padding-right: 36px;
@@ -187,4 +183,42 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		margin-left: -38px;
 		margin-right: -38px;
 	}
+}
+
+.caxton-columns .editor-block-list__layout.layout-caxton-col {
+	overflow: visible;
+}
+
+.caxton-columns {
+	grid-template-columns: 100% !important;
+	.editor-inner-blocks {
+		display: grid;
+		grid-auto-flow: dense;
+		grid-gap: 16px;
+	}
+
+	&.caxton-1-columns .editor-inner-blocks {
+		grid-template-columns: 100% 0 0 0 0 0 0 0;
+	}
+
+	&.caxton-2-columns .editor-inner-blocks {
+		grid-template-columns: 50% 50% 0 0 0 0 0 0;
+	}
+
+	&.caxton-3-columns .editor-inner-blocks {
+		grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
+	}
+
+	&.caxton-4-columns .editor-inner-blocks {
+		grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
+	}
+
+	&.caxton-5-columns .editor-inner-blocks {
+		grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
+	}
+
+	&.caxton-6-columns .editor-inner-blocks {
+		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
+	}
+
 }

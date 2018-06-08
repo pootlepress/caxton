@@ -86,7 +86,6 @@ jQuery( function ( $ ) {
 		var caxtonFontsToLoad = [];
 		$( '[style*="font-family"]' ).each( function () {
 			var font = $( this ).css( 'font-family' );
-			font.index
 			if ( - 1 === font.indexOf( ',' ) && caxtonFontsToLoad.indexOf( font ) === - 1 ) {
 				caxtonFontsToLoad.push( font );
 			}
