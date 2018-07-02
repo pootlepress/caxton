@@ -159,6 +159,8 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 .caxton-image-picker {
 	.image-button {
 		padding: 0;
+		flex-direction: column;
+		align-items: center;
 	}
 	a.caxton-remove-image {
 		position: absolute;
@@ -173,6 +175,7 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		}
 	}
 }
+
 .editor-block-list__layout .layout-caxton-col .editor-block-list__block {
 	padding-left: 36px;
 	padding-right: 36px;

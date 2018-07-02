@@ -8,8 +8,7 @@
 	function ( $, blocks, el, withAPIData, i18n, components ) {
 		var
 			createBlock = blocks.createBlock,
-			registerBlockType = blocks.registerBlockType,
-			InspectorControls = blocks.InspectorControls,
+			InspectorControls = wp.editor.InspectorControls,
 			__ = i18n.__;
 
 		CaxtonBlock( {
@@ -509,11 +508,11 @@
 				'Shadow position': {
 					type: 'select',
 					options: [
-						{value: '-0.11em 0.1em', label: 'Far Left',},
-						{value: '-0.07em 0.07em', label: 'Left',},
+						{value: 'calc( -2px + -.05em ) calc( 2px + .03em )', label: 'Far Left',},
+						{value: 'calc( -1px + -.03em ) calc( 1px + .01em )', label: 'Left',},
 						{value: '0 0', label: 'Center',},
-						{value: '0.07em 0.07em', label: 'Right',},
-						{value: '0.11em 0.1em', label: 'Far Right',},
+						{value: 'calc( 1px + .03em ) calc( 1px + .01em )', label: 'Right',},
+						{value: 'calc( 2px + .05em ) calc( 2px + .03em )', label: 'Far Right',},
 					],
 					default: '0 0',
 					section: 'Glow/Shadow',
@@ -787,11 +786,11 @@
 				'Shadow position': {
 					type: 'select',
 					options: [
-						{value: '-0.16em 0.11em', label: 'Far Left',},
-						{value: '-0.09em 0.07em', label: 'Left',},
+						{value: 'calc( -2px + -.05em ) calc( 2px + .03em )', label: 'Far Left',},
+						{value: 'calc( -1px + -.03em ) calc( 1px + .01em )', label: 'Left',},
 						{value: '0 0', label: 'Center',},
-						{value: '0.09em 0.07em', label: 'Right',},
-						{value: '0.16em 0.11em', label: 'Far Right',},
+						{value: 'calc( 1px + .03em ) calc( 1px + .01em )', label: 'Right',},
+						{value: 'calc( 2px + .05em ) calc( 2px + .03em )', label: 'Far Right',},
 					],
 					default: '0 0',
 					section: 'Button Glow/Shadow',
@@ -836,6 +835,7 @@
 					 'data-mobile-css="{{Icon size mobile}}" ' +
 					 'data-tablet-css="{{Icon size tablet}}" ' +
 					 'data-desktop-css="{{Icon size}}">' +
+					 '<span style="display:none;">&nbsp;</span>' +
 					 '</a></div>',
 			toolbars: {
 				Alignment: 'AlignmentToolbar',
@@ -953,11 +953,11 @@
 				'Shadow position': {
 					type: 'select',
 					options: [
-						{value: '-0.11em 0.1em', label: 'Far Left',},
-						{value: '-0.07em 0.07em', label: 'Left',},
+						{value: 'calc( -2px + -.05em ) calc( 2px + .03em )', label: 'Far Left',},
+						{value: 'calc( -1px + -.03em ) calc( 1px + .01em )', label: 'Left',},
 						{value: '0 0', label: 'Center',},
-						{value: '0.07em 0.07em', label: 'Right',},
-						{value: '0.11em 0.1em', label: 'Far Right',},
+						{value: 'calc( 1px + .03em ) calc( 1px + .01em )', label: 'Right',},
+						{value: 'calc( 2px + .05em ) calc( 2px + .03em )', label: 'Far Right',},
 					],
 					default: '0 0',
 					section: 'Icon Glow/Shadow',
@@ -994,6 +994,246 @@
 					section: 'Hover Colors',
 					tpl: 'border-color:%s;',
 				},
+			},
+		} );
+
+		CaxtonBlock( {
+			id: 'slider',
+			title: 'Slider',
+			icon: 'slides',
+			tpl: '<div class="caxton-slider {{Alignment}}{{BlockAlignment}}" style="{{Text color}}{{Font size}}{{Text Glow/Shadow}};" ' +
+					 'data-mobile-css="{{Font size mobile}}" ' +
+					 'data-tablet-css="{{Font size tablet}}" ' +
+					 'data-desktop-css="{{Font size}}">' +
+					 '{{Slide 1 image}}' +
+					 '{{Slide 2 image}}' +
+					 '{{Slide 3 image}}' +
+					 '{{Slide 4 image}}' +
+					 '{{Slide 5 image}}' +
+					 '</div>',
+			toolbars: {
+				Alignment: 'AlignmentToolbar',
+				BlockAlignment: 'BlockAlignToolbar',
+			},
+			fields: {
+
+				'Slide 1 image': {
+					type: 'image',
+					tpl: '<li style="background-image: url(\'%s\')">' +
+							 '<div class="flex-caption  header-slide-text">' +
+							 '{{Slide 1 title}}{{Slide 1 text}}{{Slide 1 button text}}' +
+							 '</div>' +
+							 '</li>',
+					section: 'Slide 1',
+				},
+				'Slide 1 title': {
+					type: 'text',
+					tpl: '<h2>%s</h2>',
+					section: 'Slide 1',
+				},
+				'Slide 1 text': {
+					type: 'textarea',
+					tpl: '<p>%s</p>',
+					section: 'Slide 1',
+				},
+				'Slide 1 button text': {
+					type: 'text',
+					tpl: '<a style="{{Button color}}{{Button text color}}" class="button" href="{{Slide 1 button url}}">%s</a>',
+					section: 'Slide 1',
+				},
+				'Slide 1 button url': {
+					type: 'text',
+					section: 'Slide 1',
+				},
+
+				'Slide 2 image': {
+					type: 'image',
+					tpl: '<li style="background-image: url(\'%s\')">' +
+							 '<div class="flex-caption  header-slide-text">' +
+							 '{{Slide 2 title}}{{Slide 2 text}}{{Slide 2 button text}}' +
+							 '</div>' +
+							 '</li>',
+					section: 'Slide 2',
+				},
+				'Slide 2 title': {
+					type: 'text',
+					tpl: '<h2>%s</h2>',
+					section: 'Slide 2',
+				},
+				'Slide 2 text': {
+					type: 'textarea',
+					tpl: '<p>%s</p>',
+					section: 'Slide 2',
+				},
+				'Slide 2 button text': {
+					type: 'text',
+					tpl: '<a style="{{Button color}}{{Button text color}}" class="button" href="{{Slide 2 button url}}">%s</a>',
+					section: 'Slide 2',
+				},
+				'Slide 2 button url': {
+					type: 'text',
+					section: 'Slide 2',
+				},
+
+				'Slide 3 image': {
+					type: 'image',
+					tpl: '<li style="background-image: url(\'%s\')">' +
+							 '<div class="flex-caption  header-slide-text">' +
+							 '{{Slide 3 title}}{{Slide 3 text}}{{Slide 3 button text}}' +
+							 '</div>' +
+							 '</li>',
+					section: 'Slide 3',
+				},
+				'Slide 3 title': {
+					type: 'text',
+					tpl: '<h2>%s</h2>',
+					section: 'Slide 3',
+				},
+				'Slide 3 text': {
+					type: 'textarea',
+					tpl: '<p>%s</p>',
+					section: 'Slide 3',
+				},
+				'Slide 3 button text': {
+					type: 'text',
+					tpl: '<a style="{{Button color}}{{Button text color}}" class="button" href="{{Slide 3 button url}}">%s</a>',
+					section: 'Slide 3',
+				},
+				'Slide 3 button url': {
+					type: 'text',
+					section: 'Slide 3',
+				},
+
+				'Slide 4 image': {
+					type: 'image',
+					tpl: '<li style="background-image: url(\'%s\')">' +
+							 '<div class="flex-caption  header-slide-text">' +
+							 '{{Slide 4 title}}{{Slide 4 text}}{{Slide 4 button text}}' +
+							 '</div>' +
+							 '</li>',
+					section: 'Slide 4',
+				},
+				'Slide 4 title': {
+					type: 'text',
+					tpl: '<h2>%s</h2>',
+					section: 'Slide 4',
+				},
+				'Slide 4 text': {
+					type: 'textarea',
+					tpl: '<p>%s</p>',
+					section: 'Slide 4',
+				},
+				'Slide 4 button text': {
+					type: 'text',
+					tpl: '<a style="{{Button color}}{{Button text color}}" class="button" href="{{Slide 4 button url}}">%s</a>',
+					section: 'Slide 4',
+				},
+				'Slide 4 button url': {
+					type: 'text',
+					section: 'Slide 4',
+				},
+
+				'Slide 5 image': {
+					type: 'image',
+					tpl: '<li style="background-image: url(\'%s\')">' +
+							 '<div class="flex-caption  header-slide-text">' +
+							 '{{Slide 5 title}}{{Slide 5 text}}{{Slide 5 button text}}' +
+							 '</div>' +
+							 '</li>',
+					section: 'Slide 5',
+				},
+				'Slide 5 title': {
+					type: 'text',
+					tpl: '<h2>%s</h2>',
+					section: 'Slide 5',
+				},
+				'Slide 5 text': {
+					type: 'textarea',
+					tpl: '<p>%s</p>',
+					section: 'Slide 5',
+				},
+				'Slide 5 button text': {
+					type: 'text',
+					tpl: '<a style="{{Button color}}{{Button text color}}" class="button" href="{{Slide 5 button url}}">%s</a>',
+					section: 'Slide 5',
+				},
+				'Slide 5 button url': {
+					type: 'text',
+					section: 'Slide 5',
+				},
+
+				'Button color': {
+					type: 'color',
+					default: '#0693e3',
+					tpl: 'background:%s;',
+					section: 'Typography',
+				},
+				'Button text color': {
+					type: 'color',
+					default: '#ffffff',
+					tpl: 'color:%s;',
+					section: 'Typography',
+				},
+				'Text color': {
+					type: 'color',
+					tpl: 'color:%s;',
+					section: 'Typography',
+				},
+				'Font size': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					default: 16,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size tablet': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+				'Font size mobile': {
+					type: 'range',
+					min: 5,
+					max: 250,
+					tpl: 'font-size:%spx;',
+					section: 'Typography',
+				},
+
+				'Text Glow/Shadow': {
+					type: 'select',
+					options: [
+						{value: '', label: 'No shadow/glow',},
+						{value: '255,255,255', label: 'Glow',},
+						{value: '0,0,0', label: 'Shadow',},
+					],
+					section: 'Text Glow/Shadow',
+					tpl: 'text-shadow:{{Text Shadow position}} .05em rgba(%s,{{Text Shadow strength}});',
+				},
+				'Text Shadow position': {
+					type: 'select',
+					options: [
+						{value: 'calc( -3px + -.07em ) calc( 2px + .03em )', label: 'Far Left',},
+						{value: 'calc( -1px + -.03em ) calc( 1px + .01em )', label: 'Left',},
+						{value: '0 0', label: 'Center',},
+						{value: 'calc( 1px + .03em ) calc( 1px + .01em )', label: 'Right',},
+						{value: 'calc( 2px + .05em ) calc( 2px + .03em )', label: 'Far Right',},
+					],
+					default: '0 0',
+					section: 'Text Glow/Shadow',
+				},
+				'Text Shadow strength': {
+					type: 'select',
+					options: [
+						{value: '.25', label: 'Light',},
+						{value: '.5', label: 'Normal',},
+						{value: '.75', label: 'Strong',},
+					],
+					default: '.5',
+					section: 'Text Glow/Shadow',
+				}
 			},
 		} );
 
@@ -1220,9 +1460,12 @@
 				bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 								 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
+				var childrenBlocks = el( wp.editor.InnerBlocks.Content, {} );
+
 				return el(
 					// Element
 					'div', { className: cls, key: 'super-hero-block' },
+					[
 					// Background div
 					el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
 					// Blocks inserter
@@ -1238,13 +1481,14 @@
 							'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
 							key: 'block',
 						},
-						el( wp.editor.InnerBlocks.Content, { key: 'innerblockscontent' } )
+						childrenBlocks
 					)
-				);
+						]
+				)
 			}
 		} );
 
-		registerBlockType(
+		wp.blocks.registerBlockType(
 			'caxton/posts-grid',
 			{
 				title: 'Posts grid',
@@ -1334,7 +1578,6 @@
 
 					className += ' caxton-' + attrs.imagesType + '-images';
 
-					console.log( attrs.rows * attrs.columns );
 					if ( attrs.titleBelowImage ) {
 						className += ' caxton-title-below-image';
 					}

@@ -1,5 +1,6 @@
 function initCaxton( $, blocks, el, i18n, components ) {
 	var
+		editor = wp.editor,
 		__ = i18n.__,
 		registerBlockType = blocks.registerBlockType;
 
@@ -167,7 +168,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			components.BaseControl,
 			props,
 			el(
-				blocks.MediaUpload,
+				editor.MediaUpload,
 				{
 					onSelect: function ( media ) {
 						props.onChange( media.url, media );
@@ -199,7 +200,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		panelChildren.push( el(
-			wp.blocks.ColorPalette,
+			editor.ColorPalette,
 			props,
 		) );
 
@@ -504,11 +505,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		for ( var i = 0; i < fields.length; i ++ ) {
-			var f = fields[i], func = f['type'] + functionSuffix;
+			var f = fields[i], func;
 
 			if ( -1 < functionSuffix.indexOf( 'Toolbar' ) ) {
 				f['type'] = f['type'].replace( 'Toolbar', '' )
 			}
+
+			func = f['type'] + functionSuffix;
 
 			if ( typeof this[ func ] === 'function' ) {
 				if ( ! f.hide ) {
@@ -523,7 +526,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						els.push( this[func]( f, i ) );
 					}
 				}
-			} else {
+			} else if ( -1 === f['type'].indexOf( 'Toolbar' ) ) {
 				console.log( functionSuffix.replace( 'Init', '' ) + ' ' + f['id'] + ' of type ' + f['type'] + ' and callback ' + func + ' not supported.' );
 			}
 		}
@@ -535,7 +538,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		if ( els.length ) {
 			return el(
-				blocks.BlockControls,
+				editor.BlockControls,
 				{ key: 'toolbars' },
 				els
 			);
@@ -554,7 +557,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		if ( els && els.length ) {
 			return el(
-				blocks.InspectorControls,
+				editor.InspectorControls,
 				{ key: 'inspector' },
 				els
 			);
@@ -564,6 +567,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	// region Register block
 
 	CxB.prototype.populateFields = function ( html, edit ) {
+		if ( ! html ) {
+			return '';
+		}
 		var c2e, tag;
 		for ( let f in this.fields ) {
 			if ( this.fields.hasOwnProperty( f ) ) {
@@ -607,7 +613,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		var that = this;
 		if ( this.block ) {
 			if ( typeof this.block.edit === 'function' ) {
-				return this.block.edit( props, this );
+				return this.block.edit( props, that );
 			}
 			return el( 'div', {
 				key: 'block',
@@ -678,9 +684,19 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		registerBlockProps.icon = block.icon;
 
-		registerBlockProps.edit = function ( props ) {
+		var editCallback = function ( props ) {
+
+			console.log( props );
+
 			var els = [];
 			that.saveBlockProperties( props );
+
+			if ( typeof that.block.beforeEdit === 'function' ) {
+				var beforeCallback = that.block.beforeEdit( props, this );
+				if ( beforeCallback ) {
+					els.push( beforeCallback );
+				}
+			}
 
 			if ( props.isSelected ) {
 				that.focussedProps = props;
@@ -690,8 +706,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 			els.push( that.edit( props ) );
 
-			return els;
+			if ( typeof that.block.afterEdit === 'function' ) {
+				var afterCallback = that.block.afterEdit( props, this );
+				if ( afterCallback ) {
+					els.push( afterCallback );
+				}
+			}
+
+			return el( 'div', {}, els );
 		};
+
+		registerBlockProps.edit = editCallback;
 
 		registerBlockProps.getEditWrapperProps = function( attributes ) {
 			var attrs = {}, layout = attributes.Layout, float = attributes.BlockAlignment;
@@ -718,14 +743,22 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		registerBlockProps.save = function ( props ) {
 			that.saveBlockProperties( props );
-			return that.save( props )
+			return that.save( props );
 		};
+
+		if ( 'function' === typeof block.withAPIData ) {
+			if ( 'function' !== typeof block.APIDataURL )
+				block.APIDataURL = function() { return { apiData: block.APIDataURL }; };
+			that.block.edit = block.withAPIData;
+			registerBlockProps.edit = wp.components.withAPIData( block.APIDataURL )( editCallback );
+			registerBlockProps.save = function () { return null; };
+		}
 
 		if ( 0 > block.id.indexOf( '/' ) ) {
 			block.id = 'caxton/' + block.id;
 		}
 
-		blocks.registerBlockType( block.id, registerBlockProps );
+		registerBlockType( block.id, registerBlockProps );
 	};
 
 	// endregion Register block
@@ -754,7 +787,6 @@ jQuery( function ( $ ) {
 		for ( var i = 0; i < blocksData.length; i ++ ) {
 			blk = blocksData[i];
 			icon = blk.icon.src;
-			console.log( blk.name, icon );
 			if ( typeof icon === 'object' ) {
 				icon = Caxton.el2html( icon );
 			} else {
@@ -767,7 +799,6 @@ jQuery( function ( $ ) {
 			};
 		}
 
-		console.log( blocks );
 		$.post(
 			ajaxurl,
 			{

@@ -53,9 +53,10 @@ class Caxton {
 
 	/**
 	 * Return class instance
+	 * @param string $file Plugin path
 	 * @return Caxton instance
 	 */
-	public static function instance( $file ) {
+	public static function instance( $file = '' ) {
 		if ( null == self::$_instance ) {
 			self::$_instance = new self( $file );
 		}
