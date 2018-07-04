@@ -1,0 +1,160 @@
+[class*='caxton-fancy-grid'] {
+	display: grid;
+	grid-template-areas: 'i1';
+	grid-auto-rows: 200px;
+	grid-gap: 10px;
+	padding: 10px;
+	margin: 2.5em 0;
+	&, a {
+		color: inherit;
+		font: inherit;
+	}
+}
+
+.caxton-fancy-grid-1 {
+	grid-template-areas: 'i1';
+}
+
+.caxton-fancy-grid-2 {
+	grid-template-areas: 'i1 i2';
+}
+
+.caxton-fancy-grid-3 {
+	grid-template-areas:
+		'i1 i1 i2'
+		'i1 i1 i3';
+}
+
+.caxton-fancy-grid-4 {
+	grid-template-areas:
+		'i1 i1 i2 i2'
+		'i1 i1 i3 i4';
+}
+
+.caxton-fancy-grid-5 {
+	grid-template-areas:
+		'i1 i1 i2 i3'
+		'i1 i1 i4 i5';
+}
+
+.caxton-fancy-grid-6 {
+	grid-template-areas:
+		'i1 i1 i2 i3 i6'
+		'i1 i1 i4 i5 i6';
+}
+
+.caxton-fancy-grid-7 {
+	grid-template-areas:
+		'i1 i2 i2 i4 i5'
+		'i1 i3 i3 i6 i7';
+}
+
+.caxton-fancy-grid-8 {
+	grid-template-areas:
+		'i1 i2 i2 i4'
+		'i1 i3 i3 i5'
+		'i6 i6 i7 i8';
+}
+
+.caxton-fancy-grid-9 {
+	grid-template-areas:
+		'i1 i2 i2 i3'
+		'i1 i4 i5 i6'
+		'i7 i8 i5 i9';
+}
+
+.caxton-fancy-grid-10 {
+	grid-template-areas:
+		'i1 i2 i3 i3'
+		'i1 i4 i4 i5'
+		'i7 i4 i4 i6'
+		'i8 i8 i9 i10';
+}
+
+.caxton-fancy-grid-11 {
+	grid-template-areas:
+		'i1 i2 i3 i5'
+		'i1 i4 i4 i6'
+		'i8 i4 i4 i7'
+		'i9 i10 i11 i11';
+}
+
+.caxton-fancy-grid-12 {
+	grid-template-areas:
+		'i1 i1 i3 i5'
+		'i2 i4 i3 i6'
+		'i7 i8 i8 i12'
+		'i9 i10 i11 i12';
+}
+
+[class*='caxton-fancy-grid-item'] {
+	background: center/cover;
+	position: relative;
+	span {
+		padding: 7px 16px;
+		display: block;
+		line-height: 1.6;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		.grid-label-mid & {
+			bottom: 50%;
+			transform: translateY(50%);
+		}
+
+		.grid-label-top & {
+			bottom: auto;
+			top: 0;
+		}
+	}
+}
+
+.caxton-fancy-grid-item-1 {
+	grid-area: i1;
+}
+
+.caxton-fancy-grid-item-2 {
+	grid-area: i2;
+}
+
+.caxton-fancy-grid-item-3 {
+	grid-area: i3;
+}
+
+.caxton-fancy-grid-item-4 {
+	grid-area: i4;
+}
+
+.caxton-fancy-grid-item-5 {
+	grid-area: i5;
+}
+
+.caxton-fancy-grid-item-6 {
+	grid-area: i6;
+}
+
+.caxton-fancy-grid-item-7 {
+	grid-area: i7;
+}
+
+.caxton-fancy-grid-item-8 {
+	grid-area: i8;
+}
+
+.caxton-fancy-grid-item-9 {
+	grid-area: i9;
+}
+
+.caxton-fancy-grid-item-10 {
+	grid-area: i10;
+}
+
+.caxton-fancy-grid-item-11 {
+	grid-area: i11;
+}
+
+.caxton-fancy-grid-item-12 {
+	grid-area: i12;
+}
