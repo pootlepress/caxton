@@ -178,7 +178,7 @@ HTML;
 			];
 		}
 
-		return '<div class="caxton-fancy-grid-' . $num_items . '">' . implode( '', $grid_items ) . '</div>';
+		return '<div class="caxton-fancy-grid caxton-fancy-grid-' . $num_items . '">' . implode( '', $grid_items ) . '</div>';
 
 	}
 }
