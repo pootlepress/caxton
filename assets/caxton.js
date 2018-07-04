@@ -235,6 +235,22 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			this.fieldProps( field, index )
 		)
 	};
+	CxB.prototype.orderedMultiselectFieldInit = function( field, index ) {
+		return el(
+			components.PanelBody,
+			props,
+			el( window.Select, {
+					className: 'caxton-icon-picker',
+					onClick: function ( e ) {
+						if ( e.target.tagName === 'I' ) {
+							props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+						}
+					}
+				}
+			)
+		);
+	};
+	CxB.prototype.orderedmultiselectFieldInit = CxB.prototype.orderedMultiselectFieldInit;
 	CxB.prototype.fontFieldInit = function( field, index ) {
 		if ( ! field.tpl ) {
 			field.tpl = 'font-family: %s;';
