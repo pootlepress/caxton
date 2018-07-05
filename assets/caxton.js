@@ -236,6 +236,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		)
 	};
 	CxB.prototype.orderedMultiselectFieldInit = function( field, index ) {
+		var props = this.fieldProps( field, index );
 		return el(
 			components.PanelBody,
 			props,
