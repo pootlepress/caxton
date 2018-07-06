@@ -66,8 +66,6 @@ class Caxton_Admin {
 
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
-		wp_enqueue_script( "react-select", $url . 'assets/react-select.min.js' );
-		wp_enqueue_style( "react-select", $url . 'assets/react-select.min.css' );
 		wp_enqueue_script( "$token-blocks", $url . 'assets/block.js', array( $token ) );
 		wp_enqueue_style( "$token-blocks", $url . 'assets/block.css' );
 		wp_enqueue_script( $token . '-js', $url . 'assets/caxton-utils.js', array( 'jquery' ) );
@@ -249,12 +247,14 @@ class Caxton_Admin {
 
 	private function hide_disable_blocks() {
 		$disabled_blocks = get_option( 'caxton_disabled_block' );
-		?>
-		<style id="caxton-hidden-block-styles">
-			.editor-block-list-item-<?php echo str_replace( '/', '-', implode( ', .editor-block-list-item-', $disabled_blocks ) ); ?> {
-				display: none !important;
-			}
-		</style>
-		<?php
+		if ( $disabled_blocks ) {
+			?>
+			<style id="caxton-hidden-block-styles">
+				.editor-block-list-item-<?php echo str_replace( '/', '-', implode( ', .editor-block-list-item-', $disabled_blocks ) ); ?> {
+					display: none !important;
+				}
+			</style>
+			<?php
+		}
 	}
 }

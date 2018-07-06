@@ -85,14 +85,28 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				if ( ! field.default && isNaN( field.default ) ) {
 					field.default = '';
 				}
-				this.block.attributes[ id ] = field.attr ? field.attr : {
-					type: 'string',
-				};
+				if ( field.attr ) {
+					this.block.attributes[id] = field.attr;
+				} else {
+					this.block.attributes[id] = {
+						type: this.fieldAttrType( field ),
+					};
+				}
 				ret.push( field );
 			}
 		}
 		return ret;
 	};
+
+	CxB.prototype.fieldAttrType = function ( field ) {
+		var attrTypeByFieldType = {};
+
+		if ( attrTypeByFieldType[ field.type ] ) {
+			return attrTypeByFieldType[ field.type ];
+		}
+
+		return 'string';
+	}
 
 	CxB.prototype.processSections = function( fields ) {
 		var sections = {};
@@ -235,23 +249,110 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			this.fieldProps( field, index )
 		)
 	};
-	CxB.prototype.orderedMultiselectFieldInit = function( field, index ) {
-		var props = this.fieldProps( field, index );
+	CxB.prototype.orderedSelectFieldInit = function( field, index ) {
+		var opt, optEl,
+			props = this.fieldProps( field, index ),
+			delimiter = props.delimiter ? props.delimiter : ',',
+			selectedOptionsData = {},
+			selectedOptions = [],
+			availableOption = [],
+			controlValue = props.value ? props.value.split( delimiter ) : [];
+
+		for ( var i = 0; i < props.options.length; i ++ ) {
+			opt = props.options[i];
+			optEl = el(
+				'div',
+				{
+					className: 'caxton-orderedselect-option',
+					'data-val': opt.value,
+					key: 'option-' + opt.value,
+				},
+				(
+					opt.image ? el( 'img', {src: opt.image} ) : null
+				),
+				opt.label
+			);
+
+			if ( typeof opt.value === 'number' ) {
+				opt.value = opt.value.toString();
+			}
+
+			if ( -1 === controlValue.indexOf( opt.value ) ) {
+				availableOption.push( optEl );
+			} else {
+				selectedOptionsData[ opt.value ] = opt;
+			}
+		}
+
+		for ( var i = 0; i < controlValue.length; i ++ ) {
+			opt = selectedOptionsData[controlValue[i]];
+			optEl = el(
+				'div',
+				{
+					className: 'caxton-orderedselect-option',
+					'data-val': opt.value,
+					key: 'option-' + opt.value,
+				},
+				(
+					opt.image ? el( 'img', {src: opt.image} ) : null
+				),
+				opt.label
+			);
+
+			selectedOptions.push( optEl );
+		}
+
+		if ( ! selectedOptions.length ) {
+			selectedOptions.push( el( 'span', {
+				className: 'caxton-placeholder o70',
+				key: 'placeholder',
+			}, 'Please choose...' ) )
+		}
+
+		selectedOptions.push( el( 'i', {
+			className: 'dashicons dashicons-arrow-down',
+			key: 'down-arrow-icon',
+		} ) );
+
 		return el(
-			components.PanelBody,
+			components.BaseControl,
 			props,
-			el( window.Select, {
-					className: 'caxton-icon-picker',
+			el(
+				'div',
+				{
+					className: 'caxton-orderedselect-wrap',
+					key: 'orderedselect-wrap',
+				},
+				el( 'div', {
+					className: 'caxton-orderedselect-selected',
+					key: 'selected-options',
 					onClick: function ( e ) {
-						if ( e.target.tagName === 'I' ) {
-							props.onChange( ' ' + e.target.className.replace( ' o-70', '' ) );
+						var val, $target = $( e.target );
+						if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
+							val = $target.attr( 'data-val' );
+							controlValue.splice( controlValue.indexOf( val ), 1 );
+							props.onChange( controlValue.join( delimiter ) );
+						} else {
+							$target.closest( '.caxton-orderedselect-wrap' ).toggleClass( 'caxton-orderedselect-open' );
 						}
-					}
-				}
-			)
+					},
+				}, selectedOptions ),
+				el( 'div', {
+					className: 'caxton-orderedselect-available',
+					key: 'available-options',
+					onClick: function ( e ) {
+						var val, $target = $( e.target );
+						if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
+							val = $target.attr( 'data-val' );
+							controlValue.push( val );
+							props.onChange( controlValue.join( delimiter ) );
+						}
+					},
+				}, availableOption )
+			),
 		);
 	};
-	CxB.prototype.orderedmultiselectFieldInit = CxB.prototype.orderedMultiselectFieldInit;
+	CxB.prototype.orderedselectFieldInit = CxB.prototype.orderedSelectFieldInit;
 	CxB.prototype.fontFieldInit = function( field, index ) {
 		if ( ! field.tpl ) {
 			field.tpl = 'font-family: %s;';
@@ -702,8 +803,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		registerBlockProps.icon = block.icon;
 
 		var editCallback = function ( props ) {
-
-			console.log( props );
 
 			var els = [];
 			that.saveBlockProperties( props );

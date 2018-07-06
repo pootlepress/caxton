@@ -223,5 +223,6 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	&.caxton-6-columns .editor-inner-blocks {
 		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
 	}
-
 }
+
+@import 'scss/ordered-select-control';
