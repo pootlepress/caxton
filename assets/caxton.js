@@ -137,7 +137,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			var attrs = {};
 			attrs[ id ] = val;
 			if ( field.type === 'checkbox' || field.type === 'toggle' && val ) {
-				attrs[ id ] = field.value;
+				attrs[ id ] = field.value || 1;
 			}
 			that.focussedProps.setAttributes( attrs );
 
