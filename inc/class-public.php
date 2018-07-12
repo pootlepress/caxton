@@ -167,7 +167,7 @@ HTML;
 			$style = 'background-image: url("' . $item['image'] . '")';
 			$classes = "caxton-fancy-grid-item-$num_items";
 			$grid_items[] =
-				"<a class='$classes' style='$style' href='$item[link]'><span>$item[label]</span></a>";
+				"<a class='$classes' style='$style' href='$item[link]'><span class='caxton-fancy-grid-item-content'>$item[label]</span></a>";
 
 		}
 
