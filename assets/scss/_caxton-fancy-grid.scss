@@ -10,7 +10,7 @@
 	}
 }
 
-[class*='caxton-fancy-grid-item'] {
+a[class*='caxton-fancy-grid-item'] {
 	background: center/cover;
 	position: relative;
 	&:hover:before {
@@ -20,7 +20,7 @@
 		left: 0;
 		bottom: 0;
 		right: 0;
-		background: rgba(255,255,255,.3);
+		background: rgba(0,0,0,.3);
 	}
 	> .caxton-fancy-grid-item-content {
 		padding: 7px 16px;

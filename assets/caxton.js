@@ -82,6 +82,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				}
 				field.id = id;
 				field.label = field.label ? field.label : id;
+
+				if ( field.type === 'checkbox' || field.type === 'toggle' ) {
+					field.value = field.value || 1;
+				}
+
 				if ( ! field.default && isNaN( field.default ) ) {
 					field.default = '';
 				}
@@ -136,9 +141,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		fieldProps.onChange = function ( val, moreValues ) {
 			var attrs = {};
 			attrs[ id ] = val;
-			if ( field.type === 'checkbox' || field.type === 'toggle' && val ) {
-				attrs[ id ] = field.value || 1;
+			if ( field.type === 'checkbox' || field.type === 'toggle' ) {
+				attrs[ id ] = val ? field.value : '';
 			}
+			console.log( field.type );
+			console.log( attrs );
+
 			that.focussedProps.setAttributes( attrs );
 
 			if ( typeof field.onChange === 'function' ) {
