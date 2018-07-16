@@ -7,11 +7,7 @@
 	font-style: normal;
 }
 
-#home-hero-posts, #home-hero-products {
-	padding: 0;
-}
-
-.eighteen-tags-pro-flexslider {
+.caxton-slider {
 	max-width: 100vw;
 	transition: opacity 0.5s;
 	position: relative;
@@ -50,12 +46,14 @@
 			padding: 25px 16px 70px;
 			align-items: center;
 			justify-content: center;
+			background: #fff center/cover;
 		}
 		.flex-caption {
 			position: relative;
 			z-index: 1;
 			padding: 20px 25px;
 			color: #fff;
+			min-width: calc( 25% + 200px );
 			max-width: calc( 100% - 40px );
 			&.flex-caption-overlay {
 				background: rgba(0,0,0,0.35);
@@ -126,7 +124,7 @@
 	}
 }
 
-.eighteen-tags-pro-flexslider {
+.caxton-slider {
 	.flex-direction-nav a, .flex-pauseplay a {
 		color: #fff;
 		text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
@@ -140,7 +138,7 @@
 	}
 }
 
-.eighteen-tags-pro-flexslider {
+.caxton-slider {
 	.flex-direction-nav a:before {
 		font-family: flexslider-icon;
 		font-size: 44px;

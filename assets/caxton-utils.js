@@ -95,6 +95,18 @@ jQuery( function ( $ ) {
 		}
 	}
 
+	caxtonSetupSlider = function () {
+		var $sliders = $( '.caxton-slider-pending-setup' );
+		if ( $sliders.length ) {
+			$sliders.each( function() {
+				console.log( $( this ) );
+				$( this ).flexslider();
+			} )
+		} else {
+			setTimeout( caxtonSetupSlider, 700 );
+		}
+	};
+
 	caxtonLoadFonts();
 
 	setTimeout( caxtonLoadFonts, 1100 );
