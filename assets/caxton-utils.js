@@ -95,12 +95,29 @@ jQuery( function ( $ ) {
 		}
 	}
 
+	caxtonSetupCarousel = function () {
+		var $sliders = $( '.caxton-carousel-pending-setup' );
+		if ( $sliders.length ) {
+			$sliders.each( function() {
+				console.log( $( this ) );
+				$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
+					animation: "slide",
+					animationLoop: true,
+					itemWidth: 210,
+					itemMargin: 5
+				} );
+			} )
+		} else {
+			setTimeout( caxtonSetupCarousel, 700 );
+		}
+	};
+
 	caxtonSetupSlider = function () {
 		var $sliders = $( '.caxton-slider-pending-setup' );
 		if ( $sliders.length ) {
 			$sliders.each( function() {
 				console.log( $( this ) );
-				$( this ).flexslider();
+				$( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
 			} )
 		} else {
 			setTimeout( caxtonSetupSlider, 700 );
