@@ -99,12 +99,14 @@ jQuery( function ( $ ) {
 		var $sliders = $( '.caxton-carousel-pending-setup' );
 		if ( $sliders.length ) {
 			$sliders.each( function() {
-				console.log( $( this ) );
+				if ( ! $( this ).data( 'item-margin' ) ) {
+					$( this ).data( 'item-margin', 16 )
+				}
 				$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
 					animation: "slide",
 					animationLoop: true,
 					itemWidth: 210,
-					itemMargin: 5
+					itemMargin: $sliders.data( 'item-margin' ),
 				} );
 			} )
 		} else {

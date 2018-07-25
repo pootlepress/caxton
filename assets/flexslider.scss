@@ -51,6 +51,16 @@
 			justify-content: center;
 			background: #fff center/cover;
 		}
+		p, h1, h2, h3, h4, h5, h6, a:not(.alt) {
+			color: inherit;
+			font-family: inherit;
+		}
+		p, a {
+			font-size:inherit;
+		}
+		a {
+			opacity: .9;
+		}
 		.flex-caption {
 			position: relative;
 			z-index: 1;
@@ -63,13 +73,6 @@
 			}
 			&.header-slide-text {
 				text-align: center;
-			}
-			p, h1, h2, h3, h4, h5, h6, a:not(.alt) {
-				color: inherit;
-				font-family: inherit;
-			}
-			a {
-				opacity: .9;
 			}
 			&.entry-title {
 				font-size: 25px;
@@ -243,5 +246,12 @@
 			opacity: 1;
 			cursor: default;
 		}
+	}
+}
+
+.caxton-carousel {
+	.slides li {
+		flex-direction: column;
+		align-items: stretch;
 	}
 }

@@ -13,7 +13,7 @@
 .caxton-square-grid {
 	grid-template-areas: initial;
 	grid-auto-rows: 1fr;
-	[class*='caxton-grid-item']:before {
+	[class*='caxton-grid-item']:not(.caxton-grid-item-content):before {
 		content:  '';
 		padding-top: 100%;
 		display: block;
@@ -32,7 +32,7 @@ a[class*='caxton-grid-item'] {
 		right: 0;
 		background: rgba(0,0,0,.3);
 	}
-	> .caxton-grid-item-content {
+	.caxton-grid-item-content {
 		padding: 7px 16px;
 		display: block;
 		line-height: 1.6;
