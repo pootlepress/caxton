@@ -97,36 +97,29 @@ jQuery( function ( $ ) {
 
 	caxtonSetupCarousel = function () {
 		var $sliders = $( '.caxton-carousel-pending-setup' );
-		if ( $sliders.length ) {
-			$sliders.each( function() {
-				if ( ! $( this ).data( 'item-margin' ) ) {
-					$( this ).data( 'item-margin', 16 )
-				}
-				$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
-					animation: "slide",
-					animationLoop: true,
-					itemWidth: 210,
-					itemMargin: $sliders.data( 'item-margin' ),
-				} );
-			} )
-		} else {
-			setTimeout( caxtonSetupCarousel, 700 );
-		}
+		$sliders.each( function () {
+			if ( ! $( this ).data( 'item-margin' ) ) {
+				$( this ).data( 'item-margin', 16 )
+			}
+			$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
+				animation: "slide",
+				animationLoop: true,
+				itemWidth: 210,
+				itemMargin: $sliders.data( 'item-margin' ),
+			} );
+		} )
 	};
 
 	caxtonSetupSlider = function () {
 		var $sliders = $( '.caxton-slider-pending-setup' );
-		if ( $sliders.length ) {
-			$sliders.each( function() {
-				console.log( $( this ) );
-				$( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
-			} )
-		} else {
-			setTimeout( caxtonSetupSlider, 700 );
-		}
+		$sliders.each( function () {
+			$( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
+		} )
 	};
 
 	caxtonLoadFonts();
+	caxtonSetupCarousel();
+	caxtonSetupSlider();
 
 	setTimeout( caxtonLoadFonts, 1100 );
 	setTimeout( caxtonLoadFonts, 2000 );
