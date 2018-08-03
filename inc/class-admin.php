@@ -238,6 +238,8 @@ class Caxton_Admin {
 			];
 		}
 
+		wp_reset_postdata();
+
 		return $output;
 	}
 

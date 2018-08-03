@@ -1001,19 +1001,23 @@
 			id: 'slider',
 			title: 'Slider',
 			icon: 'slides',
-			tpl: '<div class="caxton-slider {{Alignment}}{{BlockAlignment}}" style="{{Text color}}{{Font size}}{{Text Glow/Shadow}};" ' +
+			tpl: '<div class="caxton-slider caxton-slider-pending-setup {{Alignment}}{{BlockAlignment}}" style="{{Text color}}{{Font size}}{{Text Glow/Shadow}};" ' +
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
 					 'data-desktop-css="{{Font size}}">' +
+					 '<ul class="slides">' +
 					 '{{Slide 1 image}}' +
 					 '{{Slide 2 image}}' +
 					 '{{Slide 3 image}}' +
 					 '{{Slide 4 image}}' +
 					 '{{Slide 5 image}}' +
-					 '</div>',
+					 '</ul></div>',
 			toolbars: {
 				Alignment: 'AlignmentToolbar',
 				BlockAlignment: 'BlockAlignToolbar',
+			},
+			afterEdit: function() {
+				setTimeout( caxtonSetupSlider, 700 );
 			},
 			fields: {
 
@@ -1177,6 +1181,7 @@
 				'Text color': {
 					type: 'color',
 					tpl: 'color:%s;',
+					default: '#ffffff',
 					section: 'Typography',
 				},
 				'Font size': {
