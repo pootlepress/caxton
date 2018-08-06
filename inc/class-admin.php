@@ -43,7 +43,7 @@ class Caxton_Admin {
 	} // End instance()
 
 	public function admin_menu() {
-		add_menu_page( 'Caxton', 'Caxton', 'manage_options', 'caxton', [ $this, 'caxton_page' ] );
+		add_menu_page( 'Caxton', 'Caxton', 'manage_options', 'caxton', [ $this, 'caxto n_page' ] );
 	}
 
 	public function admin_init() {
