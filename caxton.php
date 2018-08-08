@@ -47,7 +47,7 @@ function caxton_fs() {
 			'has_paid_plans'      => false,
 			'is_org_compliant'    => false,
 			'menu'                => array(
-				'first-path'     => 'admin.php',
+				'slug'           => 'caxton',
 				'support'        => false,
 			),
 		) );
