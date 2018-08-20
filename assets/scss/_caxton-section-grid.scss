@@ -1,0 +1,20 @@
+[data-caxton-section] {
+	justify-content: stretch;
+	align-items: stretch;
+	> .editor-block-list__block-edit {
+		height: calc( 100% - 64px );
+		> div {
+			height: 100%;
+			box-sizing: border-box;
+			> div {
+				height: 100%;
+				box-sizing: border-box;
+			}
+		}
+	}
+}
+
+@for $i from 1 to 13 {
+	[data-caxton-section*="cols:#{$i}"] {grid-column: span $i;}
+	[data-caxton-section*="rows:#{$i}"] {grid-row: span $i;}
+}

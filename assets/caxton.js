@@ -144,8 +144,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			if ( field.type === 'checkbox' || field.type === 'toggle' ) {
 				attrs[ id ] = val ? field.value : '';
 			}
-			console.log( field.type );
-			console.log( attrs );
 
 			that.focussedProps.setAttributes( attrs );
 
@@ -653,7 +651,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					}
 				}
 			} else if ( -1 === f['type'].indexOf( 'Toolbar' ) ) {
-				console.log( functionSuffix.replace( 'Init', '' ) + ' ' + f['id'] + ' of type ' + f['type'] + ' and callback ' + func + ' not supported.' );
+				console.error( functionSuffix.replace( 'Init', '' ) + ' ' + f['id'] + ' of type ' + f['type'] + ' and callback ' + func + ' not supported.' );
 			}
 		}
 		return els;
@@ -860,6 +858,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 			if ( typeof block.registerBlockProps === 'function' ) {
 				attrs = jQuery.extend( block.registerBlockProps( attributes, that ), attrs );
+			}
+
+			if ( typeof that.block.wrapperProps === 'function' ) {
+				attrs = that.block.wrapperProps( attrs, attributes, this );
 			}
 
 			return attrs;

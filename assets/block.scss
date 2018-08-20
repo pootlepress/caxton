@@ -33,10 +33,32 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	}
 }
 
-.edit-post-visual-editor .editor-block-list__block[data-type="caxton/super-hero"] {
-	max-width: 1100px;
-	&:hover {
-		outline: 1px dotted #ddd;
+.edit-post-visual-editor .editor-block-list__block {
+	&[data-type="caxton/super-hero"],
+	&[data-type="caxton/grid"] {
+		&, .editor-block-list__block {
+			max-width: 1100px;
+		}
+		&:hover {
+			outline: 1px dotted #ddd;
+		}
+	}
+}
+
+[data-type="caxton/grid"] {
+	.editor-inner-blocks + .editor-inserter {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		svg {
+			fill: #e74c3c;
+		}
+		button {
+			border-radius: 50%;
+		}
+	}
+	.editor-block-list__block:not(:last-child) .editor-inner-blocks + .editor-inserter {
+		display: none;
 	}
 }
 
@@ -192,37 +214,53 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	overflow: visible;
 }
 
-.caxton-columns {
-	grid-template-columns: 100% !important;
-	.editor-inner-blocks {
-		display: grid;
-		grid-auto-flow: dense;
-		grid-gap: 16px;
-	}
+.gutenberg {
+	.caxton-columns {
+		grid-template-columns: 100%;
+		.editor-inner-blocks {
+			display: grid;
+			grid-auto-flow: dense;
+			grid-gap: inherit;
+		}
 
-	&.caxton-1-columns .editor-inner-blocks {
-		grid-template-columns: 100% 0 0 0 0 0 0 0;
-	}
+		&.caxton-1-columns .editor-inner-blocks {
+			grid-template-columns: 100% 0 0 0 0 0 0 0;
+		}
 
-	&.caxton-2-columns .editor-inner-blocks {
-		grid-template-columns: 50% 50% 0 0 0 0 0 0;
-	}
+		&.caxton-2-columns .editor-inner-blocks {
+			grid-template-columns: 50% 50% 0 0 0 0 0 0;
+		}
 
-	&.caxton-3-columns .editor-inner-blocks {
-		grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
-	}
+		&.caxton-3-columns .editor-inner-blocks {
+			grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
+		}
 
-	&.caxton-4-columns .editor-inner-blocks {
-		grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
-	}
+		&.caxton-4-columns .editor-inner-blocks {
+			grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
+		}
 
-	&.caxton-5-columns .editor-inner-blocks {
-		grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
-	}
+		&.caxton-5-columns .editor-inner-blocks {
+			grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
+		}
 
-	&.caxton-6-columns .editor-inner-blocks {
-		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
+		&.caxton-6-columns .editor-inner-blocks {
+			grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
+		}
+	}
+	.caxton-grid-block {
+		.editor-inner-blocks, .editor-block-list__layout {
+			grid-column: 1/-1;
+			grid-template-columns: inherit;
+			display: grid;
+			grid-auto-flow: dense;
+			grid-gap: inherit;
+		}
+		.editor-block-list__block {
+			margin: 0;
+		}
 	}
 }
 
 @import 'scss/ordered-select-control';
+
+@import 'scss/caxton-section-grid';
