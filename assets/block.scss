@@ -227,28 +227,11 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		}
 	}
 
-	.caxton-1-columns > .editor-inner-blocks > .editor-block-list__layout {
-		grid-template-columns: 100%;
-	}
 
-	.caxton-2-columns > .editor-inner-blocks > .editor-block-list__layout {
-		grid-template-columns: 50% 50%;
-	}
-
-	.caxton-3-columns > .editor-inner-blocks > .editor-block-list__layout {
-		grid-template-columns: 33.333% 33.333% 33.333%;
-	}
-
-	.caxton-4-columns > .editor-inner-blocks > .editor-block-list__layout {
-		grid-template-columns: 25% 25% 25% 25%;
-	}
-
-	.caxton-5-columns > .editor-inner-blocks > .editor-block-list__layout {
-		grid-template-columns: 20% 20% 20% 20% 20%;
-	}
-
-	.caxton-6-columns > .editor-inner-blocks > .editor-block-list__layout {
-		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666%;
+	@for $i from 1 to 6 {
+		&.caxton-#{$i}-columns > .editor-inner-blocks > .editor-block-list__layout {
+			grid-template-columns: repeat( $i , 1fr);
+		}
 	}
 
 	.caxton-grid-block {
