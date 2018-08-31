@@ -414,10 +414,6 @@
 				'div',
 				{
 					className: cls, key: 'caxton-section-block',
-					style: {
-						'gridColumns': props['Columns span'],
-						'gridRows': props['Rows span'],
-					},
 				},
 				// Background div
 				el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
@@ -483,8 +479,8 @@
 					className: cls,
 					key: 'caxton-section-block',
 					style: {
-						'gridColumns': props['Columns span'],
-						'gridRows': props['Rows span'],
+						'gridColumn': 'span ' + props['Columns span'],
+						'gridRow': 'span ' + props['Rows span'],
 					}
 				},
 				[
@@ -498,8 +494,6 @@
 								'paddingLeft': padL,
 								'paddingBottom': padB,
 								'paddingRight': padR,
-								'gridColumns': props['Columns span'],
-								'gridRows': props['Rows span'],
 							},
 							'data-mobile-css' : 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
 							'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',

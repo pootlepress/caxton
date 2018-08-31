@@ -82,6 +82,7 @@ class Caxton {
 		add_action( 'enqueue_block_editor_assets', array( $this->admin, 'enqueue' ), 5 );
 		add_action( 'wp_ajax_caxton_save_blocks', array( $this->admin, 'caxton_save_blocks' ), 5 );
 		add_action( 'save_post', array( $this->admin, 'save_post' ), 5 );
+		add_action( 'block_categories', array( $this->admin, 'block_categories' ), 5 );
 		add_action( 'rest_api_init', array( $this->admin, 'rest_api_init' ) );
 		add_action( 'wp_ajax_caxton_posts', array( $this->admin, 'posts' ) );
 

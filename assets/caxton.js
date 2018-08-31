@@ -907,6 +907,7 @@ initCaxton( jQuery, wp.blocks, wp.element.createElement, window.wp.i18n, wp.comp
 
 jQuery( function ( $ ) {
 	setTimeout( function () {
+		if ( typeof ajaxurl !== 'string' ) return;
 		var blk, icon,
 			blocksData = wp.data.select( 'core/blocks' ).getBlockTypes(),
 			blocks = {};

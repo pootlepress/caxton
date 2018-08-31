@@ -217,38 +217,42 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 .gutenberg {
 	.caxton-columns {
 		grid-template-columns: 100%;
-		.editor-inner-blocks {
+		> .editor-inner-blocks > .editor-block-list__layout {
 			display: grid;
 			grid-auto-flow: dense;
 			grid-gap: inherit;
-		}
-
-		&.caxton-1-columns .editor-inner-blocks {
-			grid-template-columns: 100% 0 0 0 0 0 0 0;
-		}
-
-		&.caxton-2-columns .editor-inner-blocks {
-			grid-template-columns: 50% 50% 0 0 0 0 0 0;
-		}
-
-		&.caxton-3-columns .editor-inner-blocks {
-			grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
-		}
-
-		&.caxton-4-columns .editor-inner-blocks {
-			grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
-		}
-
-		&.caxton-5-columns .editor-inner-blocks {
-			grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
-		}
-
-		&.caxton-6-columns .editor-inner-blocks {
-			grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
+			> .editor-block-list__block {
+				margin: 0;
+			}
 		}
 	}
+
+	.caxton-1-columns > .editor-inner-blocks > .editor-block-list__layout {
+		grid-template-columns: 100%;
+	}
+
+	.caxton-2-columns > .editor-inner-blocks > .editor-block-list__layout {
+		grid-template-columns: 50% 50%;
+	}
+
+	.caxton-3-columns > .editor-inner-blocks > .editor-block-list__layout {
+		grid-template-columns: 33.333% 33.333% 33.333%;
+	}
+
+	.caxton-4-columns > .editor-inner-blocks > .editor-block-list__layout {
+		grid-template-columns: 25% 25% 25% 25%;
+	}
+
+	.caxton-5-columns > .editor-inner-blocks > .editor-block-list__layout {
+		grid-template-columns: 20% 20% 20% 20% 20%;
+	}
+
+	.caxton-6-columns > .editor-inner-blocks > .editor-block-list__layout {
+		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666%;
+	}
+
 	.caxton-grid-block {
-		.editor-inner-blocks, .editor-block-list__layout {
+		.editor-block-list__layout {
 			grid-column: 1/-1;
 			grid-template-columns: inherit;
 			display: grid;

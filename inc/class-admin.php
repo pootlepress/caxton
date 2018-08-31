@@ -110,6 +110,14 @@ class Caxton_Admin {
 		add_meta_box( 'caxton', __( 'Caxton Styles', 'caxton' ), [ $this, 'caxton_metabox' ], null, 'side' );
 	}
 
+	public function block_categories( $categories ) {
+		$categories[] = [
+			'slug' => 'caxton',
+			'title' => __( 'Caxton', 'caxton' ),
+		];
+		return $categories;
+	}
+
 	public function caxton_metabox( $post ) {
 		$settings = array(
 			'codeEditor' => wp_enqueue_code_editor( compact( 'file' ) ),
