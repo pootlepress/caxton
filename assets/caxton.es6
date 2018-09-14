@@ -925,18 +925,20 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 					fetchUrls() {
 						let
-							props = this.state.dataProps,
-							urls = this.state.block.apiUrl( this.props );
+							state = this.state,
+							urls = this.state.block.apiUrl( this.props ),
+							cmp = this;
 
 						for ( const dataKey in urls ) {
 							if ( urls.hasOwnProperty( dataKey ) ) {
-								if ( ! props[dataKey] ) {
-									props[dataKey] = {};
+								if ( ! state.dataProps[dataKey] || urls[dataKey] !== state.dataProps[dataKey].path ) {
+									state.dataProps[dataKey] = {};
 								}
 								wp.apiFetch( {path: urls[dataKey]} ).then( data => {
-									if ( props[dataKey].data !== data ) {
-										props[dataKey].data = data;
-										this.setState( this.state );
+									if ( cmp && state.dataProps[dataKey].data !== data ) {
+										state.dataProps[dataKey].data = data;
+										state.dataProps[dataKey].path = urls[dataKey];
+										cmp.setState( state );
 									}
 								} );
 							}

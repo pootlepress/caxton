@@ -904,20 +904,20 @@ function initCaxton($, blocks, el, i18n, components) {
 						}, {
 							key: 'fetchUrls',
 							value: function fetchUrls() {
-								var _this2 = this;
-
-								var props = this.state.dataProps,
-								    urls = this.state.block.apiUrl(this.props);
+								var state = this.state,
+								    urls = this.state.block.apiUrl(this.props),
+								    cmp = this;
 
 								var _loop = function _loop(dataKey) {
 									if (urls.hasOwnProperty(dataKey)) {
-										if (!props[dataKey]) {
-											props[dataKey] = {};
+										if (!state.dataProps[dataKey] || urls[dataKey] !== state.dataProps[dataKey].path) {
+											state.dataProps[dataKey] = {};
 										}
 										wp.apiFetch({ path: urls[dataKey] }).then(function (data) {
-											if (props[dataKey].data !== data) {
-												props[dataKey].data = data;
-												_this2.setState(_this2.state);
+											if (cmp && state.dataProps[dataKey].data !== data) {
+												state.dataProps[dataKey].data = data;
+												state.dataProps[dataKey].path = urls[dataKey];
+												cmp.setState(state);
 											}
 										});
 									}
