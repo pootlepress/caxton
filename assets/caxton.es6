@@ -3,12 +3,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	const __ = i18n.__;
 	const registerBlockType = blocks.registerBlockType;
 
-	const caxtonClone = obj => {
-		var copy = {};
+	const caxtonCopy = ( target, obj ) => {
 		for ( var ki in obj ) {
-			if ( obj.hasOwnProperty( ki ) ) copy[ ki ] = obj[ ki ];
+			if ( obj.hasOwnProperty( ki ) ) target[ ki ] = obj[ ki ];
 		}
-		return copy;
+		return target;
 	};
 
 	const elementFromHTML = (html, props, tag) => {
@@ -910,42 +909,35 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					constructor( props ) {
 						super( ...arguments );
 						this.state = {
-							dataProps: caxtonClone( props ),
+							dataProps: caxtonCopy( {}, props ),
 							block: block,
 							editCallback: editCallback,
 						};
 					}
-					componentDidMount() {
-						this.fetchUrls();
-					}
-					componentDidUpdate( prevProps, prevState ) {
-						this.state.dataProps = caxtonClone( this.props );
-						this.fetchUrls();
-					}
-
 					fetchUrls() {
 						let
 							state = this.state,
-							urls = this.state.block.apiUrl( this.props ),
+							urls = this.state.block.apiUrl( state.dataProps ),
 							cmp = this;
 
 						for ( const dataKey in urls ) {
 							if ( urls.hasOwnProperty( dataKey ) ) {
 								if ( ! state.dataProps[dataKey] || urls[dataKey] !== state.dataProps[dataKey].path ) {
 									state.dataProps[dataKey] = {};
+									wp.apiFetch( {path: urls[dataKey]} ).then( data => {
+										if ( cmp && state.dataProps[dataKey].data !== data ) {
+											state.dataProps[dataKey].data = data;
+											state.dataProps[dataKey].path = urls[dataKey];
+											cmp.setState( state );
+										}
+									} );
 								}
-								wp.apiFetch( {path: urls[dataKey]} ).then( data => {
-									if ( cmp && state.dataProps[dataKey].data !== data ) {
-										state.dataProps[dataKey].data = data;
-										state.dataProps[dataKey].path = urls[dataKey];
-										cmp.setState( state );
-									}
-								} );
 							}
 						}
 					}
 
 					render() {
+						caxtonCopy( this.state.dataProps, this.props );
 						this.fetchUrls();
 						return this.state.editCallback( this.state.dataProps );
 					}

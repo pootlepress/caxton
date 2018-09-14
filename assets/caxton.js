@@ -15,12 +15,11 @@ function initCaxton($, blocks, el, i18n, components) {
 	var __ = i18n.__;
 	var registerBlockType = blocks.registerBlockType;
 
-	var caxtonClone = function caxtonClone(obj) {
-		var copy = {};
+	var caxtonCopy = function caxtonCopy(target, obj) {
 		for (var ki in obj) {
-			if (obj.hasOwnProperty(ki)) copy[ki] = obj[ki];
+			if (obj.hasOwnProperty(ki)) target[ki] = obj[ki];
 		}
-		return copy;
+		return target;
 	};
 
 	var elementFromHTML = function elementFromHTML(html, props, tag) {
@@ -883,7 +882,7 @@ function initCaxton($, blocks, el, i18n, components) {
 							var _this = _possibleConstructorReturn(this, (CaxtonAPIDataComponent.__proto__ || Object.getPrototypeOf(CaxtonAPIDataComponent)).apply(this, arguments));
 
 							_this.state = {
-								dataProps: caxtonClone(props),
+								dataProps: caxtonCopy({}, props),
 								block: block,
 								editCallback: editCallback
 							};
@@ -891,35 +890,24 @@ function initCaxton($, blocks, el, i18n, components) {
 						}
 
 						_createClass(CaxtonAPIDataComponent, [{
-							key: 'componentDidMount',
-							value: function componentDidMount() {
-								this.fetchUrls();
-							}
-						}, {
-							key: 'componentDidUpdate',
-							value: function componentDidUpdate(prevProps, prevState) {
-								this.state.dataProps = caxtonClone(this.props);
-								this.fetchUrls();
-							}
-						}, {
 							key: 'fetchUrls',
 							value: function fetchUrls() {
 								var state = this.state,
-								    urls = this.state.block.apiUrl(this.props),
+								    urls = this.state.block.apiUrl(state.dataProps),
 								    cmp = this;
 
 								var _loop = function _loop(dataKey) {
 									if (urls.hasOwnProperty(dataKey)) {
 										if (!state.dataProps[dataKey] || urls[dataKey] !== state.dataProps[dataKey].path) {
 											state.dataProps[dataKey] = {};
+											wp.apiFetch({ path: urls[dataKey] }).then(function (data) {
+												if (cmp && state.dataProps[dataKey].data !== data) {
+													state.dataProps[dataKey].data = data;
+													state.dataProps[dataKey].path = urls[dataKey];
+													cmp.setState(state);
+												}
+											});
 										}
-										wp.apiFetch({ path: urls[dataKey] }).then(function (data) {
-											if (cmp && state.dataProps[dataKey].data !== data) {
-												state.dataProps[dataKey].data = data;
-												state.dataProps[dataKey].path = urls[dataKey];
-												cmp.setState(state);
-											}
-										});
 									}
 								};
 
@@ -930,6 +918,7 @@ function initCaxton($, blocks, el, i18n, components) {
 						}, {
 							key: 'render',
 							value: function render() {
+								caxtonCopy(this.state.dataProps, this.props);
 								this.fetchUrls();
 								return this.state.editCallback(this.state.dataProps);
 							}
