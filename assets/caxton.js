@@ -4,12 +4,24 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function initCaxton($, blocks, el, i18n, components) {
 	var editor = wp.editor;
 	var __ = i18n.__;
 	var registerBlockType = blocks.registerBlockType;
+
+	var caxtonClone = function caxtonClone(obj) {
+		var copy = {};
+		for (var ki in obj) {
+			if (obj.hasOwnProperty(ki)) copy[ki] = obj[ki];
+		}
+		return copy;
+	};
 
 	var elementFromHTML = function elementFromHTML(html, props, tag) {
 		if (!props) {
@@ -852,14 +864,81 @@ function initCaxton($, blocks, el, i18n, components) {
 					return that.save(props);
 				};
 
-				if ('function' === typeof block.withAPIData) {
-					if ('function' !== typeof block.APIDataURL) block.APIDataURL = function () {
-						return {
-							apiData: block.APIDataURL
+				if ('function' === typeof block.apiCallback) {
+					if ('function' !== typeof block.apiUrl) {
+						block.apiUrl = function () {
+							return {
+								apiData: block.apiUrl
+							};
 						};
-					};
-					that.block.edit = block.withAPIData;
-					registerBlockProps.edit = wp.components.withAPIData(block.APIDataURL)(editCallback);
+					}
+					that.block.edit = block.apiCallback;
+
+					var CaxtonAPIDataComponent = function (_React$Component) {
+						_inherits(CaxtonAPIDataComponent, _React$Component);
+
+						function CaxtonAPIDataComponent(props) {
+							_classCallCheck(this, CaxtonAPIDataComponent);
+
+							var _this = _possibleConstructorReturn(this, (CaxtonAPIDataComponent.__proto__ || Object.getPrototypeOf(CaxtonAPIDataComponent)).apply(this, arguments));
+
+							_this.state = {
+								dataProps: caxtonClone(props),
+								block: block,
+								editCallback: editCallback
+							};
+							return _this;
+						}
+
+						_createClass(CaxtonAPIDataComponent, [{
+							key: 'componentDidMount',
+							value: function componentDidMount() {
+								this.fetchUrls();
+							}
+						}, {
+							key: 'componentDidUpdate',
+							value: function componentDidUpdate(prevProps, prevState) {
+								this.state.dataProps = caxtonClone(this.props);
+								this.fetchUrls();
+							}
+						}, {
+							key: 'fetchUrls',
+							value: function fetchUrls() {
+								var _this2 = this;
+
+								var props = this.state.dataProps,
+								    urls = this.state.block.apiUrl(this.props);
+
+								var _loop = function _loop(dataKey) {
+									if (urls.hasOwnProperty(dataKey)) {
+										if (!props[dataKey]) {
+											props[dataKey] = {};
+										}
+										wp.apiFetch({ path: urls[dataKey] }).then(function (data) {
+											if (props[dataKey].data !== data) {
+												props[dataKey].data = data;
+												_this2.setState(_this2.state);
+											}
+										});
+									}
+								};
+
+								for (var dataKey in urls) {
+									_loop(dataKey);
+								}
+							}
+						}, {
+							key: 'render',
+							value: function render() {
+								this.fetchUrls();
+								return this.state.editCallback(this.state.dataProps);
+							}
+						}]);
+
+						return CaxtonAPIDataComponent;
+					}(React.Component);
+
+					registerBlockProps.edit = CaxtonAPIDataComponent;
 					registerBlockProps.save = function () {
 						return null;
 					};

@@ -3,6 +3,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	const __ = i18n.__;
 	const registerBlockType = blocks.registerBlockType;
 
+	const caxtonClone = obj => {
+		var copy = {};
+		for ( var ki in obj ) {
+			if ( obj.hasOwnProperty( ki ) ) copy[ ki ] = obj[ ki ];
+		}
+		return copy;
+	};
 
 	const elementFromHTML = (html, props, tag) => {
 		if ( ! props ) {
@@ -889,13 +896,60 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				return that.save( props );
 			};
 
-			if ( 'function' === typeof block.withAPIData ) {
-				if ( 'function' !== typeof block.APIDataURL )
-					block.APIDataURL = () => ({
-						apiData: block.APIDataURL
-					});
-				that.block.edit = block.withAPIData;
-				registerBlockProps.edit = wp.components.withAPIData( block.APIDataURL )( editCallback );
+			if ( 'function' === typeof block.apiCallback ) {
+				if ( 'function' !== typeof block.apiUrl ) {
+					block.apiUrl = () => (
+						{
+							apiData: block.apiUrl,
+						}
+					);
+				}
+				that.block.edit = block.apiCallback;
+
+				class CaxtonAPIDataComponent extends React.Component {
+					constructor( props ) {
+						super( ...arguments );
+						this.state = {
+							dataProps: caxtonClone( props ),
+							block: block,
+							editCallback: editCallback,
+						};
+					}
+					componentDidMount() {
+						this.fetchUrls();
+					}
+					componentDidUpdate( prevProps, prevState ) {
+						this.state.dataProps = caxtonClone( this.props );
+						this.fetchUrls();
+					}
+
+					fetchUrls() {
+						let
+							props = this.state.dataProps,
+							urls = this.state.block.apiUrl( this.props );
+
+						for ( const dataKey in urls ) {
+							if ( urls.hasOwnProperty( dataKey ) ) {
+								if ( ! props[dataKey] ) {
+									props[dataKey] = {};
+								}
+								wp.apiFetch( {path: urls[dataKey]} ).then( data => {
+									if ( props[dataKey].data !== data ) {
+										props[dataKey].data = data;
+										this.setState( this.state );
+									}
+								} );
+							}
+						}
+					}
+
+					render() {
+						this.fetchUrls();
+						return this.state.editCallback( this.state.dataProps );
+					}
+				}
+
+				registerBlockProps.edit = CaxtonAPIDataComponent;
 				registerBlockProps.save = () => null;
 			}
 
