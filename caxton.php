@@ -4,7 +4,7 @@
  * Plugin URI: http://shramee.me/
  * Description: Caxton - blocks for Gutenberg
  * Author: PootlePress
- * Version: 0.7.0
+ * Version: 1.0.0
  * Author URI: https://pootlepress.com/
  * @developer shramee <shramee.srivastav@gmail.com>
  * TACHYONS v4.9.0 | http://tachyons.io - MIT License
