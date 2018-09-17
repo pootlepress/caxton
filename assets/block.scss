@@ -225,12 +225,11 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 				margin: 0;
 			}
 		}
-	}
 
-
-	@for $i from 1 to 6 {
-		&.caxton-#{$i}-columns > .editor-inner-blocks > .editor-block-list__layout {
-			grid-template-columns: repeat( $i , 1fr);
+		@for $i from 1 to 6 {
+			&.caxton-#{$i}-columns > .editor-inner-blocks > .editor-block-list__layout {
+				grid-template-columns: repeat($i, 1fr);
+			}
 		}
 	}
 

@@ -954,7 +954,8 @@ function initCaxton($, blocks, el, i18n, components) {
 
 	window.Caxton = {
 		el2html: HTMLFromElement,
-		html2el: elementFromHTML
+		html2el: elementFromHTML,
+		copyObj: caxtonCopy
 	};
 }
 
