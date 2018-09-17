@@ -54,7 +54,10 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 
 Version 1.0.0
 * 2018-09-17
-* Gutenberg 3.7.0 compatibility
+* Tweak - Uses of withAPIData removed
+* Fixed - Hero block columns broken
+* Dev - New `apiCallback` and `apiUrl` params for CaxtonBlock constructor
+* Dev - Now using ES6 for JS scripting
 
 Version 0.7.0
 * 2018-06-04
