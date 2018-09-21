@@ -46,6 +46,11 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 }
 
 [data-type="caxton/grid"] {
+	.caxton-grid-block > .editor-inner-blocks {
+		grid-column: 1 / -1;
+		grid-template-columns: inherit;
+		grid-template-rows: inherit;
+	}
 	.editor-inner-blocks + .editor-inserter {
 		position: absolute;
 		bottom: 0;

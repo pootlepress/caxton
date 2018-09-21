@@ -1,0 +1,217 @@
+export const gridFields = {
+	'Columns'                        : {
+		type   : 'range',
+		min    : 1,
+		max    : 12,
+		section: 'Layout',
+		default: 3,
+	},
+	'Column gap'                     : {
+		type   : 'select',
+		options: [
+			{value: 'grid-gap-none', label: 'None',},
+			{value: 'grid-gap-tight', label: 'Tight',},
+			{value: '', label: 'Normal',},
+			{value: 'grid-gap-wide', label: 'Wide',},
+			{value: 'grid-gap-wider', label: 'Wider',},
+		],
+		section: 'Layout',
+	},
+	'Inner Padding top'              : {
+		type   : 'range',
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding left'             : {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding bottom'           : {
+		type   : 'range',
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding right'            : {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding left/right tablet': {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding left/right mobile': {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding unit'             : {
+		type   : 'select',
+		options: [
+			{value: '%', label: 'Responsive',},
+			{value: 'px', label: 'Pixels x 5',},
+		],
+		default: '%',
+		section: 'Layout',
+	},
+	'Background image'               : {
+		type   : 'image',
+		section: 'Background',
+		tpl    : 'background-image:url(%s);',
+	},
+	'Background image position'      : {
+		type   : 'position',
+		section: 'Background',
+		tpl    : 'background-position:%s;',
+	},
+	'Background parallax'            : {
+		type   : 'toggle',
+		value  : 'background-attachment:fixed;',
+		section: 'Background',
+	},
+	'Background color'               : {
+		type   : 'color',
+		section: 'Background',
+	},
+	'Gradient color'                 : {
+		type   : 'color',
+		section: 'Background',
+		tpl    : ', %s',
+	},
+	'Gradient type'                  : {
+		type   : 'select',
+		options: [
+			{value: 'linear-gradient( ', label: 'Linear vertical',},
+			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
+			{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
+			{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
+			{value: 'radial-gradient( ', label: 'Radial gradient',},
+		],
+		default: 'linear-gradient( ',
+		section: 'Background',
+	},
+	'Background colors opacity'      : {
+		type   : 'range',
+		min    : 0,
+		max    : 1,
+		step   : .05,
+		help   : 'Reduce opacity to have transparent colors over image',
+		default: '.9',
+		section: 'Background',
+		tpl    : 'opacity:%s;',
+	},
+};
+
+export const sectionFields = {
+	'Inner Padding top': {
+		type: 'range',
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding left': {
+		type: 'range',
+		max: 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding bottom': {
+		type: 'range',
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding right': {
+		type: 'range',
+		max: 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding left/right tablet': {
+		type: 'range',
+		max: 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding left/right mobile': {
+		type: 'range',
+		max: 70,
+		section: 'Layout',
+		default: 5,
+	},
+	'Inner Padding unit': {
+		type: 'select',
+		options: [
+			{value: '%', label: 'Responsive',},
+			{value: 'px', label: 'Pixels x 5',},
+		],
+		default: '%',
+		section: 'Layout',
+	},
+	'Background image': {
+		type: 'image',
+		section: 'Background',
+		tpl: 'background-image:url(%s);',
+	},
+	'Background image position': {
+		type: 'position',
+		section: 'Background',
+		tpl: 'background-position:%s;',
+	},
+	'Background parallax': {
+		type: 'toggle',
+		value: 'background-attachment:fixed;',
+		section: 'Background',
+	},
+	'Background color': {
+		type: 'color',
+		section: 'Background',
+	},
+	'Gradient color': {
+		type: 'color',
+		section: 'Background',
+		tpl: ', %s',
+	},
+	'Gradient type': {
+		type: 'select',
+		options: [
+			{value: 'linear-gradient( ', label: 'Linear vertical',},
+			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
+			{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
+			{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
+			{value: 'radial-gradient( ', label: 'Radial gradient',},
+		],
+		default: 'linear-gradient( ',
+		section: 'Background',
+	},
+	'Background colors opacity': {
+		type: 'range',
+		min: 0,
+		max: 1,
+		step: .05,
+		help: 'Reduce opacity to have transparent colors over image',
+		default: '.9',
+		section: 'Background',
+		tpl: 'opacity:%s;',
+	},
+	'Columns span': {
+		type: 'range',
+		description: 'Specify number of columns this section should fill.',
+		min: 1,
+		max: 12,
+		section: 'Jedi controls',
+		default: 1,
+	},
+	'Rows span': {
+		type: 'range',
+		description: 'Specify number of rows this section should fill.',
+		min: 1,
+		max: 12,
+		section: 'Jedi controls',
+		default: 1,
+	},
+};
