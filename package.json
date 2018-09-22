@@ -3,10 +3,14 @@
 	"version": "1.0.0",
 	"description": "",
 	"author": "Shramee",
-	"main": "block.js",
+	"scripts": {
+		"build": "node build.node.js"
+	},
 	"devDependencies": {
 		"@babel/core": "^7.1.0",
-		"babelify": "^10.0.0"
+		"@babel/preset-env": "^7.1.0",
+		"babelify": "^10.0.0",
+		"browserify": "^16.2.2"
 	},
 	"dependencies": {}
 }

@@ -35,61 +35,35 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 
 	bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 					 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
-//
-//	return el(
-//		// Element
-//		'div', {
-//			className: cls,
-//			key      : 'caxton-section-block',
-//			style    : {
-//				'gridColumn': 'span ' + props['Columns span'],
-//				'gridRow'   : 'span ' + props['Rows span'],
-//			}
-//		},
-//		[
-//			// Background div
-//			el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
-//			// Blocks inserter
-//			el( 'div', {
-//					className        : colCls,
-//					style            : {
-//						'paddingTop'   : padT,
-//						'paddingLeft'  : padL,
-//						'paddingBottom': padB,
-//						'paddingRight' : padR,
-//					},
-//					'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
-//					'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
-//					key              : 'block',
-//				},
-//				childrenBlocks
-//			)
-//		]
-//	);
-
 
 	return el(
 		// Element
-		'div',
-		{
-			className: cls, key: 'caxton-section-block',
+		'div', {
+			className: cls,
+			key      : 'caxton-section-block',
+			style    : {
+				'gridColumn': 'span ' + props['Columns span'],
+				'gridRow'   : 'span ' + props['Rows span'],
+			}
 		},
-		// Background div
-		el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
-		// Blocks inserter
-		el( 'div', {
-				className: colCls,
-				style: {
-					'paddingTop': padT,
-					'paddingLeft': padL,
-					'paddingBottom': padB,
-					'paddingRight': padR,
+		[
+			// Background div
+			el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
+			// Blocks inserter
+			el( 'div', {
+					className        : colCls,
+					style            : {
+						'paddingTop'   : padT,
+						'paddingLeft'  : padL,
+						'paddingBottom': padB,
+						'paddingRight' : padR,
+					},
+					'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
+					'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
+					key              : 'block',
 				},
-				'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
-				'data-mobile-css' : 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
-				key: 'block',
-			},
-			el( wp.editor.InnerBlocks, {key: 'innerblockscontent' } ),
-			el( wp.editor.Inserter, {key: 'insertBlocks'} )
-		);
+				childrenBlocks
+			)
+		]
+	);
 };

@@ -67,10 +67,8 @@ class Caxton_Admin {
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 
-		// Don't include caxton block yet
-				wp_enqueue_script( "$token-block", $url . 'assets/layout-blocks/caxton-block.js', array( $token ) );
-		wp_enqueue_script( "$token-blocks", $url . 'assets/block.js', array( $token ) );
-		wp_enqueue_style( "$token-blocks", $url . 'assets/block.css' );
+		wp_enqueue_script( "$token-blocks", $url . 'assets/blocks.js', array( $token ) );
+		wp_enqueue_style( "$token-blocks", $url . 'assets/blocks.css' );
 		wp_enqueue_script( $token . '-js', $url . 'assets/caxton-utils.js', array( 'jquery' ) );
 
 		$caxton_fonts = $categories = [

@@ -1,3 +1,5 @@
+import { CaxtonLayoutBlocksSetup } from './layout-blocks/caxton-block.es6';
+
 /**
  * Plugin front end scripts
  *
@@ -15,6 +17,8 @@
 		const createBlock = blocks.createBlock;
 		const InspectorControls = wp.editor.InspectorControls;
 		const __ = i18n.__;
+
+//		CaxtonLayoutBlocksSetup( $, wp );
 
 		CaxtonBlock( {
 			id: 'hero',
