@@ -2,7 +2,7 @@ import {gridFields, sectionFields} from './fields.es6';
 import {GridRender} from './grid.es6';
 import {sectionRender} from './section.es6';
 
-export const CaxtonLayoutBlocksSetup = ( $, {element, editor, i18n} ) => {
+export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 	const el = element.createElement;
 
 	CaxtonBlock( {
@@ -74,7 +74,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor, i18n} ) => {
 						key              : 'block',
 					},
 					el(
-						wp.editor.InnerBlocks,
+						editor.InnerBlocks,
 						{
 							allowedBlocks: [
 								'caxton/section',
@@ -84,7 +84,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor, i18n} ) => {
 								['caxton/section', {}],
 								['caxton/section', {}],
 							],
-							templateLock : 'insert',
+//							templateLock : 'insert',
 							key          : 'innerblockscontent'
 						}
 					),
@@ -127,7 +127,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor, i18n} ) => {
 			bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 							 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
-			var childrenBlocks = el( wp.editor.InnerBlocks.Content, {} );
+			var childrenBlocks = el( editor.InnerBlocks.Content, {} );
 
 			return el(
 				// Element
@@ -164,15 +164,17 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor, i18n} ) => {
 		parent      : ['caxton/grid'],
 		fields      : sectionFields,
 		edit        : function ( props, block ) {
+			console.log( editor.InnerBlocks );
+
 			return sectionRender(
 				props, block,
-				el( editor.InnerBlocks, {key: 'innerblockscontent'} )
+				[ el( editor.InnerBlocks, {key: 'innerblocks'} ) ]
 			);
 		},
 		save        : function ( props, block ) {
 			return sectionRender(
 				props, block,
-				el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )
+				[ el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} ) ]
 			);
 		},
 		wrapperProps: function ( attrs, props ) {
