@@ -8,6 +8,7 @@
 	max-width: 300px;
 	margin: auto;
 }
+
 .caxton-grid {
 	.grid-image h3.grid-title {
 		font-size: 16px;
@@ -42,28 +43,6 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		&:hover {
 			outline: 1px dotted #ddd;
 		}
-	}
-}
-
-[data-type="caxton/grid"] {
-	.caxton-grid-block > .editor-inner-blocks {
-		grid-column: 1 / -1;
-		grid-template-columns: inherit;
-		grid-template-rows: inherit;
-	}
-	.editor-inner-blocks + .editor-inserter {
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		svg {
-			fill: #e74c3c;
-		}
-		button {
-			border-radius: 50%;
-		}
-	}
-	.editor-block-list__block:not(:last-child) .editor-inner-blocks + .editor-inserter {
-		display: none;
 	}
 }
 
@@ -117,6 +96,7 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		}
 	}
 }
+
 .edit-post-block-sidebar__panel .components-panel__body.caxton-section {
 	box-shadow: inset 0 -1px 0 #ddd;
 }
@@ -217,39 +197,6 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 
 .caxton-columns .editor-block-list__layout.layout-caxton-col {
 	overflow: visible;
-}
-
-.gutenberg {
-	.caxton-columns {
-		grid-template-columns: 100%;
-		> .editor-inner-blocks > .editor-block-list__layout {
-			display: grid;
-			grid-auto-flow: dense;
-			grid-gap: inherit;
-			> .editor-block-list__block {
-				margin: 0;
-			}
-		}
-
-		@for $i from 1 to 6 {
-			&.caxton-#{$i}-columns > .editor-inner-blocks > .editor-block-list__layout {
-				grid-template-columns: repeat($i, 1fr);
-			}
-		}
-	}
-
-	.caxton-grid-block {
-		.editor-block-list__layout {
-			grid-column: 1/-1;
-			grid-template-columns: inherit;
-			display: grid;
-			grid-auto-flow: dense;
-			grid-gap: inherit;
-		}
-		.editor-block-list__block {
-			margin: 0;
-		}
-	}
 }
 
 @import 'scss/ordered-select-control';

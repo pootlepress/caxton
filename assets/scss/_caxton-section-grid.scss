@@ -1,3 +1,56 @@
+.gutenberg {
+	.caxton-columns {
+		grid-template-columns: 100%;
+		> .editor-inner-blocks > .editor-block-list__layout {
+			display: grid;
+			grid: inherit;
+			> .editor-block-list__block {
+				margin: 0;
+			}
+		}
+
+		@for $i from 1 to 6 {
+			&.caxton-#{$i}-columns > .editor-inner-blocks > .editor-block-list__layout {
+				grid-template-columns: repeat($i, 1fr);
+			}
+		}
+	}
+}
+
+[data-type="caxton/grid"] {
+	.caxton-grid-block > .editor-inner-blocks {
+		grid: inherit;
+		grid-gap: inherit;
+		grid-column: 1 / -1;
+	}
+	.editor-inner-blocks + .editor-inserter {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		svg {
+			fill: #e74c3c;
+		}
+		button {
+			border-radius: 50%;
+		}
+	}
+	.editor-block-list__block:not(:last-child) .editor-inner-blocks + .editor-inserter {
+		display: none;
+	}
+
+	.caxton-grid-block {
+		.editor-block-list__layout {
+			grid: inherit;
+			grid-gap: inherit;
+			grid-column: 1/-1;
+			display: grid;
+		}
+		.editor-block-list__block {
+			margin: 0;
+		}
+	}
+}
+
 [data-caxton-section] {
 	justify-content: stretch;
 	align-items: stretch;
@@ -12,6 +65,10 @@
 			}
 		}
 	}
+}
+
+.edit-post-visual-editor .editor-block-list__block[data-type='caxton/section'] .editor-block-list__block-edit {
+	margin: 8px 0 32px;
 }
 
 @for $i from 1 to 13 {
