@@ -1,7 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
-var _caxtonBlock = require("./layout-blocks/caxton-block.es6");
+var _layoutBlocks = require("./layout-blocks/layout-blocks.es6");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -34,8 +34,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
       RangeControl = _ref.RangeControl;
   var createBlock = blocks.createBlock;
   var InspectorControls = wp.editor.InspectorControls;
-  var __ = i18n.__; //		CaxtonLayoutBlocksSetup( $, wp );
-
+  var __ = i18n.__;
+  (0, _layoutBlocks.CaxtonLayoutBlocksSetup)($, wp);
   CaxtonBlock({
     id: 'hero',
     title: 'Easy Hero',
@@ -1810,195 +1810,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
   });
 })(jQuery, wp.blocks, wp.element.createElement, wp.i18n, wp.components);
 
-},{"./layout-blocks/caxton-block.es6":2}],2:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CaxtonLayoutBlocksSetup = void 0;
-
-var _fields = require("./fields.es6");
-
-var _grid = require("./grid.es6");
-
-var _section = require("./section.es6");
-
-var CaxtonLayoutBlocksSetup = function CaxtonLayoutBlocksSetup($, _ref) {
-  var element = _ref.element,
-      editor = _ref.editor,
-      i18n = _ref.i18n;
-  var el = element.createElement;
-  CaxtonBlock({
-    id: 'caxton/grid',
-    title: 'Caxton',
-    icon: 'screenoptions',
-    toolbars: {
-      Layout: 'BlockWidthToolbar'
-    },
-    fields: _fields.gridFields,
-    edit: function edit(props, block) {
-      var cls = 'relative ',
-          bgHTML,
-          padUnit,
-          padT,
-          padL,
-          padB,
-          padR,
-          columns,
-          colCls = 'relative caxton-columns caxton-grid-block',
-          padMob = block.attrs['Inner Padding left/right tablet'],
-          padTab = block.attrs['Inner Padding left/right mobile'];
-      padUnit = block.attrs['Inner Padding unit'];
-      padT = block.attrs['Inner Padding top'];
-      padL = block.attrs['Inner Padding left'];
-      padB = block.attrs['Inner Padding bottom'];
-      padR = block.attrs['Inner Padding right'];
-      columns = block.attrs['Columns'];
-
-      if ('px' === padUnit) {
-        padT *= 5;
-        padL *= 5;
-        padB *= 5;
-        padR *= 5;
-      }
-
-      padT = padT ? padT + padUnit : 0;
-      padL = padL ? padL + padUnit : 0;
-      padB = padB ? padB + padUnit : 0;
-      padR = padR ? padR + padUnit : 0;
-
-      if (block.attrs['Layout']) {
-        cls += ' ' + block.attrs['Layout'];
-      }
-
-      if (block.attrs['Column gap']) {
-        colCls += ' ' + block.attrs['Column gap'];
-      }
-
-      bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' + '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
-      return el( // Element
-      'div', {
-        className: cls,
-        key: 'caxton-grid-block'
-      }, // Background div
-      el('div', {
-        key: 'bg',
-        className: 'absolute absolute--fill',
-        dangerouslySetInnerHTML: block.outputHTML(bgHTML)
-      }), // Blocks inserter
-      el('div', {
-        className: colCls,
-        style: {
-          'paddingTop': padT,
-          'paddingLeft': padL,
-          'paddingBottom': padB,
-          'paddingRight': padR,
-          'gridTemplateColumns': 'repeat( ' + columns + ', 1fr )'
-        },
-        'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
-        'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
-        key: 'block'
-      }, el(wp.editor.InnerBlocks, {
-        allowedBlocks: ['caxton/section'],
-        template: [['caxton/section', {}], ['caxton/section', {}]],
-        templateLock: 'insert',
-        key: 'innerblockscontent'
-      })));
-    },
-    save: function save(props, block) {
-      var cls = 'relative',
-          bgHTML,
-          padUnit,
-          padT,
-          padL,
-          padB,
-          padR,
-          columns,
-          colCls = 'relative caxton-columns',
-          padMob = block.attrs['Inner Padding left/right tablet'],
-          padTab = block.attrs['Inner Padding left/right mobile'];
-      padUnit = block.attrs['Inner Padding unit'];
-      padT = block.attrs['Inner Padding top'];
-      padL = block.attrs['Inner Padding left'];
-      padB = block.attrs['Inner Padding bottom'];
-      padR = block.attrs['Inner Padding right'];
-      columns = block.attrs['Columns'];
-
-      if ('px' === padUnit) {
-        padT *= 5;
-        padL *= 5;
-        padB *= 5;
-        padR *= 5;
-      }
-
-      padT = padT ? padT + padUnit : 0;
-      padL = padL ? padL + padUnit : 0;
-      padB = padB ? padB + padUnit : 0;
-      padR = padR ? padR + padUnit : 0;
-
-      if (block.attrs['Layout']) {
-        cls += ' ' + block.attrs['Layout'];
-      }
-
-      if (block.attrs['Column gap']) {
-        colCls += ' ' + block.attrs['Column gap'];
-      }
-
-      bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' + '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
-      var childrenBlocks = el(wp.editor.InnerBlocks.Content, {});
-      return el( // Element
-      'div', {
-        className: cls,
-        key: 'caxton-grid-block'
-      }, [// Background div
-      el('div', {
-        key: 'bg',
-        className: 'absolute absolute--fill',
-        dangerouslySetInnerHTML: block.outputHTML(bgHTML)
-      }), // Blocks inserter
-      el('div', {
-        className: colCls,
-        style: {
-          'paddingTop': padT,
-          'paddingLeft': padL,
-          'paddingBottom': padB,
-          'paddingRight': padR,
-          'gridTemplateColumns': '1fr '.repeat(columns)
-        },
-        'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
-        'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
-        key: 'block'
-      }, childrenBlocks)]);
-    }
-  }); // region Caxton section block
-
-  CaxtonBlock({
-    id: 'caxton/section',
-    title: 'Caxton section',
-    icon: 'screenoptions',
-    parent: ['caxton/grid'],
-    fields: _fields.sectionFields,
-    edit: function edit(props, block) {
-      return (0, _section.sectionRender)(props, block, el(editor.InnerBlocks, {
-        key: 'innerblockscontent'
-      }));
-    },
-    save: function save(props, block) {
-      return (0, _section.sectionRender)(props, block, el(editor.InnerBlocks.Content, {
-        key: 'innerblockscontent'
-      }));
-    },
-    wrapperProps: function wrapperProps(attrs, props) {
-      attrs['data-caxton-section'] = 'cols:' + props['Columns span'] + '|rows:' + props['Rows span'];
-      return attrs;
-    }
-  }); // endregion Caxton section block
-};
-
-exports.CaxtonLayoutBlocksSetup = CaxtonLayoutBlocksSetup;
-
-},{"./fields.es6":3,"./grid.es6":4,"./section.es6":5}],3:[function(require,module,exports){
+},{"./layout-blocks/layout-blocks.es6":4}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2257,7 +2069,7 @@ var sectionFields = {
 };
 exports.sectionFields = sectionFields;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2304,7 +2116,195 @@ function (_React$Component) {
 
 exports.GridRender = GridRender;
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CaxtonLayoutBlocksSetup = void 0;
+
+var _fields = require("./fields.es6");
+
+var _grid = require("./grid.es6");
+
+var _section = require("./section.es6");
+
+var CaxtonLayoutBlocksSetup = function CaxtonLayoutBlocksSetup($, _ref) {
+  var element = _ref.element,
+      editor = _ref.editor,
+      i18n = _ref.i18n;
+  var el = element.createElement;
+  CaxtonBlock({
+    id: 'caxton/grid',
+    title: 'Caxton',
+    icon: 'screenoptions',
+    toolbars: {
+      Layout: 'BlockWidthToolbar'
+    },
+    fields: _fields.gridFields,
+    edit: function edit(props, block) {
+      var cls = 'relative ',
+          bgHTML,
+          padUnit,
+          padT,
+          padL,
+          padB,
+          padR,
+          columns,
+          colCls = 'relative caxton-columns caxton-grid-block',
+          padMob = block.attrs['Inner Padding left/right tablet'],
+          padTab = block.attrs['Inner Padding left/right mobile'];
+      padUnit = block.attrs['Inner Padding unit'];
+      padT = block.attrs['Inner Padding top'];
+      padL = block.attrs['Inner Padding left'];
+      padB = block.attrs['Inner Padding bottom'];
+      padR = block.attrs['Inner Padding right'];
+      columns = block.attrs['Columns'];
+
+      if ('px' === padUnit) {
+        padT *= 5;
+        padL *= 5;
+        padB *= 5;
+        padR *= 5;
+      }
+
+      padT = padT ? padT + padUnit : 0;
+      padL = padL ? padL + padUnit : 0;
+      padB = padB ? padB + padUnit : 0;
+      padR = padR ? padR + padUnit : 0;
+
+      if (block.attrs['Layout']) {
+        cls += ' ' + block.attrs['Layout'];
+      }
+
+      if (block.attrs['Column gap']) {
+        colCls += ' ' + block.attrs['Column gap'];
+      }
+
+      bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' + '<div class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
+      return el( // Element
+      'div', {
+        className: cls,
+        key: 'caxton-grid-block'
+      }, // Background div
+      el('div', {
+        key: 'bg',
+        className: 'absolute absolute--fill',
+        dangerouslySetInnerHTML: block.outputHTML(bgHTML)
+      }), // Blocks inserter
+      el('div', {
+        className: colCls,
+        style: {
+          'paddingTop': padT,
+          'paddingLeft': padL,
+          'paddingBottom': padB,
+          'paddingRight': padR,
+          'gridTemplateColumns': 'repeat( ' + columns + ', 1fr )'
+        },
+        'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
+        'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
+        key: 'block'
+      }, el(wp.editor.InnerBlocks, {
+        allowedBlocks: ['caxton/section'],
+        template: [['caxton/section', {}], ['caxton/section', {}]],
+        templateLock: 'insert',
+        key: 'innerblockscontent'
+      })));
+    },
+    save: function save(props, block) {
+      var cls = 'relative',
+          bgHTML,
+          padUnit,
+          padT,
+          padL,
+          padB,
+          padR,
+          columns,
+          colCls = 'relative caxton-columns',
+          padMob = block.attrs['Inner Padding left/right tablet'],
+          padTab = block.attrs['Inner Padding left/right mobile'];
+      padUnit = block.attrs['Inner Padding unit'];
+      padT = block.attrs['Inner Padding top'];
+      padL = block.attrs['Inner Padding left'];
+      padB = block.attrs['Inner Padding bottom'];
+      padR = block.attrs['Inner Padding right'];
+      columns = block.attrs['Columns'];
+
+      if ('px' === padUnit) {
+        padT *= 5;
+        padL *= 5;
+        padB *= 5;
+        padR *= 5;
+      }
+
+      padT = padT ? padT + padUnit : 0;
+      padL = padL ? padL + padUnit : 0;
+      padB = padB ? padB + padUnit : 0;
+      padR = padR ? padR + padUnit : 0;
+
+      if (block.attrs['Layout']) {
+        cls += ' ' + block.attrs['Layout'];
+      }
+
+      if (block.attrs['Column gap']) {
+        colCls += ' ' + block.attrs['Column gap'];
+      }
+
+      bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' + '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
+      var childrenBlocks = el(wp.editor.InnerBlocks.Content, {});
+      return el( // Element
+      'div', {
+        className: cls,
+        key: 'caxton-grid-block'
+      }, [// Background div
+      el('div', {
+        key: 'bg',
+        className: 'absolute absolute--fill',
+        dangerouslySetInnerHTML: block.outputHTML(bgHTML)
+      }), // Blocks inserter
+      el('div', {
+        className: colCls,
+        style: {
+          'paddingTop': padT,
+          'paddingLeft': padL,
+          'paddingBottom': padB,
+          'paddingRight': padR,
+          'gridTemplateColumns': '1fr '.repeat(columns)
+        },
+        'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
+        'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
+        key: 'block'
+      }, childrenBlocks)]);
+    }
+  }); // region Caxton section block
+
+  CaxtonBlock({
+    id: 'caxton/section',
+    title: 'Caxton section',
+    icon: 'screenoptions',
+    parent: ['caxton/grid'],
+    fields: _fields.sectionFields,
+    edit: function edit(props, block) {
+      return (0, _section.sectionRender)(props, block, el(editor.InnerBlocks, {
+        key: 'innerblockscontent'
+      }));
+    },
+    save: function save(props, block) {
+      return (0, _section.sectionRender)(props, block, el(editor.InnerBlocks.Content, {
+        key: 'innerblockscontent'
+      }));
+    },
+    wrapperProps: function wrapperProps(attrs, props) {
+      attrs['data-caxton-section'] = 'cols:' + props['Columns span'] + '|rows:' + props['Rows span'];
+      return attrs;
+    }
+  }); // endregion Caxton section block
+};
+
+exports.CaxtonLayoutBlocksSetup = CaxtonLayoutBlocksSetup;
+
+},{"./fields.es6":2,"./grid.es6":3,"./section.es6":5}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
