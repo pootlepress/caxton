@@ -63,3 +63,26 @@ export function gridRender ( props, block, childrenBlocks ) {
 		)
 	);
 }
+
+function gridLayoutPicker( props ) {
+	return 'Render layout picker here.'
+}
+
+export function gridContent( props, block  ) {
+	if ( props.attributes.tpl && props.attributes.tpl.indexOf( '[' ) === 0 && props.attributes.tpl.indexOf( ']' ) > 0 ) {
+		return el(
+			editor.InnerBlocks,
+			{
+				allowedBlocks: [
+					'caxton/section',
+					//	'core/paragraph',
+				],
+				template     : JSON.parse( props.attributes.tpl ),
+				templateLock : 'insert',
+				key          : 'innerblocks'
+			}
+		);
+	} else {
+		return gridLayoutPicker( props );
+	}
+}

@@ -1,5 +1,5 @@
 import {gridFields, sectionFields} from './fields.es6';
-import {gridRender} from './grid.es6';
+import {gridRender, gridContent} from './grid.es6';
 import {sectionRender} from './section.es6';
 
 export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
@@ -13,33 +13,16 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 			Layout: 'BlockWidthToolbar',
 		},
 		fields  : gridFields,
+		attributes: {
+			tpl: {
+				type: 'string'
+			},
+		},
 		edit    : function ( props, block ) {
-			console.log( props );
-			return gridRender(
-				props, block,
-				el(
-					editor.InnerBlocks,
-					{
-						allowedBlocks: [
-							'caxton/section',
-							//	'core/paragraph',
-						],
-						template     : [
-							['caxton/section', {}],
-							['caxton/section', {}],
-						],
-//							templateLock : 'insert',
-						key          : 'innerblocks'
-					}
-				)
-			);
+			return gridRender( props, block, gridContent( props, block  ) );
 		},
 		save    : function ( props, block ) {
-			return gridRender(
-				props, block,
-				el( editor.InnerBlocks.Content, { key: 'innerblockscontent' }
-				)
-			);
+			return gridRender( props, block, el( editor.InnerBlocks.Content, { key: 'innerblockscontent' } ) );
 		}
 	} );
 
@@ -51,11 +34,9 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 		parent      : ['caxton/grid'],
 		fields      : sectionFields,
 		edit        : function ( props, block ) {
-			console.log( editor.InnerBlocks );
-
 			return sectionRender(
 				props, block,
-				[el( editor.InnerBlocks, {key: 'innerblocks'} )]
+				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
 			);
 		},
 		save        : function ( props, block ) {
