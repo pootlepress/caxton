@@ -19,9 +19,13 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 			},
 		},
 		edit    : function ( props, block ) {
+			console.log( 'Props grid edit', props );
+
 			return gridRender( props, block, gridContent( props, block  ) );
 		},
 		save    : function ( props, block ) {
+			console.log( 'Props grid save', props );
+
 			return gridRender( props, block, el( editor.InnerBlocks.Content, { key: 'innerblockscontent' } ) );
 		}
 	} );
@@ -34,12 +38,14 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 		parent      : ['caxton/grid'],
 		fields      : sectionFields,
 		edit        : function ( props, block ) {
+			console.log( 'Props section edit', props );
 			return sectionRender(
 				props, block,
 				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
 			);
 		},
 		save        : function ( props, block ) {
+			console.log( 'Props section save', props );
 			return sectionRender(
 				props, block,
 				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]

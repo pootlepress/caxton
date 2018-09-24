@@ -36,8 +36,6 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 					 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
-	console.log( 'Children blocks', childrenBlocks );
-
 	return el(
 		// Element
 		'div', {
