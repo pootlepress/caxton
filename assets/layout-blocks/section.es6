@@ -28,10 +28,10 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 		colCls += ' ' + block.attrs['Column gap'];
 	}
 
-	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background color}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
+	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
 
 	if ( + block.attrs['Background colors opacity'] < 1 ) {
-		bgHTML += '<div class="absolute absolute--fill" style="{{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
+		bgHTML += '<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
 	}
 
 	return el(

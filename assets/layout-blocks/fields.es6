@@ -71,7 +71,6 @@ export const gridFields = {
 	'Background color'               : {
 		type   : 'color',
 		section: 'Background',
-		tpl: 'background-color:%s;',
 	},
 	'Gradient color'                 : {
 		type   : 'color',
@@ -89,6 +88,7 @@ export const gridFields = {
 		],
 		default: 'linear-gradient( ',
 		section: 'Background',
+		tpl: 'background-image:%s{{Background color}}{{Gradient color}});',
 	},
 	'Background colors opacity'      : {
 		type   : 'range',
@@ -96,7 +96,7 @@ export const gridFields = {
 		max    : 1,
 		step   : .05,
 		help   : 'Reduce opacity to have transparent colors over image',
-		default: '.9',
+		default: '1',
 		section: 'Background',
 		tpl    : 'opacity:%s;',
 	},
@@ -164,7 +164,6 @@ export const sectionFields = {
 	'Background color': {
 		type: 'color',
 		section: 'Background',
-		tpl: 'background-color:%s;',
 	},
 	'Gradient color': {
 		type: 'color',
@@ -182,6 +181,7 @@ export const sectionFields = {
 		],
 		default: 'linear-gradient( ',
 		section: 'Background',
+		tpl: 'background-image:%s{{Background color}}{{Gradient color}});',
 	},
 	'Background colors opacity': {
 		type: 'range',
@@ -189,7 +189,7 @@ export const sectionFields = {
 		max: 1,
 		step: .05,
 		help: 'Reduce opacity to have transparent colors over image',
-		default: '.9',
+		default: '1',
 		section: 'Background',
 		tpl: 'opacity:%s;',
 	},
