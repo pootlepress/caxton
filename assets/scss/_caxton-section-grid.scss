@@ -32,10 +32,17 @@
 			grid: inherit;
 			> .editor-block-list__block {
 				margin: 0;
+				padding: 0;
+			}
+		}
+		.caxton-section-block {
+			grid-template-columns: 100%;
+			.editor-block-list__layout {
+				margin: 0;
 			}
 		}
 
-		@for $i from 1 to 6 {
+			@for $i from 1 to 6 {
 			&.caxton-#{$i}-columns > .editor-inner-blocks > .editor-block-list__layout {
 				grid-template-columns: repeat($i, 1fr);
 			}
@@ -48,6 +55,15 @@
 		grid: inherit;
 		grid-gap: inherit;
 		grid-column: 1 / -1;
+		> .editor-block-list__layout {
+			grid: inherit;
+			grid-gap: inherit;
+			grid-column: 1/-1;
+			display: grid;
+		}
+		.editor-block-list__block {
+			margin: 0;
+		}
 	}
 	.editor-inner-blocks + .editor-inserter {
 		position: absolute;
@@ -64,17 +80,6 @@
 		display: none;
 	}
 
-	.caxton-grid-block {
-		.editor-block-list__layout {
-			grid: inherit;
-			grid-gap: inherit;
-			grid-column: 1/-1;
-			display: grid;
-		}
-		.editor-block-list__block {
-			margin: 0;
-		}
-	}
 }
 
 [data-caxton-section] {
@@ -101,12 +106,7 @@
 	}
 }
 
-.edit-post-visual-editor .editor-block-list__block[data-type='caxton/section'] .editor-block-list__block-edit {
-	margin: 0 -43px 0;
+.edit-post-visual-editor .editor-block-list__block[data-type='caxton/section'] > .editor-block-list__block-edit {
+	margin: 0;
 	height: 100%;
-}
-
-@for $i from 1 to 13 {
-	[data-caxton-section*="cols:#{$i}"] {grid-column: span $i;}
-	[data-caxton-section*="rows:#{$i}"] {grid-row: span $i;}
 }

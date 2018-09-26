@@ -1,8 +1,8 @@
 export const sectionRender = function ( props, block, childrenBlocks ) {
 	const el = wp.element.createElement;
 	var
-		cls    = 'relative', bgHTML, padUnit, padT, padL, padB, padR, columns,
-		colCls = 'relative caxton-columns caxton-grid-block',
+		cls    = 'relative', bgHTML, padUnit, padT, padL, padB, padR,
+		colCls = 'relative caxton-section-block',
 		padMob = block.attrs['Inner Padding left/right tablet'],
 		padTab = block.attrs['Inner Padding left/right mobile'];
 
@@ -11,7 +11,6 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	padL = block.attrs['Inner Padding left'];
 	padB = block.attrs['Inner Padding bottom'];
 	padR = block.attrs['Inner Padding right'];
-	columns = block.attrs['Columns'];
 
 	if ( 'px' === padUnit ) {
 		padT *= 5;
@@ -25,25 +24,24 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	padB = padB ? padB + padUnit : 0;
 	padR = padR ? padR + padUnit : 0;
 
-	if ( block.attrs['Layout'] ) {
-		cls += ' ' + block.attrs['Layout'];
-	}
-
 	if ( block.attrs['Column gap'] ) {
 		colCls += ' ' + block.attrs['Column gap'];
 	}
 
-	bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
-					 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
+	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="{{Background color}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
+
+	if ( + block.attrs['Background colors opacity'] < 1 ) {
+		bgHTML += '<div class="absolute absolute--fill" style="{{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
+	}
 
 	return el(
 		// Element
-		'div', {
+		'div',
+		{
 			className: cls,
 			key      : 'caxton-section-block',
 			style    : {
-				'gridColumn': 'span ' + props['Columns span'],
-				'gridRow'   : 'span ' + props['Rows span'],
+				'gridArea'   : block.attrs['Grid area'],
 			}
 		},
 		[

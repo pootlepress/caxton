@@ -1,11 +1,4 @@
 export const gridFields = {
-	'Columns'                        : {
-		type   : 'range',
-		min    : 1,
-		max    : 12,
-		section: 'Layout',
-		default: 3,
-	},
 	'Column gap'                     : {
 		type   : 'select',
 		options: [
@@ -54,10 +47,10 @@ export const gridFields = {
 	'Inner Padding unit'             : {
 		type   : 'select',
 		options: [
-			{value: '%', label: 'Responsive',},
+			{value: 'vw', label: 'Responsive',},
 			{value: 'px', label: 'Pixels x 5',},
 		],
-		default: '%',
+		default: 'px',
 		section: 'Layout',
 	},
 	'Background image'               : {
@@ -78,6 +71,7 @@ export const gridFields = {
 	'Background color'               : {
 		type   : 'color',
 		section: 'Background',
+		tpl: 'background-color:%s;',
 	},
 	'Gradient color'                 : {
 		type   : 'color',
@@ -112,44 +106,44 @@ export const sectionFields = {
 	'Inner Padding top': {
 		type: 'range',
 		section: 'Layout',
-		default: 5,
-	},
-	'Inner Padding left': {
-		type: 'range',
-		max: 70,
-		section: 'Layout',
-		default: 5,
+		default: 1,
 	},
 	'Inner Padding bottom': {
 		type: 'range',
 		section: 'Layout',
-		default: 5,
+		default: 1,
+	},
+	'Inner Padding left': {
+		type: 'range',
+		max: 50,
+		section: 'Layout',
+		default: 1,
 	},
 	'Inner Padding right': {
 		type: 'range',
-		max: 70,
+		max: 50,
 		section: 'Layout',
-		default: 5,
+		default: 1,
 	},
 	'Inner Padding left/right tablet': {
 		type: 'range',
-		max: 70,
+		max: 50,
 		section: 'Layout',
-		default: 5,
+		default: 1,
 	},
 	'Inner Padding left/right mobile': {
 		type: 'range',
-		max: 70,
+		max: 50,
 		section: 'Layout',
-		default: 5,
+		default: 1,
 	},
 	'Inner Padding unit': {
 		type: 'select',
 		options: [
-			{value: '%', label: 'Responsive',},
+			{value: 'vw', label: 'Responsive',},
 			{value: 'px', label: 'Pixels x 5',},
 		],
-		default: '%',
+		default: 'px',
 		section: 'Layout',
 	},
 	'Background image': {
@@ -170,6 +164,7 @@ export const sectionFields = {
 	'Background color': {
 		type: 'color',
 		section: 'Background',
+		tpl: 'background-color:%s;',
 	},
 	'Gradient color': {
 		type: 'color',
@@ -198,20 +193,10 @@ export const sectionFields = {
 		section: 'Background',
 		tpl: 'opacity:%s;',
 	},
-	'Columns span': {
-		type: 'range',
-		description: 'Specify number of columns this section should fill.',
-		min: 1,
-		max: 12,
+	'Grid area': {
+		type: 'text',
+		description: 'Specify grid-area CSS property.',
 		section: 'Jedi controls',
-		default: 1,
-	},
-	'Rows span': {
-		type: 'range',
-		description: 'Specify number of rows this section should fill.',
-		min: 1,
-		max: 12,
-		section: 'Jedi controls',
-		default: 1,
+		default: 'span 1 / span 4 / auto / auto',
 	},
 };
