@@ -116,7 +116,7 @@ function parseLayout( lyt ) {
 	} else if ( _numCells ) {
 		layout._numRows = _numCells / 12;
 	}
-
+	
 	return layout;
 }
 
