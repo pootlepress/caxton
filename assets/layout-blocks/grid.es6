@@ -67,9 +67,12 @@ export function gridRender ( props, block, childrenBlocks ) {
 }
 
 function parseLayout( lyt ) {
-	let layout = {
+	let
+		_numCells = 0,
+		layout = {
 		attr: {},
 		tpl : [],
+		_numRows: 0
 	};
 
 	if ( ! lyt.tpl || ! lyt.tpl.length ) {
@@ -93,7 +96,9 @@ function parseLayout( lyt ) {
 
 			if ( /[0-9]{1,2},[0-9]{1,2}/.test( secProps ) ) {
 				// secProps is of the form 2,5
-				secProps = 'span ' + secProps.split( ',' ).join( '/span ' );
+				let rowsCols = secProps.split( ',' );
+				secProps = 'span ' + rowsCols.join( '/span ' );
+				_numCells += rowsCols[0] * rowsCols[1];
 			}
 			// String found: Add as block with `Grid area` attribute
 			layout.tpl.push( [
@@ -104,6 +109,12 @@ function parseLayout( lyt ) {
 	}
 	if ( typeof lyt.attr === 'object' ) {
 		layout.attr = lyt.attr;
+	}
+
+	if ( lyt._numRows ) {
+		layout._numRows = lyt._numRows;
+	} else if ( _numCells ) {
+		layout._numRows = _numCells / 12;
 	}
 
 	return layout;
@@ -134,16 +145,23 @@ function layoutElement( lyt, id ) {
 }
 
 function gridLayoutPicker( props ) {
-	var layoutEls = [];
+	var layoutEls = [], layouts = [], layoutRows;
 	const el = wp.element.createElement;
 	for ( let i = 0; i < layoutsData.length; i ++ ) {
 		const lyt = parseLayout( layoutsData[i] );
-		layoutEls.push( layoutElement( lyt, i ) );
+		layoutRows = lyt._numRows;
+		if ( ! layouts[layoutRows] ) {
+			layouts[layoutRows] = [];
+		}
+		layouts[layoutRows].push( layoutElement( lyt, i ) );
 		if ( lyt.attr ) {
 			props.setAttributes( lyt.attr );
 		}
 	}
 
+	for ( let i = 0; i < layouts.length; i ++ ) {
+		layoutEls.push( el( 'div', { className: 'clear' }, layouts[i] ) );
+	}
 
 	function gridSelectLayout( e ) {
 		let lyt = jQuery( e.target ).closest( '.caxton-layout-preview' ).data( 'layout' );

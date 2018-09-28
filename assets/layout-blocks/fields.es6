@@ -13,36 +13,30 @@ export const gridFields = {
 	'Inner Padding top'              : {
 		type   : 'range',
 		section: 'Layout',
-		default: 5,
 	},
 	'Inner Padding left'             : {
 		type   : 'range',
 		max    : 70,
 		section: 'Layout',
-		default: 5,
 	},
 	'Inner Padding bottom'           : {
 		type   : 'range',
 		section: 'Layout',
-		default: 5,
 	},
 	'Inner Padding right'            : {
 		type   : 'range',
 		max    : 70,
 		section: 'Layout',
-		default: 5,
 	},
 	'Inner Padding left/right tablet': {
 		type   : 'range',
 		max    : 70,
 		section: 'Layout',
-		default: 5,
 	},
 	'Inner Padding left/right mobile': {
 		type   : 'range',
 		max    : 70,
 		section: 'Layout',
-		default: 5,
 	},
 	'Inner Padding unit'             : {
 		type   : 'select',
