@@ -5,6 +5,22 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	const __ = i18n.__;
 	const registerBlockType = blocks.registerBlockType;
 
+	const processTemplate = ( tpl, props ) => {
+		let ki;
+		for ( ki in props ) {
+			if ( props.hasOwnProperty( ki ) ) {
+				tpl = tpl.split( `{{${ki}}}` ).join( props[ ki ] );
+			}
+		}
+		// Twice to populate references in values
+		for ( ki in props ) {
+			if ( props.hasOwnProperty( ki ) ) {
+				tpl = tpl.split( `{{${ki}}}` ).join( props[ ki ] );
+			}
+		}
+		return tpl;
+	};
+
 	const caxtonCopy = ( target, obj ) => {
 		for ( var ki in obj ) {
 			if ( obj.hasOwnProperty( ki ) ) target[ ki ] = obj[ ki ];
@@ -48,8 +64,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	class CxB {
+
 		constructor(block) {
 			const th = this;
+
+			this.keySuffix = 0;
+
 			if ( ! block.id ) {
 				console.error( 'Parameter `id` is required for CaxtonBlock' )
 			}
@@ -163,7 +183,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return fieldProps;
 		}
 
-		imageFieldInit(field, index) {
+		imageFieldEl(field, index) {
 			const props = this.fieldProps( field, index );
 			if ( ! props.className ) {
 				props.className = '';
@@ -219,7 +239,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			);
 		}
 
-		colorFieldInit(field, index) {
+		colorFieldEl(field, index) {
 			const panelChildren = [];
 			const props = this.fieldProps( field, index );
 			props.title = props.label;
@@ -243,41 +263,44 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return el( components.PanelColor, props, panelChildren )
 		}
 
-		checkboxFieldInit(field, index) {
+		checkboxFieldEl(field, index) {
 			const fieldProps = this.fieldProps( field, index );
 			fieldProps.checked = !! this.attrs[ field.id ];
 			return el( components.CheckboxControl, fieldProps );
 		}
 
-		radioFieldInit(field, index) {
+		radioFieldEl(field, index) {
 			const fieldProps = this.fieldProps( field, index );
 			fieldProps.selected = fieldProps.value;
 			return el( components.RadioControl, fieldProps );
 		}
 
-		rangeFieldInit(field, index) {
+		rangeFieldEl(field, index) {
 			return el(
 				components.RangeControl,
 				this.fieldProps( field, index )
 			)
 		}
 
-		selectFieldInit(field, index) {
+		selectFieldEl(field, index) {
 			return el(
 				components.SelectControl,
 				this.fieldProps( field, index )
 			)
 		}
 
-		orderedSelectFieldInit(field, index) {
-			let opt;
-			let optEl;
-			const props = this.fieldProps( field, index );
-			const delimiter = props.delimiter ? props.delimiter : ',';
-			const selectedOptionsData = {};
-			const selectedOptions = [];
-			const availableOption = [];
-			const controlValue = props.value ? props.value.split( delimiter ) : [];
+		orderedSelectFieldEl(field, index) {
+			const
+				props = this.fieldProps( field, index ),
+				delimiter = props.delimiter ? props.delimiter : ',',
+				multiple = typeof props.multiple === 'undefined' ? true : props.multiple,
+				selectedOptionsData = {},
+				selectedOptions = [],
+				availableOption = [];
+
+			let
+				opt, optEl,
+				controlValue = props.value ? props.value.split( delimiter ) : [];
 
 			for ( var i = 0; i < props.options.length; i ++ ) {
 				opt = props.options[i];
@@ -367,7 +390,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							const $target = $( target );
 							if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
 								val = $target.attr( 'data-val' );
-								controlValue.push( val );
+								multiple ? controlValue.push( val ) : ( controlValue = [ val ] );
 								props.onChange( controlValue.join( delimiter ) );
 							}
 						},
@@ -376,7 +399,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			);
 		}
 
-		fontFieldInit(field, index) {
+		fontFieldEl(field, index) {
 			if ( ! field.tpl ) {
 				field.tpl = 'font-family: %s;';
 			}
@@ -397,27 +420,27 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			)
 		}
 
-		textFieldInit(field, index) {
+		textFieldEl(field, index) {
 			return el(
 				components.TextControl,
 				this.fieldProps( field, index )
 			)
 		}
 
-		textareaFieldInit(field, index) {
+		textareaFieldEl(field, index) {
 			return el(
 				components.TextareaControl,
 				this.fieldProps( field, index )
 			)
 		}
 
-		toggleFieldInit(field, index) {
+		toggleFieldEl(field, index) {
 			const fieldProps = this.fieldProps( field, index );
 			fieldProps.checked = !! this.attrs[ field.id ];
 			return el( components.ToggleControl, fieldProps );
 		}
 
-		iconFieldInit(field, index) {
+		iconFieldEl(field, index) {
 			const props = this.fieldProps( field, index );
 			const that = this;
 			const defaultIcons = [];
@@ -491,7 +514,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			);
 		}
 
-		positionFieldInit(field, index) {
+		positionFieldEl(field, index) {
 			const fieldProps = this.fieldProps( field, index );
 			fieldProps.selected = fieldProps.value;
 			fieldProps.options = [
@@ -645,12 +668,24 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return el( components.PanelBody, panelProps, panelFields );
 		}
 
+		fieldEl ( f, func, key_suffix ) {
+			if ( ! func ) {
+				func = f['type'] + 'FieldEl';
+			}
+
+			if ( ! key_suffix ) {
+				key_suffix = this.keySuffix++;
+			}
+
+			return this[ func ]( f, key_suffix );
+		}
+
 		renderFields(fields, section, functionSuffix) {
 			const els = [];
 			const panelsRenderd = [];
 
 			if ( ! functionSuffix ) {
-				functionSuffix = 'FieldInit';
+				functionSuffix = 'FieldEl';
 			}
 
 			for ( let i = 0; i < fields.length; i ++ ) {
@@ -663,17 +698,18 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 				func = f['type'] + functionSuffix;
 
+
 				if ( typeof this[ func ] === 'function' ) {
 					if ( ! f.hide ) {
 						if ( ! section ) {
 							if ( ! f.section ) {
-								els.push( this[func]( f, i ) );
+								els.push( this.fieldEl( f, func ) );
 							} else if ( !panelsRenderd.includes(f.section) ) {
 								panelsRenderd.push( f.section );
 								els.push( this.renderPanel( f.section ) );
 							}
 						} else if ( f.section == section ) {
-							els.push( this[func]( f, i ) );
+							els.push( this.fieldEl( f, func ) );
 						}
 					}
 				} else if ( !f['type'].includes('Toolbar') ) {
@@ -957,7 +993,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 	}
 
-	CxB.prototype.orderedselectFieldInit = CxB.prototype.orderedSelectFieldInit;
+	CxB.prototype.orderedselectFieldEl = CxB.prototype.orderedSelectFieldEl;
 
 	// endregion Register block
 
@@ -967,6 +1003,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		el2html: HTMLFromElement,
 		html2el: elementFromHTML,
 		copyObj: caxtonCopy,
+		tplProc: processTemplate,
 	};
 }
 
