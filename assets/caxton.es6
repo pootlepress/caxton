@@ -408,7 +408,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.onChange = val => {
 				if ( !val.includes(',') ) {
 					const link = $( "<link rel='stylesheet' class='caxton-google-font'>" );
-					link.attr( "href", `http://fonts.googleapis.com/css?family=${val}` )
+					link.attr( "href", `https://fonts.googleapis.com/css?family=${val}` )
 					$( 'body' ).append( link );
 				}
 				onChange( val );

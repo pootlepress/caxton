@@ -91,7 +91,7 @@ jQuery( function ( $ ) {
 			}
 		} );
 		if ( caxtonFontsToLoad.length ) {
-			$caxtonFontsLink.attr( "href", "http://fonts.googleapis.com/css?family=" + caxtonFontsToLoad.join( '|' ) );
+			$caxtonFontsLink.attr( "href", "https://fonts.googleapis.com/css?family=" + caxtonFontsToLoad.join( '|' ) );
 		}
 	}
 
