@@ -65,12 +65,17 @@ class Caxton_Admin {
 		Caxton::instance()->public->enqueue();
 
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
-		wp_enqueue_script( $token, $url . 'assets/caxton.js', array( 'wp-blocks' ) );
+		wp_enqueue_script( "$token-framework", $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 
-		wp_enqueue_script( "$token-blocks", $url . 'assets/blocks.js', array( $token ) );
+		wp_enqueue_script( "$token-blocks", $url . 'assets/blocks.js', array( "$token-framework" ) );
 		wp_enqueue_style( "$token-blocks", $url . 'assets/blocks.css' );
-		wp_enqueue_script( $token . '-js', $url . 'assets/caxton-utils.js', array( 'jquery' ) );
 
+		$this->localize_scripts();
+
+		$this->hide_disable_blocks();
+	}
+
+	protected function localize_scripts() {
 		$caxton_fonts = $categories = [
 			[
 				'label' => 'Please choose...',
@@ -97,13 +102,12 @@ class Caxton_Admin {
 			];
 		}
 
-		wp_localize_script( $token, 'caxton', [
+		wp_localize_script( "{$this->token}-framework", 'caxton', [
 			'post'           => filter_input( INPUT_GET, 'post' ),
 			'postCategories' => $categories,
 			'fonts'          => $caxton_fonts,
 		] );
 
-		$this->hide_disable_blocks();
 	}
 
 	public function add_meta_boxes() {

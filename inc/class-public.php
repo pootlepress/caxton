@@ -54,9 +54,18 @@ class Caxton_Public{
 		wp_enqueue_style( 'flexslider', $url . 'assets/flexslider.css' );
 		wp_enqueue_script( 'flexslider', $url . 'assets/flexslider.min.js', array( 'jquery' ) );
 
-		wp_enqueue_style( $token . '-css', $url . 'assets/front.css' );
+		wp_enqueue_style( $token . '-front', $url . 'assets/front.css' );
 		wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.0.10/css/all.css' );
-		wp_enqueue_script( $token . '-js', $url . 'assets/caxton-utils.js', array( 'flexslider' ) );
+
+		wp_enqueue_script( $token . '-utils', $url . 'assets/caxton-utils.js', array( 'flexslider' ) );
+
+		$this->localize();
+	}
+
+	private function localize() {
+		wp_localize_script( "{$this->token}-utils", 'caxtonUtilProps', [
+			'url' => $this->url,
+		] );
 	}
 
 	public function register_blocks() {
