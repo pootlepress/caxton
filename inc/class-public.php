@@ -190,4 +190,13 @@ HTML;
 		return '<div class="caxton-fancy-grid caxton-fancy-grid-' . $num_items . '">' . implode( '', $grid_items ) . '</div>';
 
 	}
+
+	public static function processTemplate( $template, $properties ) {
+		$search = $replace = [];
+		foreach ( $properties as $k => $v ) {
+			$search[]  = '{{' . $k . '}}';
+			$replace[] = $v;
+		}
+		return str_replace( $search, $replace, $template );
+	}
 }

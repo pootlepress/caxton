@@ -63,3 +63,27 @@
 	text-align: center;
 	box-sizing: content-box;
 }
+
+.caxton-hide-image img {
+	display: none !important;
+}
+
+.caxton-flex-row-reverse .flex {
+	flex-direction: row-reverse !important;
+}
+
+.blur, .blur-children > * {
+	-webkit-filter: blur(7px);
+	filter: blur(7px);
+}
+
+.blur-children .absolute--fill {
+	top: -7px;
+	left: -7px;
+	right: -7px;
+	bottom: -7px;
+}
+
+.blur-children {
+	overflow: hidden;
+}
