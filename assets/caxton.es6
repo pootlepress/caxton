@@ -673,7 +673,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				func = f['type'] + 'FieldEl';
 			}
 
-			if ( ! key_suffix ) {
+			if ( 'undefined' === typeof key_suffix ) {
 				key_suffix = this.keySuffix++;
 			}
 
@@ -703,13 +703,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					if ( ! f.hide ) {
 						if ( ! section ) {
 							if ( ! f.section ) {
-								els.push( this.fieldEl( f, func ) );
+								els.push( this.fieldEl( f, func, i ) );
 							} else if ( !panelsRenderd.includes(f.section) ) {
 								panelsRenderd.push( f.section );
 								els.push( this.renderPanel( f.section ) );
 							}
 						} else if ( f.section == section ) {
-							els.push( this.fieldEl( f, func ) );
+							els.push( this.fieldEl( f, func, i ) );
 						}
 					}
 				} else if ( !f['type'].includes('Toolbar') ) {
