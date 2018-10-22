@@ -276,7 +276,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		rangeFieldEl(field, index) {
-			console.log( this.fieldProps( field, index ) );
 			return el(
 				components.RangeControl,
 				this.fieldProps( field, index )
@@ -874,7 +873,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				that.saveBlockProperties( props );
 
 				if ( typeof that.block.beforeEdit === 'function' ) {
-					const beforeCallback = that.block.beforeEdit( props, this );
+					const beforeCallback = that.block.beforeEdit( props, that );
 					if ( beforeCallback ) {
 						els.push( beforeCallback );
 					}
@@ -889,7 +888,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				els.push( that.edit( props ) );
 
 				if ( typeof that.block.afterEdit === 'function' ) {
-					const afterCallback = that.block.afterEdit( props, this );
+					const afterCallback = that.block.afterEdit( props, that );
 					if ( afterCallback ) {
 						els.push( afterCallback );
 					}
