@@ -66,7 +66,7 @@ class Caxton_Admin {
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( "caxton", $url . 'assets/caxton.js', array( 'wp-blocks' ) );
 
-		wp_enqueue_script( "caxton-blocks", $url . 'assets/blocks.js', array( "caxton-framework" ) );
+		wp_enqueue_script( "caxton-blocks", $url . 'assets/blocks.js', array( "caxton" ) );
 		wp_enqueue_style( "caxton-blocks", $url . 'assets/blocks.css' );
 
 		$this->localize_scripts();
