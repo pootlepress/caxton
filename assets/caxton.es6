@@ -127,11 +127,15 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					ret.push( field );
 				}
 			}
+
 			return ret;
 		}
 
 		fieldAttrType({type}) {
-			const attrTypeByFieldType = {};
+			const attrTypeByFieldType = {
+				'number': 'number',
+				'range': 'number',
+			};
 
 			if ( attrTypeByFieldType[ type ] ) {
 				return attrTypeByFieldType[ type ];
@@ -837,7 +841,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			for ( let f in this.fields ) {
 				if ( this.fields.hasOwnProperty( f ) ) {
 					const fld = this.fields[ f ];
-					if ( isNaN( this.attrs[fld.id] ) && ! this.attrs[fld.id] ) this.attrs[fld.id] = fld.default
+					if ( ! this.attrs[fld.id] && isNaN( this.attrs[fld.id] ) ) {
+						this.attrs[fld.id] = fld.default
+					}
 				}
 			}
 		}
