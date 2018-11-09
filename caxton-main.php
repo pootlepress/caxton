@@ -58,7 +58,7 @@ class Caxton {
 		self::$file    = $file;
 		self::$url     = plugin_dir_url( $file );
 		self::$path    = plugin_dir_path( $file );
-		self::$version = '1.5.0';
+		self::$version = CAXTON_VERSION;
 
 		$this->init();
 
