@@ -1,52 +1,4 @@
 export const gridFields = {
-	'Column gap'                     : {
-		type   : 'select',
-		options: [
-			{value: 'grid-gap-none', label: 'None',},
-			{value: 'grid-gap-tight', label: 'Tight',},
-			{value: '', label: 'Normal',},
-			{value: 'grid-gap-wide', label: 'Wide',},
-			{value: 'grid-gap-wider', label: 'Wider',},
-		],
-		section: 'Layout',
-	},
-	'Inner Padding top'              : {
-		type   : 'range',
-		section: 'Layout',
-	},
-	'Inner Padding left'             : {
-		type   : 'range',
-		max    : 70,
-		section: 'Layout',
-	},
-	'Inner Padding bottom'           : {
-		type   : 'range',
-		section: 'Layout',
-	},
-	'Inner Padding right'            : {
-		type   : 'range',
-		max    : 70,
-		section: 'Layout',
-	},
-	'Inner Padding left/right tablet': {
-		type   : 'range',
-		max    : 70,
-		section: 'Layout',
-	},
-	'Inner Padding left/right mobile': {
-		type   : 'range',
-		max    : 70,
-		section: 'Layout',
-	},
-	'Inner Padding unit'             : {
-		type   : 'select',
-		options: [
-			{value: 'vw', label: 'Responsive',},
-			{value: 'px', label: 'Pixels x 5',},
-		],
-		default: 'px',
-		section: 'Layout',
-	},
 	'Background image'               : {
 		type   : 'image',
 		section: 'Background',
@@ -93,6 +45,60 @@ export const gridFields = {
 		default: '1',
 		section: 'Background',
 		tpl    : 'opacity:%s;',
+	},
+
+	'Column gap'                     : {
+		type   : 'select',
+		options: [
+			{value: 'grid-gap-none', label: 'None',},
+			{value: 'grid-gap-tight', label: 'Tight',},
+			{value: '', label: 'Normal',},
+			{value: 'grid-gap-wide', label: 'Wide',},
+			{value: 'grid-gap-wider', label: 'Wider',},
+		],
+		section: 'Layout',
+	},
+//	'Full height': {
+//		type: 'toggle',
+//		value: 'min-vh-100',
+//		section: 'Layout',
+//	},
+	'Inner Padding top'              : {
+		type   : 'range',
+		section: 'Layout',
+	},
+	'Inner Padding left'             : {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+	},
+	'Inner Padding bottom'           : {
+		type   : 'range',
+		section: 'Layout',
+	},
+	'Inner Padding right'            : {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+	},
+	'Inner Padding left/right tablet': {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+	},
+	'Inner Padding left/right mobile': {
+		type   : 'range',
+		max    : 70,
+		section: 'Layout',
+	},
+	'Inner Padding unit'             : {
+		type   : 'select',
+		options: [
+			{value: 'vw', label: 'Responsive',},
+			{value: 'px', label: 'Pixels x 5',},
+		],
+		default: 'px',
+		section: 'Layout',
 	},
 };
 
