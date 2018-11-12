@@ -12,7 +12,7 @@ Caxton bring to you super useful blocks which make your Gutenberg more and more 
 
 == Description ==
 
-https://www.youtube.com/watch?v=ZCfp1RtSnWg
+https://vimeo.com/292544743
 
 Caxton is a page layout plugin for Gutenberg. Caxton makes it easy to layout your pages in any grid configuration, and then add blocks within your layout. Caxton layouts support nesting of rows, row backgrounds, and is fully responsive.
 
