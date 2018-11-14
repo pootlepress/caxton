@@ -252,19 +252,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				props.initialOpen = props.value ? false : true;
 			}
 
-			panelChildren.push( el(
-				editor.ColorPalette,
-				props,
-			) );
-
 			if ( field.help ) {
 				panelChildren.push( field.help );
 			}
 
-			// Show color preview
-			props.colorValue = props.value;
+			props.colorSettings = [ {
+				label: props.label,
+				value: props.value,
+				onChange: props.onChange,
+			} ];
 
-			return el( components.PanelColor, props, panelChildren )
+			return el( wp.editor.PanelColorSettings, props, panelChildren )
 		}
 
 		checkboxFieldEl(field, index) {
