@@ -97,7 +97,7 @@
 	}
 	> .editor-block-list__block-edit {
 		height: calc( 100% - 64px );
-		> div {
+		[data-block] {
 			height: 100%;
 			box-sizing: border-box;
 			> div {
