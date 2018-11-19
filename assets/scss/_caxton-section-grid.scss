@@ -112,3 +112,29 @@
 	margin: 0;
 	height: 100%;
 }
+
+[data-type='caxton/grid'] > .editor-block-list__block-edit > .editor-block-list__breadcrumb, xx[data-type='caxton/section'] > .editor-block-list__block-edit > .editor-block-list__breadcrumb {
+	display: none !important;
+}
+
+.editor-block-list__block[data-type='caxton/grid']:hover > .editor-block-list__block-edit:after {
+	content: "Caxton Layout";
+	display: block;
+	width: 106px;
+	right: -16px;
+	position: absolute;
+	bottom: -16px;
+	background: #007cba;
+	color: #fff;
+	text-align: center;
+	font: 11px/1.8 sans-serif;
+	padding: 2px 0 0;
+	text-transform: uppercase;
+	z-index: 999;
+	opacity: 1;
+}
+
+.editor-block-list__layout .editor-block-list__block[data-type='caxton/grid']:hover > .editor-block-list__block-edit:before {
+	outline: 1px solid #007cba;
+	outline-offset: 2px;
+}

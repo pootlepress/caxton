@@ -87,3 +87,15 @@
 .blur-children {
 	overflow: hidden;
 }
+
+.flip {
+	transform: scale( -1, -1 );
+}
+
+.flip-h {
+	transform: scale( -1, 1 );
+}
+
+.flip-v {
+	transform: scale( 1, -1 );
+}
