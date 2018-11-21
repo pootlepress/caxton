@@ -9,8 +9,31 @@
 	}
 }
 
-.caxton-shape-divider svg {
-	fill: currentColor;
-	display: block;
-	margin: -1px;
+body:not(.wp-admin) {
+	.caxton-shape-divider-onxt,
+	.caxton-shape-divider-oprv {
+		height: 0;
+		svg {
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+	}
 }
+
+.caxton-shape-divider {
+	position: relative;
+	&.caxton-shape-divider-onxt svg {
+		top: 0;
+	}
+	&.caxton-shape-divider-oprv svg {
+		bottom: 0;
+	}
+	svg {
+		position: relative;
+		fill: currentColor;
+		display: block;
+		margin: -1px;
+	}
+}
+
