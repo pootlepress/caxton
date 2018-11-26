@@ -1435,7 +1435,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 
 				let
 					svg = svgMaps[''],
-					classes = 'caxton-shape-divider cover bg-center{{Full width}}{{Flip}}{{Position}}';
+					classes = 'caxton-shape-divider cover bg-center{{Full width}}{{Position}}';
 
 				console.log( props );
 
@@ -1443,7 +1443,8 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 					svg = svgMaps[props.attributes['Shape']];
 				}
 
-				return '<div class="' + classes + '" style="background:{{Color 1}};color:{{Color 2}};">' + svg + '</div>';
+				return '<div class="' + classes + '" style="background:{{Color 2}};color:{{Color 1}};">' +
+							 '<div class="{{Flip}}">' + svg + '</div></div>';
 			},
 			fields: {
 				'Shape': {

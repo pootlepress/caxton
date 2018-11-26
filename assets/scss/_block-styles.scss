@@ -1,3 +1,7 @@
+.wp-block-caxton-super-text > * {
+	margin: 0;
+}
+
 .caxton-slider {
 	h2 {
 		font-size: 2em;
@@ -13,7 +17,7 @@ body:not(.wp-admin) {
 	.caxton-shape-divider-onxt,
 	.caxton-shape-divider-oprv {
 		height: 0;
-		svg {
+		> div {
 			position: absolute;
 			left: 0;
 			right: 0;
@@ -21,13 +25,18 @@ body:not(.wp-admin) {
 	}
 }
 
+.wp-block-caxton-divider,
 .caxton-shape-divider {
 	position: relative;
-	&.caxton-shape-divider-onxt svg {
-		top: 0;
-	}
-	&.caxton-shape-divider-oprv svg {
+	z-index: 999;
+}
+
+.caxton-shape-divider {
+	&.caxton-shape-divider-onxt > div {
 		bottom: 0;
+	}
+	&.caxton-shape-divider-oprv > div {
+		top: 0;
 	}
 	svg {
 		position: relative;
