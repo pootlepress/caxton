@@ -34,8 +34,10 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	}
 }
 
-.gutenberg-editor-page .editor-block-list__block[data-type*='caxton/'] {
-	max-width: 1060px;
+.block-editor .editor-block-list__block[data-type*='caxton/'] {
+	&, .wp-block {
+		max-width: 1060px;
+	}
 }
 
 .edit-post-visual-editor .editor-block-list__block {

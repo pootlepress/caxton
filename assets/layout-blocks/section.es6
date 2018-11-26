@@ -29,10 +29,7 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	}
 
 	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
-
-	if ( + block.attrs['Background colors opacity'] < 1 ) {
-		bgHTML += '<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
-	}
+	bgHTML += '<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
 
 	return el(
 		// Element

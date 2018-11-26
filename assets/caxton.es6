@@ -796,15 +796,23 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return { __html: html };
 		}
 
+		getBlockTpl( props ) {
+			if ( typeof this.tpl === 'function' ) {
+				return this.tpl( props, this );
+			} else {
+				return this.tpl;
+			}
+		}
+
 		edit(props) {
-			const that = this;
-			if ( this.block ) {
-				if ( typeof this.block.edit === 'function' ) {
-					return this.block.edit( props, that );
+			let that = this;
+			if ( that.block ) {
+				if ( typeof that.block.edit === 'function' ) {
+					return that.block.edit( props, that );
 				}
 				return el( 'div', {
 					key: 'block',
-					dangerouslySetInnerHTML: this.outputHTML( this.tpl, 'edit' ),
+					dangerouslySetInnerHTML: that.outputHTML( that.getBlockTpl( props ), 'edit' ),
 					onClick(e) {
 						e.preventDefault();
 					},
@@ -817,6 +825,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						const attrs = {};
 						const prop = $t.data( 'editableproperty' );
 						attrs[prop] = $t.html();
+						console.log( attrs, prop );
 						that.focussedProps.setAttributes( attrs );
 					},
 				} );
@@ -829,7 +838,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				if ( typeof this.block.save === 'function' ) {
 					return this.block.save( props, this );
 				}
-				return el( 'div', {dangerouslySetInnerHTML: this.outputHTML( this.tpl )} );
+				return el( 'div', {dangerouslySetInnerHTML: this.outputHTML( this.getBlockTpl( props ) )} );
 			}
 		}
 
