@@ -78,7 +78,7 @@ class Caxton {
 
 		//Enqueue admin end JS and CSS
 		add_action( 'admin_init', array( $this->admin, 'admin_init' ), 5 );
-//		add_action( 'admin_menu', array( $this->admin, 'admin_menu' ), 5 );
+		add_action( 'admin_menu', array( $this->admin, 'admin_menu' ), 5 );
 		add_action( 'enqueue_block_editor_assets', array( $this->admin, 'enqueue' ), 5 );
 		add_action( 'wp_ajax_caxton_save_blocks', array( $this->admin, 'caxton_save_blocks' ), 5 );
 		add_action( 'save_post', array( $this->admin, 'save_post' ), 5 );
