@@ -1,29 +1,29 @@
 export const gridFields = {
-	'Background image'               : {
+	'Background image'         : {
 		type   : 'image',
 		section: 'Background',
 		tpl    : 'background-image:url(%s);',
 	},
-	'Background image position'      : {
+	'Background image position': {
 		type   : 'position',
 		section: 'Background',
 		tpl    : 'background-position:%s;',
 	},
-	'Background parallax'            : {
+	'Background parallax'      : {
 		type   : 'toggle',
 		value  : 'background-attachment:fixed;',
 		section: 'Background',
 	},
-	'Background color'               : {
+	'Background color'         : {
 		type   : 'color',
 		section: 'Background',
 	},
-	'Gradient color'                 : {
+	'Gradient color'           : {
 		type   : 'color',
 		section: 'Background',
 		tpl    : ', %s',
 	},
-	'Gradient type'                  : {
+	'Gradient type'            : {
 		type   : 'select',
 		options: [
 			{value: 'linear-gradient( ', label: 'Linear vertical',},
@@ -34,9 +34,9 @@ export const gridFields = {
 		],
 		default: 'linear-gradient( ',
 		section: 'Background',
-		tpl: 'background-image:%s{{Background color}}{{Gradient color}});',
+		tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
 	},
-	'Background colors opacity'      : {
+	'Background colors opacity': {
 		type   : 'range',
 		min    : 0,
 		max    : 1,
@@ -47,6 +47,15 @@ export const gridFields = {
 		tpl    : 'opacity:%s;',
 	},
 
+	'Layout'                         : {
+		type   : 'select',
+		options: [
+			{value: '', label: 'Normal',},
+			{value: 'vw-100-bg', label: 'Full width background',},
+			{value: 'vw-100', label: 'Full width content',},
+		],
+		section: 'Layout',
+	},
 	'Column gap'                     : {
 		type   : 'select',
 		options: [
@@ -103,42 +112,42 @@ export const gridFields = {
 };
 
 export const sectionFields = {
-	'Inner Padding top': {
-		type: 'range',
+	'Inner Padding top'              : {
+		type   : 'range',
 		section: 'Layout',
 		default: 1,
 	},
-	'Inner Padding bottom': {
-		type: 'range',
+	'Inner Padding bottom'           : {
+		type   : 'range',
 		section: 'Layout',
 		default: 1,
 	},
-	'Inner Padding left': {
-		type: 'range',
-		max: 50,
+	'Inner Padding left'             : {
+		type   : 'range',
+		max    : 50,
 		section: 'Layout',
 		default: 1,
 	},
-	'Inner Padding right': {
-		type: 'range',
-		max: 50,
+	'Inner Padding right'            : {
+		type   : 'range',
+		max    : 50,
 		section: 'Layout',
 		default: 1,
 	},
 	'Inner Padding left/right tablet': {
-		type: 'range',
-		max: 50,
+		type   : 'range',
+		max    : 50,
 		section: 'Layout',
 		default: 1,
 	},
 	'Inner Padding left/right mobile': {
-		type: 'range',
-		max: 50,
+		type   : 'range',
+		max    : 50,
 		section: 'Layout',
 		default: 1,
 	},
-	'Inner Padding unit': {
-		type: 'select',
+	'Inner Padding unit'             : {
+		type   : 'select',
 		options: [
 			{value: 'vw', label: 'Responsive',},
 			{value: 'px', label: 'Pixels x 5',},
@@ -146,32 +155,32 @@ export const sectionFields = {
 		default: 'px',
 		section: 'Layout',
 	},
-	'Background image': {
-		type: 'image',
+	'Background image'               : {
+		type   : 'image',
 		section: 'Background',
-		tpl: 'background-image:url(%s);',
+		tpl    : 'background-image:url(%s);',
 	},
-	'Background image position': {
-		type: 'position',
+	'Background image position'      : {
+		type   : 'position',
 		section: 'Background',
-		tpl: 'background-position:%s;',
+		tpl    : 'background-position:%s;',
 	},
-	'Background parallax': {
-		type: 'toggle',
-		value: 'background-attachment:fixed;',
-		section: 'Background',
-	},
-	'Background color': {
-		type: 'color',
+	'Background parallax'            : {
+		type   : 'toggle',
+		value  : 'background-attachment:fixed;',
 		section: 'Background',
 	},
-	'Gradient color': {
-		type: 'color',
+	'Background color'               : {
+		type   : 'color',
 		section: 'Background',
-		tpl: ', %s',
 	},
-	'Gradient type': {
-		type: 'select',
+	'Gradient color'                 : {
+		type   : 'color',
+		section: 'Background',
+		tpl    : ', %s',
+	},
+	'Gradient type'                  : {
+		type   : 'select',
 		options: [
 			{value: 'linear-gradient( ', label: 'Linear vertical',},
 			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
@@ -181,22 +190,22 @@ export const sectionFields = {
 		],
 		default: 'linear-gradient( ',
 		section: 'Background',
-		tpl: 'background-image:%s{{Background color}}{{Gradient color}});',
+		tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
 	},
-	'Background colors opacity': {
-		type: 'range',
-		min: 0,
-		max: 1,
-		step: .05,
-		help: 'Reduce opacity to have transparent colors over image',
+	'Background colors opacity'      : {
+		type   : 'range',
+		min    : 0,
+		max    : 1,
+		step   : .05,
+		help   : 'Reduce opacity to have transparent colors over image',
 		default: '1',
 		section: 'Background',
-		tpl: 'opacity:%s;',
+		tpl    : 'opacity:%s;',
 	},
-	'Grid area': {
-		type: 'text',
+	'Grid area'                      : {
+		type       : 'text',
 		description: 'Specify grid-area CSS property.',
-		section: 'Jedi controls',
-		default: 'span 1 / span 4 / auto / auto',
+		section    : 'Jedi controls',
+		default    : 'span 1 / span 4 / auto / auto',
 	},
 };

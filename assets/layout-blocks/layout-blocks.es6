@@ -10,9 +10,6 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 		title     : 'Caxton Layouts',
 		icon      : 'screenoptions',
 		category  : 'caxton',
-		toolbars  : {
-			Layout: 'BlockWidthToolbar',
-		},
 		fields    : gridFields,
 		attributes: {
 			tpl: {
