@@ -4,7 +4,7 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 4.9.5
 Requires PHP: 5.6.0
-Stable tag: 1.6.2
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,11 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 3. Block preview
 
 == Changelog ==
+
+Version 1.7.0
+* 2018-11-28
+* New - Shape divider block
+* Tweak - UI improvements
 
 Version 1.6.2
 * 2018-11-21
