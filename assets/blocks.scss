@@ -2,6 +2,9 @@
  * Plugin front end styles
  * @package Caxton
  */
+
+$caxton-width: 1060px;
+
 .caxton-notification {
 	padding: 50px;
 	text-align: center;
@@ -36,7 +39,7 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 
 .block-editor .editor-block-list__block[data-type*='caxton/'] {
 	&, .wp-block {
-		max-width: 1060px;
+		max-width: $caxton-width;
 	}
 }
 
@@ -94,12 +97,12 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 		}
 		.vw-100, .vw-100-bg {
 			width: auto;
-			margin: auto;
-			padding: 0;
+			margin: 0  !important;
+			padding: 0 !important;
 		}
 		.vw-100-bg {
-			padding-left: 5%;
-			padding-right: 5%;
+			padding-left: calc( 50% - #{$caxton-width}/2 ) !important;
+			padding-right: calc( 50% - #{$caxton-width}/2 ) !important;
 		}
 	}
 }
