@@ -75,8 +75,6 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 
 	&[caxton-layout*='vw-100'] {
 		max-width: none;
-		margin-left: -36px;
-		margin-right: -36px;
 		clear: both;
 		z-index: 20;
 		> {
