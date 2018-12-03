@@ -210,20 +210,20 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 .wp-core-ui {
 	.vw-100, .vw-100-bg {
 		width: calc( 100vw - 200px ) !important;
-		margin-left: calc( -50vw + 50% + 80px ) !important;
+		margin-left: calc( -50vw + 50% + 100px ) !important;
 	}
 	.vw-100-bg {
-		padding-right: calc( 50vw - 50% - 80px );
-		padding-left: calc( 50vw - 50% - 80px );
+		padding-right: calc( 50vw - 50% - 100px );
+		padding-left: calc( 50vw - 50% - 100px );
 	}
 	.is-sidebar-opened {
 		.vw-100, .vw-100-bg {
 			width: calc( 100vw - 480px ) !important;
-			margin-left: calc( -50vw + 50% + 220px ) !important;
+			margin-left: calc( -50vw + 50% + 240px ) !important;
 		}
 		.vw-100-bg {
-			padding-right: calc( 50vw - 50% - 220px );
-			padding-left: calc( 50vw - 50% - 220px );
+			padding-right: calc( 50vw - 50% - 240px );
+			padding-left: calc( 50vw - 50% - 240px );
 		}
 	}
 }
