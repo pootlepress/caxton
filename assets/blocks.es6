@@ -1269,14 +1269,11 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 					return Array( +columns ).fill( colBlk );
 				}
 
-				let cls = 'relative ';
-				let bgHTML;
-				let padUnit;
-				let padT;
-				let padL;
-				let padB;
-				let padR;
-				let colCls = 'relative caxton-columns';
+				let bgHTML, padUnit, padT, padL, padB, padR, columns;
+
+				let
+					cls = 'relative ',
+					colCls = 'relative caxton-columns';
 				const padMob = block.attrs['Inner Padding left/right tablet'];
 				const padTab = block.attrs['Inner Padding left/right mobile'];
 
@@ -1437,8 +1434,6 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 					svg = svgMaps[''],
 					classes = 'caxton-shape-divider cover bg-center{{Full width}}{{Position}}';
 
-				console.log( props );
-
 				if ( svgMaps[ props.attributes['Shape'] ] ) {
 					svg = svgMaps[props.attributes['Shape']];
 				}
@@ -1538,6 +1533,14 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 			}
 
 			render() {
+				function postMetaMarkup() {
+					if ( attrs.displayMeta ) {
+						return {__html: `<span class="author">${authorIcon}${post.author}</span><span class="comments">${commentIcon} ${post.comments}</span>`};
+					} else {
+						return {__html: ''};
+					}
+				};
+
 				Caxton.copyObj( this.state.dataProps, this.props );
 				this.fetchUrls();
 
@@ -1577,14 +1580,6 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 
 					for ( let i = 0; i < props.posts.data.length; i ++ ) {
 						post = props.posts.data[i];
-
-						function postMetaMarkup() {
-							if ( attrs.displayMeta ) {
-								return {__html: `<span class="author">${authorIcon}${post.author}</span><span class="comments">${commentIcon} ${post.comments}</span>`};
-							} else {
-								return {__html: ''};
-							}
-						};
 						gridInfo = [
 							el( 'a', {className: 'grid-link', href: '#',key: 'anchor'},
 								el( 'div', {className: 'grid-image', style: {backgroundImage: `url(${post.thumb_ml})`},},
