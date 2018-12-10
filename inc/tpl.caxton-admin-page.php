@@ -8,5 +8,5 @@
 		and then add blocks within your layout. Caxton layouts support nesting of rows, row backgrounds, and is fully
 		responsive.</p>
 	<p>Caxton also contains a growing library of blocks to enhance your layouts, including Posts Grid, Slider, Button,
-		Hero, and Social Icons.</p>
+		Hero, Social Icons and Shape Divider.</p>
 </div>

@@ -2,7 +2,7 @@
 Contributors: pootlepress, shramee, jamie
 Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
-Tested up to: 4.9.5
+Tested up to: 5.0.0
 Requires PHP: 5.6.0
 Stable tag: 1.7.1
 License: GPLv2 or later
@@ -16,7 +16,7 @@ https://vimeo.com/292544743
 
 Caxton is a page layout plugin for Gutenberg. Caxton makes it easy to layout your pages in any grid configuration, and then add blocks within your layout. Caxton layouts support nesting of rows, row backgrounds, and is fully responsive.
 
-Caxton also contains a growing library of blocks to enhance your layouts, including Posts Grid, Slider, Button, Hero, and Social Icons.
+Caxton also contains a growing library of blocks to enhance your layouts, including Posts Grid, Slider, Button, Hero, Social Icons and Shape Divider.
 We’ve put together a live interactive site here where you can [test Caxton for yourself](http://demo.caxton.pro/).
 
 == Installation ==
@@ -51,6 +51,10 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 1. Blocks menu
 2. Block settings
 3. Block preview
+4. Wave block divider
+5. Tilt block divider
+6. Book block divider
+7. Book block divider on column
 
 == Changelog ==
 
