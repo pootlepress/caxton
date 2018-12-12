@@ -5,6 +5,7 @@
 .vw-100, .vw-100-bg {
 	width: 100vw;
 	margin-left: calc( -50vw + 50% ) !important;
+	max-width: none !important;
 }
 
 .vw-100-bg {

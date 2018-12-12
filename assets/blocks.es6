@@ -22,7 +22,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 
 		CaxtonBlock( {
 			id: 'hero',
-			title: 'Easy Hero',
+			title: 'Cover with button',
 			icon: 'archive',
 			category: 'caxton',
 			tpl:
@@ -905,7 +905,8 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 			title: 'Slider',
 			icon: 'slides',
 			category: 'caxton',
-			tpl: '<div class="caxton-slider caxton-slider-pending-setup {{Alignment}}{{BlockAlignment}}" style="{{Text color}}{{Font size}}{{Text Glow/Shadow}};" ' +
+			tpl: '<div class="caxton-slider caxton-slider-pending-setup {{Alignment}}{{BlockAlignment}}" ' +
+					 'style="{{Text color}}{{Height}}{{Font size}}{{Text Glow/Shadow}};" ' +
 					 'data-mobile-css="{{Font size mobile}}" ' +
 					 'data-tablet-css="{{Font size tablet}}" ' +
 					 'data-desktop-css="{{Font size}}">' +
@@ -925,6 +926,14 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 			},
 			fields: {
 
+				'Height': {
+					type: 'range',
+					tpl: 'min-height:%svh;',
+					min: 25,
+					max: 125,
+					help: 'Relative to screen height. Set to 100 to have it full height.',
+					section: 'Layout',
+				},
 				'Slide 1 image': {
 					type: 'image',
 					tpl: '<li style="background-image: url(\'%s\')">' +

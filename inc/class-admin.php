@@ -60,8 +60,7 @@ class Caxton_Admin {
 	 */
 	public function enqueue() {
 		$url   = $this->url;
-
-		Caxton::instance()->public->enqueue();
+		$this->enqueue_public();
 
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
 		wp_enqueue_script( "caxton", $url . 'assets/caxton.js', array( 'wp-blocks', 'wp-block-library' ) );
@@ -72,6 +71,18 @@ class Caxton_Admin {
 		$this->localize_scripts();
 
 		$this->hide_disable_blocks();
+	}
+
+	protected function enqueue_public() {
+		$url   = $this->url;
+
+		wp_enqueue_style( 'flexslider', $url . 'assets/flexslider.css' );
+		wp_enqueue_script( 'flexslider', $url . 'assets/flexslider.min.js', array( 'jquery' ) );
+
+		wp_enqueue_style( 'caxton-front', $url . 'assets/front.css' );
+		wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.0.10/css/all.css' );
+
+		wp_enqueue_script( 'caxton-utils', $url . 'assets/caxton-utils.js', array( 'flexslider' ) );
 	}
 
 	protected function localize_scripts() {

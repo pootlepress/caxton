@@ -29,6 +29,7 @@ body:not(.wp-admin) {
 .caxton-shape-divider {
 	position: relative;
 	z-index: 999;
+	margin: 0 !important;
 }
 
 .caxton-shape-divider {
@@ -38,11 +39,13 @@ body:not(.wp-admin) {
 	&.caxton-shape-divider-oprv > div {
 		top: 0;
 	}
+	> div {
+		overflow: hidden;
+		margin: -1px 0;
+	}
 	svg {
 		position: relative;
 		fill: currentColor;
 		display: block;
-		margin: -1px;
 	}
 }
-
