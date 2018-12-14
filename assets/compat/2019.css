@@ -1,4 +1,5 @@
 .entry .entry-content [class*="wp-block-caxton"] {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
+	max-width: none;
 }
