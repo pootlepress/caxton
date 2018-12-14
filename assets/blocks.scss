@@ -72,37 +72,6 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	&[caxton-float=" fr"] .editor-block-list__block-edit {
 		float: right;
 	}
-
-	&[caxton-layout*='vw-100'] {
-		max-width: none;
-		clear: both;
-		z-index: 20;
-		> {
-			.editor-block-contextual-toolbar {
-				margin-left: -25px;
-			}
-			.editor-block-list__block-edit {
-				margin-left: -50px;
-				margin-right: -50px;
-			}
-		}
-		.editor-default-block-appender {
-			max-width: none;
-		}
-		.editor-block-list__block-draggable {
-			left: 0;
-			right: 0;
-		}
-		.vw-100, .vw-100-bg {
-			width: auto;
-			margin: 0  !important;
-			padding: 0 !important;
-		}
-		.vw-100-bg {
-			padding-left: calc( 50% - #{$caxton-width}/2 ) !important;
-			padding-right: calc( 50% - #{$caxton-width}/2 ) !important;
-		}
-	}
 }
 
 .edit-post-block-sidebar__panel .components-panel__body.caxton-section {
@@ -189,6 +158,11 @@ div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 			opacity: 1;
 		}
 	}
+}
+
+// 2018 fix
+.editor-styles-wrapper div.wp-block {
+	width: auto;
 }
 
 .editor-block-list__layout .layout-caxton-col .editor-block-list__block {
