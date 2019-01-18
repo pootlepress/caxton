@@ -1,4 +1,5 @@
 === Caxton - Create Pro page layouts in Gutenberg ===
+
 Contributors: pootlepress, shramee, jamie
 Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
@@ -12,12 +13,50 @@ Caxton bring to you super useful blocks which make your Gutenberg more and more 
 
 == Description ==
 
-https://vimeo.com/292544743
+Caxton is a collection of awesome blocks that makes it easy for you to create beautiful WordPress pages
+=======================================================================================================
 
-Caxton is a page layout plugin for Gutenberg. Caxton makes it easy to layout your pages in any grid configuration, and then add blocks within your layout. Caxton layouts support nesting of rows, row backgrounds, and is fully responsive.
+Don’t just take our word for it. This is what Matt Mullenweg said...
 
-Caxton also contains a growing library of blocks to enhance your layouts, including Posts Grid, Slider, Button, Hero, Social Icons and Shape Divider.
-We’ve put together a live interactive site here where you can [test Caxton for yourself](http://demo.caxton.pro/).
+Matt Mullenweg - WordPress founder
+----------------------------------
+
+> The sites people are creating with it are just gorgeous. It’s going to open up a level of creativity and expression for an audience that’s literally never had it. It’s like people are going to get new notes on a keyboard they can play, or a new voice they can sing with...
+Source wptavern.com
+
+We made a little video
+----------------------
+
+https://vimeo.com/311873183
+
+Blocks included
+---------------
+
+* Advanced layout block
+* Shape Dividers Block
+* Posts grid Block
+* Photo slider Block
+* Call To Action Block
+* Typography Block
+* Icons Block
+* Button Block
+
+Functionality
+-------------
+
+* Add backgrounds to sections
+* Create nested rows
+* Create full width sections
+* Create parallax rows
+* Create beautiful transitions between Blocks
+* Awesome customisation controls for each Block
+* Advanced mobile controls
+
+We’ve put together a live interactive site here where you can test Caxton for yourself.
+
+See Matt Mullenweg feature Caxton Blocks at WordCamp US
+
+https://www.youtube.com/watch?v=R0kZ8TbBr_Y&feature=youtu.be
 
 == Installation ==
 Automatic installation is the easiest way to install Caxton.
@@ -67,7 +106,7 @@ Version 1.7.2
 * New - Improved full width preview in Admin
 * Fix - Twenty Nineteen compatibility
 * Fix - Full width blocks not working in a few themes
-* Tweak - Shape block improved compatibility
+* Tweak - Shape divider block improved compatibility
 
 Version 1.7.1
 * 2018-11-28
@@ -93,7 +132,8 @@ Version 1.6.0
 
 Version 1.5.0
 * 2018-10-01
-* New - The Layout block
+* New - Caxton Layout block - Beautiful masonry layouts for Gutenberg without writing any code
+* New - Caxton Section block - Beautiful masonry layouts for WordPress without writing any code.
 
 Version 1.0.0
 * 2018-09-17
@@ -106,12 +146,12 @@ Version 0.7.0
 * 2018-06-04
 * New - Field section supported
 * New - Field template supported, %s in tpl replaced with value
-* New - Icon picker field
+* New - Icon picker field - Search and Pick any of the font awesome icons for Gutenberg
 * New - Alignment toolbars support
-* New - Super hero block
-* New - Super text block
-* New - Super button block
-* New - Super icon block
+* New - Super hero block - Full height hero, Full width hero, Full screen hero with custom gradients, gradient background
+* New - Super text block - Fully customizable typography block, font, letter spacing, calligraphy
+* New - Super button block - Fully customizable buttons, font, letter spacing, background and text color, calligraphy.
+* New - Super icon block - Font awesome icons with customizable size, color, outline, shapes (circle/curved square/square)
 * New - Improved editor support for `Full width`
 * Tweak - Caxton posts grid responsive
 * Fix - Bug which causes issues while editing multiple blocks
