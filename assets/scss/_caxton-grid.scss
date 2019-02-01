@@ -121,51 +121,90 @@
 	}
 }
 
-@media (min-width:1024px) {
-	.caxton-columns {
-		display: grid;
-		grid-auto-flow: dense;
-		grid-gap: 16px;
+.caxton-columns {
+	display: grid;
+	grid-auto-flow: dense;
+	grid-gap: 16px;
 
-		&.grid-gap-none {
-			grid-gap: 0;
-		}
+	&.grid-gap-none {
+		grid-gap: 0;
+	}
 
-		&.grid-gap-tight {
-			grid-gap: 8px;
-		}
+	&.grid-gap-tight {
+		grid-gap: 8px;
+	}
 
-		&.grid-gap-wide {
-			grid-gap: 25px;
-		}
+	&.grid-gap-wide {
+		grid-gap: 25px;
+	}
 
-		&.grid-gap-wider {
-			grid-gap: 32px;
-		}
+	&.grid-gap-wider {
+		grid-gap: 32px;
+	}
 
+<<<<<<< Updated upstream
 		@for $i from 1 to 6 {
 			&.caxton-#{$i}-columns {
 				grid-template-columns: repeat( $i , 1fr);
 			}
 		}
+=======
+	&.caxton-1-columns {
+		grid-template-columns: 100% 0 0 0 0 0 0 0;
+	}
 
-		&.layout-caxton-col {
-			overflow: hidden;
-		}
+	&.caxton-2-columns {
+		grid-template-columns: 50% 50% 0 0 0 0 0 0;
+	}
 
-		.layout-caxton-col {
-			overflow: hidden;
-		}
+	&.caxton-3-columns {
+		grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
+	}
 
-		@for $i from 1 through 6 {
-			.caxton-col-#{ $i } {
-				grid-column: #{ $i };
-			}
+	&.caxton-4-columns {
+		grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
+	}
+
+	&.caxton-5-columns {
+		grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
+	}
+
+	&.caxton-6-columns {
+		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
+	}
+>>>>>>> Stashed changes
+
+	&.layout-caxton-col {
+		overflow: hidden;
+	}
+
+	.layout-caxton-col {
+		overflow: hidden;
+	}
+
+	@for $i from 1 through 6 {
+		.caxton-col-#{ $i } {
+			grid-column: #{ $i };
 		}
 	}
 }
 
-@media (max-width:768px) {
+@media (max-width:1024px) AND (min-width:768px) {
+	.caxton-columns:not(.caxton-responsive-phone):not(caxton-responsive-never) {
+		grid-template-columns: 100%;
+		.layout-caxton-col {
+			grid-column: 1;
+		}
+	}
+}
+
+@media (max-width:767px) {
+	.caxton-columns:not(caxton-responsive-never) {
+		grid-template-columns: 100%;
+		.layout-caxton-col {
+			grid-column: 1;
+		}
+	}
 	.caxton-grid .grid-item {
 		width: 100% !important;
 	}

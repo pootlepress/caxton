@@ -8,11 +8,9 @@
 			grid-template-columns: repeat(12, 12px);
 			grid-gap: 5px;
 			padding: 4px;
+			grid-auto-rows: 25px;
 			border: 3px solid #eee;
 			background: #eee;
-			margin: 0 16px 16px 0;
-			float: left;
-			grid-auto-rows: 25px;
 			cursor: pointer;
 			opacity: .88;
 			&:hover {
@@ -21,6 +19,55 @@
 			}
 			.caxton-layout-preview-section {
 				background: #999;
+			}
+			&.caxton-layout-selected {
+				background: #ccc;
+				.caxton-layout-preview-section {
+					background: #777;
+				}
+			}
+		}
+		.caxton-layout-preview-wrap {
+			float: left;
+			position: relative;
+			margin: 0 25px 25px 0;
+
+			&:hover .caxton-layout-preview-legends {
+				opacity: .7;
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+		.caxton-layout-preview-legends {
+			position: absolute;
+			top: calc( 100% - 1px );
+			right: 0;
+			z-index: 1;
+			opacity: 0;
+			.dashicons {
+				float: left;
+			}
+		}
+		&.caxton-responsive-layout-picker {
+			border: none;
+			padding: 0;
+			column-count: 2;
+			column-gap: 5px;
+			.caxton-layout-preview {
+				grid-template-columns: repeat(12, 1fr);
+				grid-gap: 2px;
+				padding: 2px;
+				grid-auto-rows: 11px;
+			}
+			.caxton-layout-preview-wrap {
+				display: inline-block;
+				-webkit-column-break-inside: avoid;
+				page-break-inside: avoid;
+				break-inside: avoid;
+				margin: 0;
+				padding: 2.5px 0;
+				width: 100%;
 			}
 		}
 	}

@@ -52,7 +52,7 @@ Functionality
 * Awesome customisation controls for each Block
 * Advanced mobile controls
 
-We’ve put together a live interactive site here where you can test Caxton for yourself.
+We’ve put together a live interactive site here where you can [test Caxton for yourself](http://demo.caxton.pro/).
 
 See Matt Mullenweg feature Caxton Blocks at WordCamp US
 

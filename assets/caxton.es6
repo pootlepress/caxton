@@ -671,12 +671,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		fieldEl ( f, func, key_suffix ) {
-			if ( ! func ) {
-				func = f['type'] + 'FieldEl';
-			}
 
 			if ( 'undefined' === typeof key_suffix ) {
 				key_suffix = this.keySuffix++;
+			}
+
+			if ( typeof f.render === 'function' ) {
+				return f.render( this.fieldProps( f, key_suffix ), this );
+			}
+
+			if ( ! func ) {
+				func = f['type'] + 'FieldEl';
 			}
 
 			return this[ func ]( f, key_suffix );
@@ -1011,6 +1016,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	// endregion Register block
 
 	window.CaxtonBlock = block => new CxB( block );
+
+	window.caxtonRegisterFieldType = ( name, callback ) => {
+
+	};
 
 	window.Caxton = {
 		el2html: HTMLFromElement,

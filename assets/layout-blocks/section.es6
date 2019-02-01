@@ -31,16 +31,28 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
 	bgHTML += '<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
 
-	return el(
-		// Element
-		'div',
-		{
-			className: cls,
-			key      : 'caxton-section-block',
-			style    : {
-				'gridArea'   : block.attrs['Grid area'],
-			}
+	var props = {
+		className        : cls,
+		key              : 'caxton-section-block',
+		style            : {
+			'gridArea': block.attrs['Grid area'],
 		},
+		'data-mobile-css': 'grid-area:' + block.attrs['Mobile grid area'] + ';',
+		'data-tablet-css': 'grid-area:' + block.attrs['Tablet grid area'] + ';',
+	};
+
+	let gridAreaMobile = block.attrs['Mobile grid area']
+	let gridAreaTablet = block.attrs['Tablet grid area']
+
+	if ( gridAreaMobile ) {
+		props['data-mobile-css'] = 'grid-area:' + gridAreaMobile + ';';
+	}
+	if ( gridAreaTablet ) {
+		props['data-tablet-css'] = 'grid-area:' + gridAreaTablet + ';';
+	}
+
+	return el(
+		'div', props,
 		[
 			// Background div
 			el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),

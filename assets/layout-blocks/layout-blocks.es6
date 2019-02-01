@@ -1,9 +1,12 @@
 import {gridFields, sectionFields} from './fields.es6';
-import {gridRender, gridContent} from './grid.es6';
+import {gridRender, gridContent, responsiveLayoutPicker} from './grid.es6';
 import {sectionRender} from './section.es6';
 
 export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 	const el = element.createElement;
+
+	gridFields['Mobile layout'].render = responsiveLayoutPicker;
+	gridFields['Tablet layout'].render = responsiveLayoutPicker;
 
 	CaxtonBlock( {
 		id        : 'caxton/grid',

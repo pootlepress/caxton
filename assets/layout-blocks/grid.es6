@@ -1,4 +1,5 @@
 import layoutsData from './layouts.json';
+import altLayoutsData from './alt-layouts.json';
 
 export function gridRender ( props, block, childrenBlocks ) {
 	const el = wp.element.createElement;
@@ -86,7 +87,8 @@ function parseLayout( lyt ) {
 			secProps = lyt.tpl[i],
 			children = [];
 
-		if ( typeof secProps === 'object' && secProps.length === 2 ) {
+		// @TODO maybe implement children block in future
+		if ( typeof secProps === 'object' && secProps[1] && secProps[0] ) {
 			children = secProps[1];
 			secProps = secProps[0];
 		}
@@ -116,7 +118,7 @@ function parseLayout( lyt ) {
 	if ( lyt._numRows ) {
 		layout._numRows = lyt._numRows;
 	} else if ( _numCells ) {
-		layout._numRows = _numCells / 12;
+		layout._numRows = Math.ceil( _numCells / 12 );
 	}
 	
 	return layout;
@@ -139,11 +141,18 @@ function layoutElement( lyt, id ) {
 			} )
 		);
 	}
-	return el( 'div', {
-		className    : 'caxton-layout-preview',
-		key          : 'layout-' + id,
-		'data-layout': JSON.stringify( lyt ),
-	}, sections );
+	return el(
+		'div',
+		{
+			className: 'caxton-layout-preview-wrap',
+			key      : 'layout-wrap-' + id,
+		},
+		el( 'div', {
+			className    : 'caxton-layout-preview',
+			key          : 'layout-' + id,
+			'data-layout': JSON.stringify( lyt ),
+		}, sections ),
+	);
 }
 
 function gridLayoutPicker( props ) {
@@ -170,7 +179,10 @@ function gridLayoutPicker( props ) {
 		if ( typeof lyt === 'string' ) {
 			lyt = JSON.parse( lyt );
 		}
-		props.setAttributes( { tpl: JSON.stringify( lyt.tpl ) } );
+		if ( typeof lyt.tpl === 'object' ) {
+			lyt.tpl = JSON.stringify( lyt.tpl );
+		}
+		props.setAttributes( lyt );
 	}
 
 	return el(
@@ -187,13 +199,34 @@ function gridLayoutPicker( props ) {
 export function gridContent( props, block  ) {
 	const el = wp.element.createElement;
 	if ( props.attributes.tpl && props.attributes.tpl.indexOf( '[' ) === 0 && props.attributes.tpl.indexOf( ']' ) > 0 ) {
+
+		let
+			tpl = JSON.parse( props.attributes.tpl ),
+			tabLyt = props.attributes['Tablet layout'],
+			mobLyt = props.attributes['Mobile layout'];
+
+		tabLyt = tabLyt ? tabLyt.split( '|' ) : [];
+		mobLyt = mobLyt ? mobLyt.split( '|' ) : [];
+
+		for ( let i = 0; i < tpl.length; i ++ ) {
+			const sec = tpl[i];
+			if ( tabLyt[i] ) {
+				sec[1]['Tablet grid area'] = tabLyt[i];
+			}
+			if ( mobLyt[i] ) {
+				sec[1]['Mobile grid area'] = mobLyt[i];
+			}
+		}
+
+		console.log( tpl );
+
 		return el(
 			wp.editor.InnerBlocks,
 			{
 				allowedBlocks: [
 					'caxton/section',
 				],
-				template     : JSON.parse( props.attributes.tpl ),
+				template     : tpl,
 				templateLock : 'insert',
 				key          : 'innerblocks'
 			}
@@ -201,4 +234,79 @@ export function gridContent( props, block  ) {
 	} else {
 		return gridLayoutPicker( props );
 	}
+}
+
+function responsiveLayoutElement( lyt, id, field ) {
+	id = id ? id : 0;
+	let
+		lytStr = 'span ' + lyt.join( '|span ' ).replace( /,/g, '/span ' ),
+		className = 'caxton-layout-preview';
+
+	if ( lytStr === field.value ) {
+		className += ' caxton-layout-selected';
+	}
+
+	const el = wp.element.createElement;
+	let sections = [];
+
+	for ( let i = 0; i < lyt.length; i ++ ) {
+		let section = lyt[i].split( ',' );
+
+		sections.push(
+			el( 'div', {
+				className: 'caxton-layout-preview-section',
+				key      : 'layout-section-' + i,
+				style    : {
+					'gridArea': 'span ' + section.join( '/span ' ),
+				}
+			} )
+		);
+	}
+	return el(
+		'div',
+		{
+			className: 'caxton-layout-preview-wrap',
+			key      : 'layout-wrap-' + id,
+		},
+		el(
+			'div',
+			{
+				className    : className,
+				key          : 'layout-' + id,
+				'data-layout': lytStr,
+			},
+			sections
+		)
+	);
+}
+
+export function responsiveLayoutPicker( field, that ) {
+	field.title = field.label;
+	field.className = 'caxton-icon-picker-panel';
+
+	const el = wp.element.createElement;
+	let layouts = [];
+	let layoutsData = altLayoutsData[ JSON.parse( that.attrs.tpl ).length + '-sections' ];
+
+	for ( let i = 0; i < layoutsData.length; i ++ ) {
+		layouts.push( responsiveLayoutElement( layoutsData[i], i, field ) );
+	}
+
+	return el(
+		wp.components.PanelBody,
+		field,
+		el( 'div', {
+				className: 'caxton-layout-picker caxton-responsive-layout-picker',
+				onClick( {target} ) {
+					var $lyt = $( target ).closest( '[data-layout]' );
+					if ( $lyt.length ) {
+						console.log( $lyt.data( 'layout' ) );
+						field.onChange( $lyt.data( 'layout' ) );
+					}
+				},
+			},
+			layouts,
+			el( 'div', {className: 'clear'} ),
+		)
+	);
 }

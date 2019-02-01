@@ -47,6 +47,16 @@ export const gridFields = {
 		tpl    : 'opacity:%s;',
 	},
 
+	'Mobile layout'                  : {
+		type   : 'select',
+		section: 'Responsive layout',
+	},
+
+	'Tablet layout'                  : {
+		type   : 'select',
+		section: 'Responsive layout',
+	},
+
 	'Layout'                         : {
 		type   : 'select',
 		options: [
@@ -204,8 +214,18 @@ export const sectionFields = {
 	},
 	'Grid area'                      : {
 		type       : 'text',
-		description: 'Specify grid-area CSS property.',
+		description: 'Change grid-area CSS property.',
 		section    : 'Jedi controls',
 		default    : 'span 1 / span 4 / auto / auto',
+	},
+	'Tablet grid area'               : {
+		type       : 'text',
+		description: 'Change grid-area CSS property for Tablet devices.',
+		section    : 'Jedi controls',
+	},
+	'Mobile grid area'               : {
+		type       : 'text',
+		description: 'Change grid-area CSS property for Mobile devices.',
+		section    : 'Jedi controls',
 	},
 };
