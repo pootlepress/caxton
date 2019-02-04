@@ -201,24 +201,7 @@ export function gridContent( props, block  ) {
 	if ( props.attributes.tpl && props.attributes.tpl.indexOf( '[' ) === 0 && props.attributes.tpl.indexOf( ']' ) > 0 ) {
 
 		let
-			tpl = JSON.parse( props.attributes.tpl ),
-			tabLyt = props.attributes['Tablet layout'],
-			mobLyt = props.attributes['Mobile layout'];
-
-		tabLyt = tabLyt ? tabLyt.split( '|' ) : [];
-		mobLyt = mobLyt ? mobLyt.split( '|' ) : [];
-
-		for ( let i = 0; i < tpl.length; i ++ ) {
-			const sec = tpl[i];
-			if ( tabLyt[i] ) {
-				sec[1]['Tablet grid area'] = tabLyt[i];
-			}
-			if ( mobLyt[i] ) {
-				sec[1]['Mobile grid area'] = mobLyt[i];
-			}
-		}
-
-		console.log( tpl );
+			tpl = JSON.parse( props.attributes.tpl );
 
 		return el(
 			wp.editor.InnerBlocks,
@@ -227,7 +210,7 @@ export function gridContent( props, block  ) {
 					'caxton/section',
 				],
 				template     : tpl,
-				templateLock : 'insert',
+				templateLock : 'all',
 				key          : 'innerblocks'
 			}
 		);
@@ -283,8 +266,12 @@ function responsiveLayoutElement( lyt, id, field ) {
 export function responsiveLayoutPicker( field, that ) {
 	field.title = field.label;
 	field.className = 'caxton-icon-picker-panel';
+	const
+		props = that.props,
+		el = wp.element.createElement;
 
-	const el = wp.element.createElement;
+	if ( ! that.attrs.tpl ) return el( 'div', {}, 'Please select a layout to get started.' ) ;
+
 	let layouts = [];
 	let layoutsData = altLayoutsData[ JSON.parse( that.attrs.tpl ).length + '-sections' ];
 
@@ -300,7 +287,20 @@ export function responsiveLayoutPicker( field, that ) {
 				onClick( {target} ) {
 					var $lyt = $( target ).closest( '[data-layout]' );
 					if ( $lyt.length ) {
-						console.log( $lyt.data( 'layout' ) );
+						let lyt = $lyt.data( 'layout' );
+						lyt = lyt ? lyt.split( '|' ) : [];
+
+						let blk = wp.data.select( 'core/editor' ).getBlocksByClientId( props.clientId )[ 0 ];
+
+						if ( blk && lyt ) {
+							let children = blk.innerBlocks;
+							for ( let i = 0; i < children.length; i ++ ) {
+								if ( lyt[i] ) {
+									children[i].attributes[ field.childField ] = lyt[i];
+								}
+							}
+						}
+
 						field.onChange( $lyt.data( 'layout' ) );
 					}
 				},
