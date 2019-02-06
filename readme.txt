@@ -5,7 +5,7 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 5.0.0
 Requires PHP: 5.6.0
-Stable tag: 1.7.2.1
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,12 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 7. Book block divider on column
 
 == Changelog ==
+
+Version 1.8.0
+* 2019-02-06
+* Fix - MS Edge layout breaking.
+* New - **Responsive layouts for Caxton Layout block**
+* Tweak - Freemius SDK updated
 
 Version 1.7.2.1
 * 2018-12-17
