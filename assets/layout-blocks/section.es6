@@ -37,8 +37,6 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 		style            : {
 			'gridArea': block.attrs['Grid area'],
 		},
-		'data-mobile-css': 'grid-area:' + block.attrs['Mobile grid area'] + ';',
-		'data-tablet-css': 'grid-area:' + block.attrs['Tablet grid area'] + ';',
 	};
 
 	let gridAreaMobile = block.attrs['Mobile grid area'];
