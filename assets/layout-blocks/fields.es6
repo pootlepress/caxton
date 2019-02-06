@@ -47,18 +47,6 @@ export const gridFields = {
 		tpl    : 'opacity:%s;',
 	},
 
-	'Mobile layout'                  : {
-		type   : 'select',
-		section: 'Responsive layout',
-		childField: 'Mobile grid area',
-	},
-
-	'Tablet layout'                  : {
-		type   : 'select',
-		section: 'Responsive layout',
-		childField: 'Tablet grid area',
-	},
-
 	'Layout'                         : {
 		type   : 'select',
 		options: [
@@ -121,6 +109,19 @@ export const gridFields = {
 		default: 'px',
 		section: 'Layout',
 	},
+
+	'Mobile layout'                  : {
+		type   : 'select',
+		section: 'Responsive layout',
+		childField: 'Mobile grid area',
+	},
+
+	'Tablet layout'                  : {
+		type   : 'select',
+		section: 'Responsive layout',
+		childField: 'Tablet grid area',
+	},
+
 };
 
 export const sectionFields = {
