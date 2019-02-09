@@ -267,46 +267,55 @@ export function responsiveLayoutPicker( field, that ) {
 	field.title = field.label;
 	field.className = 'caxton-icon-picker-panel';
 	const
-		props = that.props,
-		el = wp.element.createElement;
+		props   = that.props,
+		el      = wp.element.createElement,
+		numSecs = JSON.parse( that.attrs.tpl ).length;
 
 	if ( ! that.attrs.tpl ) return el( 'div', {}, 'Please select a layout to get started.' ) ;
 
 	let layouts = [];
-	let layoutsData = altLayoutsData[ JSON.parse( that.attrs.tpl ).length + '-sections' ];
+	let layoutsData = altLayoutsData[ numSecs + '-sections' ];
 
-	for ( let i = 0; i < layoutsData.length; i ++ ) {
-		layouts.push( responsiveLayoutElement( layoutsData[i], i, field ) );
-	}
+	if ( layoutsData && layoutsData.length > 1 ) {
+		for ( let i = 0; i < layoutsData.length; i ++ ) {
+			layouts.push( responsiveLayoutElement( layoutsData[i], i, field ) );
+		}
 
-	return el(
-		wp.components.PanelBody,
-		field,
-		el( 'div', {
-				className: 'caxton-layout-picker caxton-responsive-layout-picker',
-				onClick( {target} ) {
-					var $lyt = $( target ).closest( '[data-layout]' );
-					if ( $lyt.length ) {
-						let lyt = $lyt.data( 'layout' );
-						lyt = lyt ? lyt.split( '|' ) : [];
+		return el(
+			wp.components.PanelBody,
+			field,
+			el( 'div', {
+					className: 'caxton-layout-picker caxton-responsive-layout-picker',
+					onClick( {target} ) {
+						var $lyt = $( target ).closest( '[data-layout]' );
+						if ( $lyt.length ) {
+							let lyt = $lyt.data( 'layout' );
+							lyt = lyt ? lyt.split( '|' ) : [];
 
-						let blk = wp.data.select( 'core/editor' ).getBlocksByClientId( props.clientId )[ 0 ];
+							let blk = wp.data.select( 'core/editor' ).getBlocksByClientId( props.clientId )[ 0 ];
 
-						if ( blk && lyt ) {
-							let children = blk.innerBlocks;
-							for ( let i = 0; i < children.length; i ++ ) {
-								if ( lyt[i] ) {
-									children[i].attributes[ field.childField ] = lyt[i];
+							if ( blk && lyt ) {
+								let children = blk.innerBlocks;
+								for ( let i = 0; i < children.length; i ++ ) {
+									if ( lyt[i] ) {
+										children[i].attributes[ field.childField ] = lyt[i];
+									}
 								}
 							}
-						}
 
-						field.onChange( $lyt.data( 'layout' ) );
-					}
+							field.onChange( $lyt.data( 'layout' ) );
+						}
+					},
 				},
-			},
-			layouts,
-			el( 'div', {className: 'clear'} ),
-		)
-	);
+				layouts,
+				el( 'div', {className: 'clear'} ),
+			)
+		);
+	} else {
+		return el(
+			wp.components.PanelBody,
+			field,
+			el( 'div', {}, 'No alternative layouts found.' )
+		);
+	}
 }
