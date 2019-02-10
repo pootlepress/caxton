@@ -264,15 +264,12 @@ function responsiveLayoutElement( lyt, id, field ) {
 }
 
 export function responsiveLayoutPicker( field, that ) {
-	if ( ! that.attrs.tpl ) return;
 	field.title = field.label;
-	field.className = 'caxton-icon-picker-panel';
+	if ( ! that.attrs.tpl ) return el( 'div', {}, 'Please select a layout to get started.' ) ;
 	const
 		props   = that.props,
 		el      = wp.element.createElement,
 		numSecs = JSON.parse( that.attrs.tpl ).length;
-
-	if ( ! that.attrs.tpl ) return el( 'div', {}, 'Please select a layout to get started.' ) ;
 
 	let layouts = [];
 	let layoutsData = altLayoutsData[ numSecs + '-sections' ];
