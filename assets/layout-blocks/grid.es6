@@ -265,12 +265,13 @@ function responsiveLayoutElement( lyt, id, field ) {
 
 export function responsiveLayoutPicker( field, that ) {
 	field.title = field.label;
-	if ( ! that.attrs.tpl ) return el( 'div', {}, 'Please select a layout to get started.' ) ;
 	const
 		props   = that.props,
-		el      = wp.element.createElement,
-		numSecs = JSON.parse( that.attrs.tpl ).length;
-
+		el      = wp.element.createElement;
+	if ( ! that.attrs.tpl ) {
+		return el( 'div', {}, 'Please select a layout to get started.' ) ;
+	}
+	const numSecs = that.attrs.tpl ? JSON.parse( that.attrs.tpl ).length : 0;
 	let layouts = [];
 	let layoutsData = altLayoutsData[ numSecs + '-sections' ];
 
