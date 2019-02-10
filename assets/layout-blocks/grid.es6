@@ -264,6 +264,7 @@ function responsiveLayoutElement( lyt, id, field ) {
 }
 
 export function responsiveLayoutPicker( field, that ) {
+	if ( ! that.attrs.tpl ) return;
 	field.title = field.label;
 	field.className = 'caxton-icon-picker-panel';
 	const
