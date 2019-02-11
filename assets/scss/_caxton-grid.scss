@@ -142,37 +142,11 @@
 		grid-gap: 32px;
 	}
 
-<<<<<<< Updated upstream
 		@for $i from 1 to 6 {
 			&.caxton-#{$i}-columns {
 				grid-template-columns: repeat( $i , 1fr);
 			}
 		}
-=======
-	&.caxton-1-columns {
-		grid-template-columns: 100% 0 0 0 0 0 0 0;
-	}
-
-	&.caxton-2-columns {
-		grid-template-columns: 50% 50% 0 0 0 0 0 0;
-	}
-
-	&.caxton-3-columns {
-		grid-template-columns: 33.333% 33.333% 33.333% 0 0 0 0 0;
-	}
-
-	&.caxton-4-columns {
-		grid-template-columns: 25% 25% 25% 25% 0 0 0 0;
-	}
-
-	&.caxton-5-columns {
-		grid-template-columns: 20% 20% 20% 20% 20% 0 0 0;
-	}
-
-	&.caxton-6-columns {
-		grid-template-columns: 16.666% 16.666% 16.666% 16.666% 16.666% 16.666% 0 0;
-	}
->>>>>>> Stashed changes
 
 	&.layout-caxton-col {
 		overflow: hidden;
