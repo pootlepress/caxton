@@ -170,6 +170,9 @@
 			grid-column: 1;
 		}
 	}
+	.wp-block-caxton-section:not([data-tablet-css*='grid-area']) {
+		grid-area: span 1 / span 12 / auto / auto !important;
+	}
 }
 
 @media (max-width:767px) {
@@ -178,6 +181,9 @@
 		.layout-caxton-col {
 			grid-column: 1;
 		}
+	}
+	.wp-block-caxton-section:not([data-mobile-css*='grid-area']) {
+		grid-area: span 1 / span 12 / auto / auto !important;
 	}
 	.caxton-grid .grid-item {
 		width: 100% !important;
