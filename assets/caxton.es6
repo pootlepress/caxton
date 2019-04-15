@@ -111,7 +111,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					field.label = field.label ? field.label : id;
 
 					if ( field.type === 'checkbox' || field.type === 'toggle' ) {
-						field.value = field.value || 1;
+						field.value = field.value || '1';
 					}
 
 					if ( ! field.default && isNaN( field.default ) ) {
