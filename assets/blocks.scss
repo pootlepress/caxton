@@ -31,6 +31,16 @@ $caxton-width: 1060px;
 	font-weight: 400;
 }
 
+.caxton-listing-block {
+	.editor-inner-blocks,
+	.editor-block-list__layout {
+		display: inherit;
+		justify-content: inherit;
+		align-items: inherit;
+		width: 100%;
+	}
+}
+
 div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
 	> span[contentEditable] {
 		display: block;

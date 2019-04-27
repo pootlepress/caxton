@@ -163,6 +163,27 @@
 	}
 }
 
+.caxton-listing-block {
+	display: flex;
+	justify-content: inherit;
+	align-items: inherit;
+	> *:not( .ml-auto ) {
+		margin-left: 1.6em;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+}
+
+.caxton-listing-block .editor-inner-blocks .wp-block {
+	&:not(.ml-auto) {
+		margin-left: 0;
+	}
+	&:not(.mr-auto) {
+		margin-right: 0;
+	}
+}
+
 @media (max-width:1024px) AND (min-width:768px) {
 	.caxton-columns:not(.caxton-responsive-phone):not(caxton-responsive-never) {
 		grid-template-columns: 100%;
