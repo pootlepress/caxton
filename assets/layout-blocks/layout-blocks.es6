@@ -1,7 +1,8 @@
-import {gridFields, sectionFields, listingFields} from './fields.es6';
+import {gridFields, sectionFields, listingFields, tplFields} from './fields.es6';
 import {gridRender, gridContent, responsiveLayoutPicker} from './grid.es6';
 import {sectionRender} from './section.es6';
 import {listingRender} from './listing.es6';
+import {tplRender, tplContent} from './tpl.es6';
 
 export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 	const el = element.createElement;
@@ -86,26 +87,29 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 	} );
 	// endregion Listings block
 
-	// region Caxton link block
-	CaxtonBlock( {
-		id          : 'caxton/link-item',
-		title       : 'Caxton link item',
-		icon        : 'text',
-		category    : 'caxton',
-		fields      : listingFields,
-		edit        : function ( props, block ) {
-			return listingRender(
-				props, block,
-				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
-			);
-		},
-		save        : function ( props, block ) {
-			return listingRender(
-				props, block,
-				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]
-			);
-		},
-	} );
-	// endregion Caxton section block
+	// region template block
+	window.caxtonTemplateBlock = ( blockProps, optionsRenderer ) => {
+		if ( ! blockProps.id || ! blockProps.title ) {
+			console.error( 'Function caxtonTemplateBlock requires `id` and `title` properties on first parameter object.' );
+		}
+		let defaultBlockProps = {
+			icon      : 'screenoptions',
+			category  : 'caxton',
+			fields    : tplFields,
+			attributes: {tpl: {type: 'string'},},
+			edit      : function ( props, block ) {
+				return tplRender( props, block, tplContent( props, block, optionsRenderer ) );
+			},
+			save      : function ( props, block ) {
+				return tplRender( props, block, el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} ) );
+			},
+		};
 
+		for ( let prop in blockProps ) {
+			defaultBlockProps[ prop ] = blockProps[ prop ];
+		}
+
+		CaxtonBlock( defaultBlockProps, optionsRenderer );
+	};
+	// endregion template block
 };

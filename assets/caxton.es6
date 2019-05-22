@@ -912,6 +912,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					}
 				}
 
+				console.log( that.block.id );
+
 				return el( 'div', { key: 'block-content'}, els );
 			};
 
