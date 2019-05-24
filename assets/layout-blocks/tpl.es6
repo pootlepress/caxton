@@ -77,7 +77,7 @@ export function tplContent( props, block, optionsRenderer  ) {
 			wp.editor.InnerBlocks,
 			{
 				template     : tpl,
-				templateLock : 'all',
+				templateLock : false,
 				key          : 'innerblocks'
 			}
 		);

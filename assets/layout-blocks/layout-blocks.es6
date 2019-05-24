@@ -34,12 +34,22 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 		icon        : 'screenoptions',
 		parent      : ['caxton/grid'],
 		category    : 'caxton',
+		attributes: { tpl: { type: 'string' }, },
 		fields      : sectionFields,
 		edit        : function ( props, block ) {
-			return sectionRender(
-				props, block,
-				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
+			let tpl = [];
+			if ( props.attributes.tpl && props.attributes.tpl.indexOf( '[' ) === 0 && props.attributes.tpl.indexOf( ']' ) > 0 ) {
+				tpl = JSON.parse( props.attributes.tpl );
+			}
+			const content = el(
+				wp.editor.InnerBlocks,
+				{
+					template     : tpl,
+					templateLock : false,
+					key          : 'innerblocks'
+				}
 			);
+			return sectionRender( props, block, content );
 		},
 		save        : function ( props, block ) {
 			return sectionRender(
@@ -88,28 +98,65 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 	// endregion Listings block
 
 	// region template block
-	window.caxtonTemplateBlock = ( blockProps, optionsRenderer ) => {
-		if ( ! blockProps.id || ! blockProps.title ) {
-			console.error( 'Function caxtonTemplateBlock requires `id` and `title` properties on first parameter object.' );
+	window.CaxtonLayoutOptionsBlock = ( blockArgs, options ) => {
+		if ( ! blockArgs.id || ! blockArgs.title ) {
+			console.error( 'Function CaxtonLayoutOptionsBlock requires `id` and `title` properties on first parameter object.' );
 		}
-		let defaultBlockProps = {
+		let blockProps = {
 			icon      : 'screenoptions',
 			category  : 'caxton',
 			fields    : tplFields,
 			attributes: {tpl: {type: 'string'},},
+			chooseLayoutTitle: 'Please choose a layout',
+			optionsRenderer: ( props, block ) => {
+					var applyProps = function ( e ) {
+						let newProps = jQuery( e.target ).closest( '.caxton-layout-option' ).data( 'props' );
+						if ( typeof newProps === 'string' ) {
+							newProps = JSON.parse( newProps );
+						}
+						if ( typeof newProps.tpl === 'object' ) {
+							newProps.tpl = JSON.stringify( newProps.tpl );
+						}
+						props.setAttributes( newProps );
+					};
+
+					var optEls = [];
+
+					for ( var i = 0; i < options.length; i ++ ) {
+						var opt = options[i];
+						optEls.push(
+							el(
+								'div',
+								{
+									className   : 'caxton-layout-option',
+									key         : 'option-' + i,
+									"data-props": JSON.stringify( opt.props ),
+									onClick     : applyProps
+								},
+								el( 'h5', {}, opt.title ),
+								el( 'img', {src: opt.img} ),
+							)
+						);
+					}
+
+					return el( 'div', {}, [
+						el( 'h4', {key: 'heading'}, 'Select an option' ),
+						el( 'div', {key: 'options', className: 'caxton-layout-options'}, optEls ),
+					] );
+				},
 			edit      : function ( props, block ) {
-				return tplRender( props, block, tplContent( props, block, optionsRenderer ) );
+				return tplRender( props, block, tplContent( props, block, blockProps.optionsRenderer ) );
 			},
 			save      : function ( props, block ) {
 				return tplRender( props, block, el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} ) );
 			},
 		};
 
-		for ( let prop in blockProps ) {
-			defaultBlockProps[ prop ] = blockProps[ prop ];
+		for ( let prop in blockArgs ) {
+			blockProps[ prop ] = blockArgs[ prop ];
 		}
 
-		CaxtonBlock( defaultBlockProps, optionsRenderer );
+		CaxtonBlock( blockProps );
 	};
 	// endregion template block
 };
