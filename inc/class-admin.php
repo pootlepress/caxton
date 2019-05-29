@@ -112,8 +112,12 @@ class Caxton_Admin {
 			];
 		}
 
+		$post_id = filter_input( INPUT_GET, 'post' );
+
 		wp_localize_script( "caxton", 'caxton', [
-			'post'           => filter_input( INPUT_GET, 'post' ),
+			'post'           => $post_id,
+			'post_thumbnail_full' => get_the_post_thumbnail_url( $post_id, 'full' ),
+			'post_thumbnail' => get_the_post_thumbnail_url( $post_id, 'large' ),
 			'postCategories' => $categories,
 			'fonts'          => $caxton_fonts,
 		] );

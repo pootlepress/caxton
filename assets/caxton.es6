@@ -197,6 +197,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			let removeBtn = null;
 
 			if ( props.value ) {
+				if ( props.value.indexOf( 'post_thumbnail' ) > -1 ) {
+					props.onChange( caxton[ props.value ] );
+				}
 				btnContent = [
 					el( 'img', {src: props.value, key: 'image'} ),
 					__( 'Click the image to edit or update' ),
@@ -204,7 +207,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				removeBtn = el(
 					'a', {
 						className: 'caxton-remove-image',
-						href: '#',
+						href     : '#',
 						onClick() {
 							props.onChange( '', {} )
 						},

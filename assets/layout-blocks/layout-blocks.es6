@@ -102,6 +102,14 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 		if ( ! blockArgs.id || ! blockArgs.title ) {
 			console.error( 'Function CaxtonLayoutOptionsBlock requires `id` and `title` properties on first parameter object.' );
 		}
+
+		if ( blockArgs.debug ) {
+			tplFields.tpl = {
+				type   : 'textarea',
+				section: 'Layout',
+			};
+		}
+
 		let blockProps = {
 			icon      : 'screenoptions',
 			category  : 'caxton',
