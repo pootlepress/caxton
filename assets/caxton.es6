@@ -197,8 +197,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			let removeBtn = null;
 
 			if ( props.value ) {
-				if ( props.value.indexOf( 'post_thumbnail' ) > -1 ) {
-					props.onChange( caxton[ props.value ] );
+				if ( props.value.indexOf( 'featured_image' ) > -1 ) {
+					props.value = caxton[props.value];
 				}
 				btnContent = [
 					el( 'img', {src: props.value, key: 'image'} ),
@@ -224,6 +224,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				el(
 					editor.MediaUpload,
 					{
+						key     : 'imagePicker',
 						onSelect(media) {
 							props.onChange( media.url, media );
 						},
@@ -231,17 +232,35 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						value: props.value,
 						label: props.label,
 						render({open}) {
-							return el( 'div', {},
+							return el( 'span', { className: 'v-mid dib'},
 								removeBtn,
 								el( components.Button, {
 										className: props.value ? 'image-button' : 'button button-large',
-										onClick: open,
+										onClick  : open,
 									},
 									btnContent
 								)
 							);
 						},
 					}
+				),
+				props.value ? null : el( 'span', {className: 'v-mid dib ph2'}, ' OR ' ),
+				props.value ? null : el(
+					'select',
+					{
+						key     : 'options',
+						onChange: function ( e ) {
+							if ( e.target.value ) {
+								props.onChange( e.target.value );
+							}
+						}
+					},
+					[
+						el( 'option', {disabled: 'disabled',selected: 'selected'}, __( 'Use featured image' ) ),
+						el( 'option', {value: 'featured_image_medium_large',}, __( 'Size: Medium large' ) ),
+						el( 'option', {value: 'featured_image_large',}, __( 'Size: Large' ) ),
+						el( 'option', {value: 'featured_image_full',}, __( 'Size: Full' ) ),
+					]
 				)
 			);
 		}
@@ -852,12 +871,18 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		saveBlockProperties( props ) {
 			this.props = props;
-			this.attrs = this.props.attributes;
+			this.attrs = {};
+			const attrs = this.props.attributes;
+
 			for ( let f in this.fields ) {
 				if ( this.fields.hasOwnProperty( f ) ) {
 					const fld = this.fields[ f ];
-					if ( ! this.attrs[fld.id] && isNaN( this.attrs[fld.id] ) ) {
+					if ( ! attrs[fld.id] && isNaN( attrs[fld.id] ) ) {
 						this.attrs[fld.id] = fld.default
+					} else if ( 'image' === fld.type && attrs[ fld.id ].indexOf( 'featured_image' ) > -1 ) {
+							this.attrs[ fld.id ] = caxton[ attrs[ fld.id ] ];
+					} else {
+						this.attrs[ fld.id ] = attrs[ fld.id ];
 					}
 				}
 			}
@@ -889,7 +914,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			registerBlockProps.icon = block.icon;
 
 			const editCallback = function ( props ) {
-
 				const els = [];
 				that.saveBlockProperties( props );
 
@@ -914,9 +938,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						els.push( afterCallback );
 					}
 				}
-
-				console.log( that.block.id );
-
 				return el( 'div', { key: 'block-content'}, els );
 			};
 
