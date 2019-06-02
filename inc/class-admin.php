@@ -116,14 +116,20 @@ class Caxton_Admin {
 
 		wp_localize_script( "caxton", 'caxton', [
 			'post'           => $post_id,
-			'featured_image_medium_large' => get_the_post_thumbnail_url( $post_id, 'medium_large' ),
-			'featured_image_large' => get_the_post_thumbnail_url( $post_id, 'large' ),
-			'featured_image_full' => get_the_post_thumbnail_url( $post_id, 'full' ),
-			'featured_image' => get_the_post_thumbnail_url( $post_id, 'large' ),
+			'content_vars'   => self::get_content_vars( $post_id ),
 			'postCategories' => $categories,
 			'fonts'          => $caxton_fonts,
 		] );
 
+	}
+
+	public static function get_content_vars( $post_id ) {
+		return [
+			'featured_image_medium_large' => get_the_post_thumbnail_url( $post_id, 'medium_large' ),
+			'featured_image_large'        => get_the_post_thumbnail_url( $post_id, 'large' ),
+			'featured_image_full'         => get_the_post_thumbnail_url( $post_id, 'full' ),
+			'featured_image'              => get_the_post_thumbnail_url( $post_id, 'large' ),
+		];
 	}
 
 	public function add_meta_boxes() {

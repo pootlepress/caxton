@@ -198,7 +198,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 			if ( props.value ) {
 				if ( props.value.indexOf( 'featured_image' ) > -1 ) {
-					props.value = caxton[props.value];
+					props.onChange( caxton.content_vars[props.value] );
 				}
 				btnContent = [
 					el( 'img', {src: props.value, key: 'image'} ),
@@ -244,24 +244,24 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						},
 					}
 				),
-				props.value ? null : el( 'span', {className: 'v-mid dib ph2'}, ' OR ' ),
-				props.value ? null : el(
-					'select',
-					{
-						key     : 'options',
-						onChange: function ( e ) {
-							if ( e.target.value ) {
-								props.onChange( e.target.value );
-							}
-						}
-					},
-					[
-						el( 'option', {disabled: 'disabled',selected: 'selected'}, __( 'Use featured image' ) ),
-						el( 'option', {value: 'featured_image_medium_large',}, __( 'Size: Medium large' ) ),
-						el( 'option', {value: 'featured_image_large',}, __( 'Size: Large' ) ),
-						el( 'option', {value: 'featured_image_full',}, __( 'Size: Full' ) ),
-					]
-				)
+//				props.value ? null : el( 'span', {className: 'v-mid dib ph2'}, ' OR ' ),
+//				props.value ? null : el(
+//					'select',
+//					{
+//						key     : 'options',
+//						onChange: function ( e ) {
+//							if ( e.target.value ) {
+//								props.onChange( e.target.value );
+//							}
+//						}
+//					},
+//					[
+//						el( 'option', {disabled: 'disabled',selected: 'selected'}, __( 'Use featured image' ) ),
+//						el( 'option', {value: 'featured_image_medium_large',}, __( 'Size: Medium large' ) ),
+//						el( 'option', {value: 'featured_image_large',}, __( 'Size: Large' ) ),
+//						el( 'option', {value: 'featured_image_full',}, __( 'Size: Full' ) ),
+//					]
+//				)
 			);
 		}
 
@@ -871,18 +871,17 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		saveBlockProperties( props ) {
 			this.props = props;
-			this.attrs = {};
-			const attrs = this.props.attributes;
+			this.attrs = this.props.attributes;
 
 			for ( let f in this.fields ) {
 				if ( this.fields.hasOwnProperty( f ) ) {
 					const fld = this.fields[ f ];
-					if ( ! attrs[fld.id] && isNaN( attrs[fld.id] ) ) {
+					if ( ! this.attrs[fld.id] && isNaN( this.attrs[fld.id] ) ) {
 						this.attrs[fld.id] = fld.default
-					} else if ( 'image' === fld.type && attrs[ fld.id ].indexOf( 'featured_image' ) > -1 ) {
-							this.attrs[ fld.id ] = caxton[ attrs[ fld.id ] ];
+					} else if ( 'image' === fld.type && this.attrs[ fld.id ].indexOf( 'featured_image' ) > -1 ) {
+						this.attrs[ fld.id ] = caxton.content_vars[ this.attrs[ fld.id ] ];
 					} else {
-						this.attrs[ fld.id ] = attrs[ fld.id ];
+						this.attrs[ fld.id ] = this.attrs[ fld.id ];
 					}
 				}
 			}

@@ -110,6 +110,8 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 			};
 		}
 
+
+
 		let blockProps = {
 			icon      : 'screenoptions',
 			category  : 'caxton',
@@ -141,14 +143,14 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 									"data-props": JSON.stringify( opt.props ),
 									onClick     : applyProps
 								},
-								el( 'h5', {}, opt.title ),
 								el( 'img', {src: opt.img} ),
+								el( 'h5', {}, opt.title ),
 							)
 						);
 					}
 
 					return el( 'div', {}, [
-						el( 'h4', {key: 'heading'}, 'Select an option' ),
+						el( 'h4', {key: 'heading'}, 'Select an layout' ),
 						el( 'div', {key: 'options', className: 'caxton-layout-options'}, optEls ),
 					] );
 				},
