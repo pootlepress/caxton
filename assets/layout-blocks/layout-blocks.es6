@@ -75,10 +75,10 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 	} );
 	// endregion Caxton section block
 
-	// region Caxton inline listings block
+	// region Horizontal listings block
 	CaxtonBlock( {
-		id          : 'caxton/listing',
-		title       : 'Caxton listing',
+		id          : 'caxton/horizontal',
+		title       : 'Horizontal blocks (beta)',
 		icon        : 'text',
 		category    : 'caxton',
 		fields      : listingFields,
@@ -95,7 +95,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 			);
 		},
 	} );
-	// endregion Listings block
+	// endregion Horizontal listings block
 
 	// region template block
 	window.CaxtonLayoutOptionsBlock = ( blockArgs, options ) => {

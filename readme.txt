@@ -99,6 +99,7 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 
 Version 1.9.0
 * 2019-06-06
+* New - 'Horizontal blocks beta' block
 * Tweak - Updated FS SDK
 * Tweak - New block type
 
