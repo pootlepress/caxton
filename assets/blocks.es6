@@ -15,9 +15,9 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 		{SelectControl, TextControl, ToggleControl, RangeControl}
 	) => {
 		const createBlock = blocks.createBlock;
-		const InspectorControls = wp.editor.InspectorControls;
+		const InspectorControls = caxtonWPEditor.InspectorControls;
 		const __ = i18n.__;
-		
+
 		CaxtonLayoutBlocksSetup( $, wp );
 
 		CaxtonBlock( {
@@ -1334,7 +1334,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 							'data-mobile-css' : `padding-left:${padMob}em;padding-right:${padMob}em;`,
 							key: 'block',
 						},
-						el( wp.editor.InnerBlocks, {
+						el( caxtonWPEditor.InnerBlocks, {
 							template: getColumnsTemplate( block.attrs['Columns'] ),
 							templateLock: 'all',
 							allowedBlock: colBlk,
@@ -1386,7 +1386,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 				bgHTML = '<div key="bg-image" class="cover bg-center absolute absolute--fill" style="{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
 								 '<div key="bg-colors" class="absolute absolute--fill" style="background-color: {{Background color}};background-image:{{Gradient type}}{{Background color}}{{Gradient color}});{{Background colors opacity}}"></div>';
 
-				const childrenBlocks = el( wp.editor.InnerBlocks.Content, {} );
+				const childrenBlocks = el( caxtonWPEditor.InnerBlocks.Content, {} );
 
 				return el(
 					// Element

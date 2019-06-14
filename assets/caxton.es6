@@ -1,7 +1,8 @@
 import FAIcons from './icons.json';
 
 function initCaxton( $, blocks, el, i18n, components ) {
-	const editor = wp.editor;
+	window.caxtonWPEditor = wp.blockEditor ? wp.blockEditor : wp.editor;
+	const editor = caxtonWPEditor;
 	const __ = i18n.__;
 	const registerBlockType = blocks.registerBlockType;
 
@@ -27,7 +28,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 		return target;
 	};
-
+	
 	const elementFromHTML = (html, props, tag) => {
 		if ( ! props ) {
 			props = {};
@@ -284,7 +285,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				onChange: props.onChange,
 			} ];
 
-			return el( wp.editor.PanelColorSettings, props, panelChildren )
+			return el( caxtonWPEditor.PanelColorSettings, props, panelChildren )
 		}
 
 		checkboxFieldEl(field, index) {

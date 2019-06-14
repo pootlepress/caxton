@@ -74,7 +74,7 @@ export function tplContent( props, block, optionsRenderer  ) {
 			tpl = JSON.parse( props.attributes.tpl );
 
 		return el(
-			wp.editor.InnerBlocks,
+			caxtonWPEditor.InnerBlocks,
 			{
 				template     : tpl,
 				templateLock : false,

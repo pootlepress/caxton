@@ -4,7 +4,8 @@ import {sectionRender} from './section.es6';
 import {listingRender} from './listing.es6';
 import {tplRender, tplContent} from './tpl.es6';
 
-export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
+export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
+	let editor = caxtonWPEditor;
 	const el = element.createElement;
 
 	gridFields['Mobile layout'].render = responsiveLayoutPicker;
@@ -42,7 +43,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element, editor} ) => {
 				tpl = JSON.parse( props.attributes.tpl );
 			}
 			const content = el(
-				wp.editor.InnerBlocks,
+				caxtonWPEditor.InnerBlocks,
 				{
 					template     : tpl,
 					templateLock : false,

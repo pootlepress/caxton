@@ -120,7 +120,7 @@ function parseLayout( lyt ) {
 	} else if ( _numCells ) {
 		layout._numRows = Math.ceil( _numCells / 12 );
 	}
-	
+
 	return layout;
 }
 
@@ -204,7 +204,7 @@ export function gridContent( props, block  ) {
 			tpl = JSON.parse( props.attributes.tpl );
 
 		return el(
-			wp.editor.InnerBlocks,
+			caxtonWPEditor.InnerBlocks,
 			{
 				allowedBlocks: [
 					'caxton/section',

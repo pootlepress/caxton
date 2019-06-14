@@ -1189,7 +1189,7 @@
 							'data-mobile-css' : 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
 							key: 'block',
 						},
-						el( wp.editor.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] ), key: 'innerblockscontent' } )
+						el( caxtonWPEditor.InnerBlocks, {layouts: getColumnLayouts( block.attrs['Columns'] ), key: 'innerblockscontent' } )
 					)
 				);
 			},
@@ -1247,7 +1247,7 @@
 							'data-tablet-css' : 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
 							key: 'block',
 						},
-						el( wp.editor.InnerBlocks.Content, { key: 'innerblockscontent' } )
+						el( caxtonWPEditor.InnerBlocks.Content, { key: 'innerblockscontent' } )
 					)
 				);
 			}
