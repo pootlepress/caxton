@@ -80,7 +80,7 @@ class Caxton_Admin {
 		wp_enqueue_script( 'flexslider', $url . 'assets/flexslider.min.js', array( 'jquery' ) );
 
 		wp_enqueue_style( 'caxton-front', $url . 'assets/front.css' );
-		wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.0.10/css/all.css' );
+		wp_enqueue_style( 'fontawesome', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css' );
 
 		wp_enqueue_script( 'caxton-utils', $url . 'assets/caxton-utils.js', array( 'flexslider' ) );
 	}
