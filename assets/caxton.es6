@@ -28,7 +28,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 		return target;
 	};
-	
+
 	const elementFromHTML = (html, props, tag) => {
 		if ( ! props ) {
 			props = {};
