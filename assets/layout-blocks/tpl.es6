@@ -35,9 +35,6 @@ export function tplRender ( props, block, childrenBlocks ) {
 		colCls += ' ' + block.attrs['Full height'];
 	}
 
-	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
-	bgHTML += '<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
-
 	return el(
 		// Element
 		'div', {className: cls, key: 'caxton-grid-block'},
@@ -45,7 +42,7 @@ export function tplRender ( props, block, childrenBlocks ) {
 		el( 'div', {
 			key                    : 'bg',
 			className              : 'absolute absolute--fill',
-			dangerouslySetInnerHTML: block.outputHTML( bgHTML )
+			dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' )
 		} ),
 		// Blocks inserter
 		el( 'div', {

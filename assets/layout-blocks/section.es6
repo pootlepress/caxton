@@ -28,9 +28,6 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 		colCls += ' ' + block.attrs['Column gap'];
 	}
 
-	bgHTML = '<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>';
-	bgHTML += '<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
-
 	var elProps = {
 		className        : cls,
 		key              : 'caxton-section-block',
@@ -55,7 +52,7 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 		'div', elProps,
 		[
 			// Background div
-			el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( bgHTML )} ),
+			el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' ) } ),
 			// Blocks inserter
 			el( 'div', {
 					className        : colCls,

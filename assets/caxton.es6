@@ -96,8 +96,84 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			th.registerBlock();
 		}
 
+		preprocessField_background( id, fields ) {
+
+			let tpl =
+						'<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
+						'<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
+
+			Object.assign( fields[id], {
+				section: 'Background',
+				tpl    : tpl
+			} );
+
+			let f = fields[id];
+
+			Object.assign( fields, {
+				'Background image'         : {
+					type   : 'image',
+					section: f.section,
+					tpl    : 'background-image:url(%s);',
+				},
+				'Background image position': {
+					type   : 'position',
+					section: f.section,
+					tpl    : 'background-position:%s;',
+				},
+				'Background parallax'      : {
+					type   : 'toggle',
+					value  : 'background-attachment:fixed;',
+					section: f.section,
+				},
+				'Background color'         : {
+					type   : 'color',
+					section: f.section,
+				},
+				'Gradient color'           : {
+					type   : 'color',
+					section: f.section,
+					tpl    : ', %s',
+				},
+				'Gradient type'            : {
+					type   : 'select',
+					options: [
+						{value: 'linear-gradient( ', label: 'Linear vertical',},
+						{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
+						{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
+						{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
+						{value: 'radial-gradient( ', label: 'Radial gradient',},
+					],
+					default: 'linear-gradient( ',
+					section: f.section,
+					tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
+				},
+				'Background colors opacity': {
+					type   : 'range',
+					min    : 0,
+					max    : 1,
+					step   : .05,
+					help   : 'Reduce opacity to have transparent colors over image',
+					default: '1',
+					section: f.section,
+					tpl    : 'opacity:%s;',
+				},
+			} );
+		}
+
+		preprocessFields(fields) {
+			for ( const id in fields ) {
+				if ( fields.hasOwnProperty( id ) && fields[id].type && 'function' === typeof this['preprocessField_' + fields[id].type] ) {
+					this['preprocessField_' + fields[id].type]( id, fields );
+				}
+			}
+
+			return fields;
+		}
+
 		processFields(fields) {
 			const ret = [];
+
+			fields = this.preprocessFields( fields );
 
 			for ( const id in fields ) {
 				if( fields.hasOwnProperty( id ) ) {
@@ -781,32 +857,45 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		// region Register block
 
-		populateFields(html, edit) {
+		populateField_editable( val, fld, edit ) {
+
+			let c2e = __( 'Click to Edit' );
+			if ( ! fld.tag ) {
+				fld.tag = 'span';
+			}
+			if ( edit ) {
+				if ( val === fld.default ) {
+					val = `<${fld.tag} class="default">${val}</${fld.tag}>`;
+				}
+				val =
+					`<${fld.tag} contentEditable="true" title="${c2e}" data-editableproperty="${fld.id}">${val}</${fld.tag}>`;
+			} else {
+				if ( val ) {
+					val = `<${fld.tag}>${val}</${fld.tag}>`;
+				}
+			}
+
+			return val;
+		}
+
+		populateField_background( val, f ) {
+			return '1';
+		}
+
+		populateFields( html, editing ) {
 			if ( ! html ) {
 				return '';
 			}
-			let c2e;
-			let tag;
 			for ( let f in this.fields ) {
 				if ( this.fields.hasOwnProperty( f ) ) {
 					let _val;
 					const fld = this.fields[ f ];
 					let val = _val = this.attrs[fld.id];
-					if ( fld.type === 'editable' ) {
-						tag = fld.tag ? fld.tag : 'span';
-						if ( edit ) {
-							if ( val === fld.default ) {
-								val = `<${tag} class="default">${val}</${tag}>`;
-							}
-							c2e = __( 'Click to Edit' );
-							val =
-								`<${tag} contentEditable="true" title="${c2e}" data-editableproperty="${fld.id}">${val}</${tag}>`;
-						} else {
-							if ( val ) {
-								val = `<${tag}>${val}</${tag}>`;
-							}
-						}
+
+					if ( typeof this[ 'populateField_' + fld.type ] === 'function' ) {
+						val = this[ 'populateField_' + fld.type ]( val, fld, editing )
 					}
+
 					if ( ( val || typeof val === 'number' ) && fld.tpl ) {
 						val = fld.tpl.replace( /%s/g, val );
 					}
@@ -818,9 +907,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return html;
 		}
 
-		outputHTML(html, edit) {
-			html = this.populateFields( html, edit );
-			html = this.populateFields( html, edit ); // Twice to allow using dynamic fields in
+		outputHTML( html, editing ) {
+			html = this.populateFields( html, editing );
+			html = this.populateFields( html, editing ); // Twice to allow using dynamic fields in
 			return { __html: html };
 		}
 
@@ -853,7 +942,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						const attrs = {};
 						const prop = $t.data( 'editableproperty' );
 						attrs[prop] = $t.html();
-						console.log( attrs, prop );
 						that.focussedProps.setAttributes( attrs );
 					},
 				} );

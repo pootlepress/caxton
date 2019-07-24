@@ -1,52 +1,8 @@
 export const gridFields = {
-	'Background image'         : {
-		type   : 'image',
-		section: 'Background',
-		tpl    : 'background-image:url(%s);',
-	},
-	'Background image position': {
-		type   : 'position',
-		section: 'Background',
-		tpl    : 'background-position:%s;',
-	},
-	'Background parallax'      : {
-		type   : 'toggle',
-		value  : 'background-attachment:fixed;',
+	'Background'         : {
+		type   : 'background',
 		section: 'Background',
 	},
-	'Background color'         : {
-		type   : 'color',
-		section: 'Background',
-	},
-	'Gradient color'           : {
-		type   : 'color',
-		section: 'Background',
-		tpl    : ', %s',
-	},
-	'Gradient type'            : {
-		type   : 'select',
-		options: [
-			{value: 'linear-gradient( ', label: 'Linear vertical',},
-			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
-			{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
-			{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
-			{value: 'radial-gradient( ', label: 'Radial gradient',},
-		],
-		default: 'linear-gradient( ',
-		section: 'Background',
-		tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
-	},
-	'Background colors opacity': {
-		type   : 'range',
-		min    : 0,
-		max    : 1,
-		step   : .05,
-		help   : 'Reduce opacity to have transparent colors over image',
-		default: '1',
-		section: 'Background',
-		tpl    : 'opacity:%s;',
-	},
-
 	'Layout'                         : {
 		type   : 'select',
 		options: [
@@ -125,6 +81,10 @@ export const gridFields = {
 };
 
 export const sectionFields = {
+	'Background'         : {
+		type   : 'background',
+		section: 'Background',
+	},
 	'Inner Padding top'              : {
 		type   : 'range',
 		section: 'Layout',
@@ -168,53 +128,6 @@ export const sectionFields = {
 		default: 'px',
 		section: 'Layout',
 	},
-	'Background image'               : {
-		type   : 'image',
-		section: 'Background',
-		tpl    : 'background-image:url(%s);',
-	},
-	'Background image position'      : {
-		type   : 'position',
-		section: 'Background',
-		tpl    : 'background-position:%s;',
-	},
-	'Background parallax'            : {
-		type   : 'toggle',
-		value  : 'background-attachment:fixed;',
-		section: 'Background',
-	},
-	'Background color'               : {
-		type   : 'color',
-		section: 'Background',
-	},
-	'Gradient color'                 : {
-		type   : 'color',
-		section: 'Background',
-		tpl    : ', %s',
-	},
-	'Gradient type'                  : {
-		type   : 'select',
-		options: [
-			{value: 'linear-gradient( ', label: 'Linear vertical',},
-			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
-			{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
-			{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
-			{value: 'radial-gradient( ', label: 'Radial gradient',},
-		],
-		default: 'linear-gradient( ',
-		section: 'Background',
-		tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
-	},
-	'Background colors opacity'      : {
-		type   : 'range',
-		min    : 0,
-		max    : 1,
-		step   : .05,
-		help   : 'Reduce opacity to have transparent colors over image',
-		default: '1',
-		section: 'Background',
-		tpl    : 'opacity:%s;',
-	},
 	'Grid area'                      : {
 		type       : 'text',
 		description: 'Change grid-area CSS property.',
@@ -234,6 +147,10 @@ export const sectionFields = {
 };
 
 export const listingFields = {
+	'Background'         : {
+		type   : 'background',
+		section: 'Background',
+	},
 	'Alignment'                      : {
 		type   : 'select',
 		section: 'Layout',
@@ -245,7 +162,7 @@ export const listingFields = {
 		],
 		default: 1,
 	},
-	'Vertical Alignment'                      : {
+	'Vertical Alignment'             : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
@@ -297,53 +214,6 @@ export const listingFields = {
 		],
 		default: 'px',
 		section: 'Layout',
-	},
-	'Background image'               : {
-		type   : 'image',
-		section: 'Background',
-		tpl    : 'background-image:url(%s);',
-	},
-	'Background image position'      : {
-		type   : 'position',
-		section: 'Background',
-		tpl    : 'background-position:%s;',
-	},
-	'Background parallax'            : {
-		type   : 'toggle',
-		value  : 'background-attachment:fixed;',
-		section: 'Background',
-	},
-	'Background color'               : {
-		type   : 'color',
-		section: 'Background',
-	},
-	'Gradient color'                 : {
-		type   : 'color',
-		section: 'Background',
-		tpl    : ', %s',
-	},
-	'Gradient type'                  : {
-		type   : 'select',
-		options: [
-			{value: 'linear-gradient( ', label: 'Linear vertical',},
-			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
-			{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
-			{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
-			{value: 'radial-gradient( ', label: 'Radial gradient',},
-		],
-		default: 'linear-gradient( ',
-		section: 'Background',
-		tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
-	},
-	'Background colors opacity'      : {
-		type   : 'range',
-		min    : 0,
-		max    : 1,
-		step   : .05,
-		help   : 'Reduce opacity to have transparent colors over image',
-		default: '1',
-		section: 'Background',
-		tpl    : 'opacity:%s;',
 	},
 	'Tablet Alignment'               : {
 		type   : 'select',
@@ -370,6 +240,10 @@ export const listingFields = {
 };
 
 export const tplFields = {
+	'Background'         : {
+		type   : 'background',
+		section: 'Background',
+	},
 	'Alignment'                      : {
 		type   : 'select',
 		section: 'Layout',
@@ -381,7 +255,7 @@ export const tplFields = {
 		],
 		default: 1,
 	},
-	'Vertical Alignment'                      : {
+	'Vertical Alignment'             : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
@@ -433,52 +307,5 @@ export const tplFields = {
 		],
 		default: 'px',
 		section: 'Layout',
-	},
-	'Background image'               : {
-		type   : 'image',
-		section: 'Background',
-		tpl    : 'background-image:url(%s);',
-	},
-	'Background image position'      : {
-		type   : 'position',
-		section: 'Background',
-		tpl    : 'background-position:%s;',
-	},
-	'Background parallax'            : {
-		type   : 'toggle',
-		value  : 'background-attachment:fixed;',
-		section: 'Background',
-	},
-	'Background color'               : {
-		type   : 'color',
-		section: 'Background',
-	},
-	'Gradient color'                 : {
-		type   : 'color',
-		section: 'Background',
-		tpl    : ', %s',
-	},
-	'Gradient type'                  : {
-		type   : 'select',
-		options: [
-			{value: 'linear-gradient( ', label: 'Linear vertical',},
-			{value: 'linear-gradient( 90deg, ', label: 'Linear horizontal',},
-			{value: 'linear-gradient( 45deg, ', label: 'Linear 45 deg',},
-			{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
-			{value: 'radial-gradient( ', label: 'Radial gradient',},
-		],
-		default: 'linear-gradient( ',
-		section: 'Background',
-		tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
-	},
-	'Background colors opacity'      : {
-		type   : 'range',
-		min    : 0,
-		max    : 1,
-		step   : .05,
-		help   : 'Reduce opacity to have transparent colors over image',
-		default: '1',
-		section: 'Background',
-		tpl    : 'opacity:%s;',
 	},
 };

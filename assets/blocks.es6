@@ -1593,7 +1593,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 							el( 'a', {className: 'grid-link', href: '#',key: 'anchor'},
 								el( 'div', {className: 'grid-image', style: {backgroundImage: `url(${post.thumb_ml})`},},
 									el( 'h3', {className: 'grid-title', style: {fontSize: attrs.titleSize},}, post.title ),
-								),
+								)
 							)
 						];
 
