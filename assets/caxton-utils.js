@@ -148,6 +148,28 @@ jQuery( function ( $ ) {
 		} )
 	};
 
+	$b.on( 'click', '[data-toggle-class]', function () {
+		var
+			$t = $( this ),
+			target = $t.attr( 'data-toggle-target' ),
+			$target,
+			toggleClass = $t.attr( 'data-toggle-class' );
+
+		if ( ! target ) {
+			$target = $t.parent();
+		} else {
+			$target = $t.siblings( target );
+			if ( ! $target.length ) {
+				$target = $( target );
+			}
+		}
+
+		if ( ! toggleClass ) {
+			toggleClass = 'toggle'
+		}
+		$target.toggleClass( toggleClass )
+	} );
+
 	caxtonLoadFonts();
 	caxtonSetupCarousel();
 	caxtonSetupSlider();
