@@ -148,26 +148,57 @@ jQuery( function ( $ ) {
 		} )
 	};
 
-	$b.on( 'click', '[data-toggle-class]', function () {
+	function findTarget( el, selector ) {
+		var target = el.parentElement.querySelector( selector );
+		if ( ! target ) {
+			target = document.querySelector( selector );
+		}
+
+		return target;
+	}
+
+	function affectToggleSlide( el ) {
+		$( findTarget( el, el.getAttribute( 'data-toggle-slide' ) ) ).slideToggle();
+	}
+
+	function affectToggleFade( el ) {
+		$( findTarget( el, el.getAttribute( 'data-toggle-fade' ) ) ).fadeToggle();
+	}
+
+	function affectToggle( el ) {
+		$( findTarget( el, el.getAttribute( 'data-toggle' ) ) ).toggle();
+	}
+
+	function affectToggleClass( el ) {
 		var
-			$t = $( this ),
-			target = $t.attr( 'data-toggle-target' ),
+			target      = el.getAttribute( 'data-toggle-target' ),
 			$target,
-			toggleClass = $t.attr( 'data-toggle-class' );
+			toggleClass = el.getAttribute( 'data-toggle-class' );
 
 		if ( ! target ) {
-			$target = $t.parent();
+			$target = el.parentElement;
 		} else {
-			$target = $t.siblings( target );
-			if ( ! $target.length ) {
-				$target = $( target );
-			}
+			$target = findTarget( this, target );
 		}
 
 		if ( ! toggleClass ) {
 			toggleClass = 'toggle'
 		}
-		$target.toggleClass( toggleClass )
+
+		$target.classList.toggle( toggleClass )
+	}
+
+	$b.on( 'click', function ( e ) {
+
+		if ( e.target.hasAttribute( 'data-toggle-class' ) ) {
+			affectToggleClass( e.target );
+		} else if ( e.target.hasAttribute( 'data-toggle-slide' ) ) {
+			affectToggleSlide( e.target );
+		} else if ( e.target.hasAttribute( 'data-toggle-fade' ) ) {
+			affectToggleFade( e.target );
+		} else if ( e.target.hasAttribute( 'data-toggle' ) ) {
+			affectToggle( e.target );
+		}
 	} );
 
 	caxtonLoadFonts();
