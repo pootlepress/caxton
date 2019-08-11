@@ -41,9 +41,12 @@ $caxton-width: 1060px;
 	}
 }
 
-div, h1, h2, h3, h4, h5, h6, p, header, footer, section {
-	> span[contentEditable] {
-		display: block;
+.is-selected {
+	div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
+		> span[data-caxtonEditableProp] {
+			display: block;
+			min-height: 1em;
+		}
 	}
 }
 

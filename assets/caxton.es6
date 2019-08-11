@@ -868,7 +868,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					val = `<${fld.tag} class="default">${val}</${fld.tag}>`;
 				}
 				val =
-					`<${fld.tag} contentEditable="true" title="${c2e}" data-editableproperty="${fld.id}">${val}</${fld.tag}>`;
+					`<${fld.tag} contentEditable="true" title="${c2e}" data-caxtonEditableProp="${fld.id}">${val}</${fld.tag}>`;
 			} else {
 				if ( val ) {
 					val = `<${fld.tag}>${val}</${fld.tag}>`;
@@ -940,7 +940,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					onBlur({target}) {
 						const $t = $( target );
 						const attrs = {};
-						const prop = $t.data( 'editableproperty' );
+						const prop = $t.data( 'caxtonEditableProp' );
 						attrs[prop] = $t.html();
 						that.focussedProps.setAttributes( attrs );
 					},
