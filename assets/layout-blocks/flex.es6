@@ -1,10 +1,14 @@
-export const listingRender = function ( props, block, childrenBlocks ) {
+export const flexRender = function ( props, block, childrenBlocks ) {
 	const el = wp.element.createElement;
 	var
 		cls    = 'relative', bgHTML, padUnit, padT, padL, padB, padR,
-		colCls = 'relative caxton-listing-block',
+		colCls = 'relative caxton-flex-block',
 		padMob = block.attrs['Inner Padding left/right tablet'],
 		padTab = block.attrs['Inner Padding left/right mobile'];
+
+	if ( block.name === 'caxon/horizontal' ) {
+		colCls = 'relative caxton-listing-block';
+	}
 
 	padUnit = block.attrs['Inner Padding unit'];
 	padT = block.attrs['Inner Padding top'];
@@ -36,6 +40,10 @@ export const listingRender = function ( props, block, childrenBlocks ) {
 			'align-items'    : block.attrs['Vertical Alignment'],
 		},
 	};
+
+	if ( block.attrs['Content direction'] ) {
+		elProps.style['flex-direction'] = block.attrs['Content direction'];
+	}
 
 	if ( block.attrs['Mobile Alignment'] ) {
 		elProps['data-mobile-css'] = 'justify-content:' + block.attrs['Mobile Alignment'] + ';';

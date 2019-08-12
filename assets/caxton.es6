@@ -264,6 +264,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return fieldProps;
 		}
 
+		backgroundFieldEl(field, index) {
+			return null;
+		}
+
 		imageFieldEl(field, index) {
 			const props = this.fieldProps( field, index );
 			if ( ! props.className ) {

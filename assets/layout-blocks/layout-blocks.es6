@@ -1,7 +1,7 @@
-import {gridFields, sectionFields, listingFields, tplFields} from './fields.es6';
+import {gridFields, sectionFields, flexFields, tplFields} from './fields.es6';
 import {gridRender, gridContent, responsiveLayoutPicker} from './grid.es6';
 import {sectionRender} from './section.es6';
-import {listingRender} from './listing.es6';
+import {flexRender} from './flex.es6';
 import {tplRender, tplContent} from './tpl.es6';
 
 export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
@@ -79,18 +79,18 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 	// region Horizontal listings block
 	CaxtonBlock( {
 		id          : 'caxton/horizontal',
-		title       : 'Horizontal blocks (beta)',
+		title       : 'Horizontal blocks (deprecated)',
 		icon        : 'text',
 		category    : 'caxton',
-		fields      : listingFields,
+		fields      : flexFields,
 		edit        : function ( props, block ) {
-			return listingRender(
+			return flexRender(
 				props, block,
 				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
 			);
 		},
 		save        : function ( props, block ) {
-			return listingRender(
+			return flexRender(
 				props, block,
 				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]
 			);
@@ -98,7 +98,36 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 	} );
 	// endregion Horizontal listings block
 
-	// region template block
+	// region Flex block
+	CaxtonBlock( {
+		id          : 'caxton/flex',
+		title       : 'Flex blocks (beta)',
+		icon        : 'text',
+		category    : 'caxton',
+		fields      : flexFields,
+		edit        : function ( props, block ) {
+			return flexRender(
+				props, block,
+				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
+			);
+		},
+		save        : function ( props, block ) {
+			return flexRender(
+				props, block,
+				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]
+			);
+		},
+		transforms: {
+			from: [
+				{
+					type: 'caxton/horizontal',
+				},
+			]
+		}
+	} );
+	// endregion Flex block
+
+	// region Template block
 	window.CaxtonLayoutOptionsBlock = ( blockArgs, options ) => {
 		if ( ! blockArgs.id || ! blockArgs.title ) {
 			console.error( 'Function CaxtonLayoutOptionsBlock requires `id` and `title` properties on first parameter object.' );
@@ -120,41 +149,41 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 			attributes: {tpl: {type: 'string'},},
 			chooseLayoutTitle: 'Please choose a layout',
 			optionsRenderer: ( props, block ) => {
-					var applyProps = function ( e ) {
-						let newProps = jQuery( e.target ).closest( '.caxton-layout-option' ).data( 'props' );
-						if ( typeof newProps === 'string' ) {
-							newProps = JSON.parse( newProps );
-						}
-						if ( typeof newProps.tpl === 'object' ) {
-							newProps.tpl = JSON.stringify( newProps.tpl );
-						}
-						props.setAttributes( newProps );
-					};
-
-					var optEls = [];
-
-					for ( var i = 0; i < options.length; i ++ ) {
-						var opt = options[i];
-						optEls.push(
-							el(
-								'div',
-								{
-									className   : 'caxton-layout-option',
-									key         : 'option-' + i,
-									"data-props": JSON.stringify( opt.props ),
-									onClick     : applyProps
-								},
-								el( 'img', {src: opt.img} ),
-								el( 'h5', {}, opt.title ),
-							)
-						);
+				var applyProps = function ( e ) {
+					let newProps = jQuery( e.target ).closest( '.caxton-layout-option' ).data( 'props' );
+					if ( typeof newProps === 'string' ) {
+						newProps = JSON.parse( newProps );
 					}
+					if ( typeof newProps.tpl === 'object' ) {
+						newProps.tpl = JSON.stringify( newProps.tpl );
+					}
+					props.setAttributes( newProps );
+				};
 
-					return el( 'div', {}, [
-						el( 'h4', {key: 'heading'}, 'Select an layout' ),
-						el( 'div', {key: 'options', className: 'caxton-layout-options'}, optEls ),
-					] );
-				},
+				var optEls = [];
+
+				for ( var i = 0; i < options.length; i ++ ) {
+					var opt = options[i];
+					optEls.push(
+						el(
+							'div',
+							{
+								className   : 'caxton-layout-option',
+								key         : 'option-' + i,
+								"data-props": JSON.stringify( opt.props ),
+								onClick     : applyProps
+							},
+							el( 'img', {src: opt.img} ),
+							el( 'h5', {}, opt.title ),
+						)
+					);
+				}
+
+				return el( 'div', {}, [
+					el( 'h4', {key: 'heading'}, 'Select an layout' ),
+					el( 'div', {key: 'options', className: 'caxton-layout-options'}, optEls ),
+				] );
+			},
 			edit      : function ( props, block ) {
 				return tplRender( props, block, tplContent( props, block, blockProps.optionsRenderer ) );
 			},
@@ -169,5 +198,5 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 
 		CaxtonBlock( blockProps );
 	};
-	// endregion template block
+	// endregion Template block
 };

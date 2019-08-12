@@ -163,8 +163,16 @@
 	}
 }
 
+.caxton-section-block {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.caxton-flex-block,
 .caxton-listing-block {
 	display: flex;
+	flex-direction: inherit;
 	justify-content: inherit;
 	align-items: inherit;
 	> *:not( .ml-auto ) {

@@ -128,6 +128,16 @@ export const sectionFields = {
 		default: 'px',
 		section: 'Layout',
 	},
+	'Vertical Alignment'             : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Top',},
+			{value: 'center', label: 'Center',},
+			{value: 'flex-end', label: 'Bottom',},
+		],
+		default: 1,
+	},
 	'Grid area'                      : {
 		type       : 'text',
 		description: 'Change grid-area CSS property.',
@@ -146,31 +156,37 @@ export const sectionFields = {
 	},
 };
 
-export const listingFields = {
+export const flexFields = {
 	'Background'         : {
 		type   : 'background',
 		section: 'Background',
 	},
-	'Alignment'                      : {
+	'Content direction'                      : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
-			{value: 'flex-start', label: 'Left',},
+			{value: '', label: 'Horizontal'},
+			{value: 'column', label: 'Vertical'},
+		],
+	},
+	'Content Justify'                      : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Start',},
 			{value: 'center', label: 'Center',},
-			{value: 'flex-end', label: 'Right',},
+			{value: 'flex-end', label: 'End',},
 			{value: 'space-between', label: 'Justify',},
 		],
-		default: 1,
 	},
-	'Vertical Alignment'             : {
+	'Alignment'             : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
-			{value: 'flex-start', label: 'Top',},
+			{value: 'flex-start', label: 'Start',},
 			{value: 'center', label: 'Center',},
-			{value: 'flex-end', label: 'Bottom',},
+			{value: 'flex-end', label: 'End',},
 		],
-		default: 1,
 	},
 	'Inner Padding top'              : {
 		type   : 'range',

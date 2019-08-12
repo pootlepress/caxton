@@ -2,7 +2,7 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	const el = wp.element.createElement;
 	var
 		cls    = 'relative', bgHTML, padUnit, padT, padL, padB, padR,
-		colCls = 'relative caxton-section-block',
+		childWrapCls = 'relative caxton-section-block',
 		padMob = block.attrs['Inner Padding left/right tablet'],
 		padTab = block.attrs['Inner Padding left/right mobile'];
 
@@ -25,7 +25,7 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 	padR = padR ? padR + padUnit : 0;
 
 	if ( block.attrs['Column gap'] ) {
-		colCls += ' ' + block.attrs['Column gap'];
+		childWrapCls += ' ' + block.attrs['Column gap'];
 	}
 
 	var elProps = {
@@ -35,9 +35,18 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 			'gridArea': block.attrs['Grid area'],
 		},
 	};
-
-	let gridAreaMobile = block.attrs['Mobile grid area'];
-	let gridAreaTablet = block.attrs['Tablet grid area'];
+	const childWrapProps = {
+		className        : childWrapCls,
+		style            : {
+			'paddingTop'   : padT,
+			'paddingLeft'  : padL,
+			'paddingBottom': padB,
+			'paddingRight' : padR,
+		},
+		'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
+		'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
+		key              : 'block',
+	};
 
 	if ( block.attrs['Mobile grid area'] ) {
 		elProps['data-mobile-css'] = 'grid-area:' + block.attrs['Mobile grid area'] + ';';
@@ -48,24 +57,17 @@ export const sectionRender = function ( props, block, childrenBlocks ) {
 		elProps['data-desktop-css'] = 'grid-area:' + block.attrs['Grid area'] + ';';
 	}
 
+	if ( block.attrs['Vertical Alignment'] ) {
+		childWrapProps.style['justify-content'] = block.attrs['Vertical Alignment'];
+	}
+
 	return el(
 		'div', elProps,
 		[
 			// Background div
 			el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' ) } ),
 			// Blocks inserter
-			el( 'div', {
-					className        : colCls,
-					style            : {
-						'paddingTop'   : padT,
-						'paddingLeft'  : padL,
-						'paddingBottom': padB,
-						'paddingRight' : padR,
-					},
-					'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
-					'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
-					key              : 'block',
-				},
+			el( 'div', childWrapProps,
 				childrenBlocks
 			)
 		]
