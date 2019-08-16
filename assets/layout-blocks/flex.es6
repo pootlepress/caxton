@@ -43,17 +43,13 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 		'align-items'    : block.attrs['Alignment'],
 	};
 
+	blkProps['data-desktop-css'] = 'padding-left:' + padL + 'em;padding-right:' + padR + 'em;';
 	blkProps['data-mobile-css'] = 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;';
 	blkProps['data-tablet-css'] = 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;';
 
 	if ( block.attrs['Column gap'] ) {
 		blkProps.className += ' ' + block.attrs['Column gap'];
 	}
-
-	var wrapProps = {
-		className: cls,
-		key      : 'caxton-flex-block-wrap',
-	};
 
 	if ( block.attrs['Content height unit'] === 'px' ) {
 		blkProps.style['min-height'] = ( blkProps.style['min-height'] * 10 ) + 'px';
@@ -62,25 +58,28 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 	}
 
 	if ( block.attrs['Content direction'] ) {
-		wrapProps.style['flex-direction'] = block.attrs['Content direction'];
+		blkProps.style['flex-direction'] = block.attrs['Content direction'];
 	}
 
 	if ( block.attrs['Content justify'] ) {
-		wrapProps.style['justify-content'] = block.attrs['Content justify'];
+		blkProps.style['justify-content'] = block.attrs['Content justify'];
 	}
 
 	if ( block.attrs['Mobile Alignment'] ) {
-		wrapProps['data-mobile-css'] = 'justify-content:' + block.attrs['Mobile Alignment'] + ';';
-		wrapProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
+		blkProps['data-mobile-css'] += 'justify-content:' + block.attrs['Mobile Alignment'] + ';';
+		blkProps['data-desktop-css'] += 'justify-content:' + block.attrs['Content justify'] + ';';
 	}
 
 	if ( block.attrs['Tablet Alignment'] ) {
-		wrapProps['data-tablet-css'] = 'justify-content:' + block.attrs['Tablet Alignment'] + ';';
-		wrapProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
+		blkProps['data-tablet-css'] += 'justify-content:' + block.attrs['Tablet Alignment'] + ';';
+		blkProps['data-desktop-css'] += 'justify-content:' + block.attrs['Content justify'] + ';';
 	}
 
 	return el(
-		'div', wrapProps,
+		'div', {
+			className: cls,
+			key      : 'caxton-flex-block-wrap',
+		},
 		[
 			// Background div
 			el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' ) } ),

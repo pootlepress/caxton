@@ -54,6 +54,7 @@ body:not(.wp-admin) {
 .caxton-listing-block,
 .caxton-flex-block {
 	flex-wrap: wrap;
+	display: flex;
 	> *:not( .ml-auto ) {
 		margin-left: 1.6em;
 		&:first-child {
