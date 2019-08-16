@@ -2,12 +2,17 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 	const el = wp.element.createElement;
 	var
 		cls    = 'relative', bgHTML, padUnit, padT, padL, padB, padR,
-		colCls = 'relative caxton-flex-block',
+		blkProps = {
+			className: 'relative caxton-flex-block',
+			'data-mobile-css': '',
+			'data-tablet-css': '',
+			key              : 'block',
+		},
 		padMob = block.attrs['Inner Padding left/right tablet'],
 		padTab = block.attrs['Inner Padding left/right mobile'];
 
 	if ( block.name === 'caxon/horizontal' ) {
-		colCls = 'relative caxton-listing-block';
+		blkProps.className = 'relative caxton-listing-block';
 	}
 
 	padUnit = block.attrs['Inner Padding unit'];
@@ -28,62 +33,59 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 	padB = padB ? padB + padUnit : 0;
 	padR = padR ? padR + padUnit : 0;
 
+	blkProps.style = {
+		'paddingTop'   : padT,
+		'paddingLeft'  : padL,
+		'paddingBottom': padB,
+		'paddingRight' : padR,
+		'justify-content': block.attrs['Alignment'],
+		'min-height': block.attrs['Minimum content height'],
+		'align-items'    : block.attrs['Alignment'],
+	};
+
+	blkProps['data-mobile-css'] = 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;';
+	blkProps['data-tablet-css'] = 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;';
+
 	if ( block.attrs['Column gap'] ) {
-		colCls += ' ' + block.attrs['Column gap'];
+		blkProps.className += ' ' + block.attrs['Column gap'];
 	}
 
-	var elProps = {
+	var wrapProps = {
 		className: cls,
-		key      : 'caxton-section-block',
-		style    : {
-			'justify-content': block.attrs['Alignment'],
-			'min-height': block.attrs['Minimum content height'],
-			'align-items'    : block.attrs['Alignment'],
-		},
+		key      : 'caxton-flex-block-wrap',
 	};
 
 	if ( block.attrs['Content height unit'] === 'px' ) {
-		elProps.style['min-height'] = ( elProps.style['min-height'] * 10 ) + 'px';
+		wrapProps.style['min-height'] = ( wrapProps.style['min-height'] * 10 ) + 'px';
 	} else {
-		elProps.style['min-height'] = elProps.style['min-height'] + block.attrs['Content height unit'];
+		wrapProps.style['min-height'] = wrapProps.style['min-height'] + block.attrs['Content height unit'];
 	}
 
 	if ( block.attrs['Content direction'] ) {
-		elProps.style['flex-direction'] = block.attrs['Content direction'];
+		wrapProps.style['flex-direction'] = block.attrs['Content direction'];
 	}
 
 	if ( block.attrs['Content justify'] ) {
-		elProps.style['justify-content'] = block.attrs['Content justify'];
+		wrapProps.style['justify-content'] = block.attrs['Content justify'];
 	}
 
 	if ( block.attrs['Mobile Alignment'] ) {
-		elProps['data-mobile-css'] = 'justify-content:' + block.attrs['Mobile Alignment'] + ';';
-		elProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
+		wrapProps['data-mobile-css'] = 'justify-content:' + block.attrs['Mobile Alignment'] + ';';
+		wrapProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
 	}
 
 	if ( block.attrs['Tablet Alignment'] ) {
-		elProps['data-tablet-css'] = 'justify-content:' + block.attrs['Tablet Alignment'] + ';';
-		elProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
+		wrapProps['data-tablet-css'] = 'justify-content:' + block.attrs['Tablet Alignment'] + ';';
+		wrapProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
 	}
 
 	return el(
-		'div', elProps,
+		'div', wrapProps,
 		[
 			// Background div
 			el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' ) } ),
 			// Blocks inserter
-			el( 'div', {
-					className        : colCls,
-					style            : {
-						'paddingTop'   : padT,
-						'paddingLeft'  : padL,
-						'paddingBottom': padB,
-						'paddingRight' : padR,
-					},
-					'data-mobile-css': 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;',
-					'data-tablet-css': 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;',
-					key              : 'block',
-				},
+			el( 'div', blkProps,
 				childrenBlocks
 			)
 		]

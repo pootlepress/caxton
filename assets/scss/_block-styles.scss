@@ -53,10 +53,6 @@ body:not(.wp-admin) {
 
 .caxton-listing-block,
 .caxton-flex-block {
-	display: flex;
-	flex-direction: inherit;
-	justify-content: inherit;
-	align-items: inherit;
 	flex-wrap: wrap;
 	> *:not( .ml-auto ) {
 		margin-left: 1.6em;
