@@ -38,7 +38,7 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 		style    : {
 			'justify-content': block.attrs['Alignment'],
 			'min-height': block.attrs['Minimum content height'],
-			'align-items'    : block.attrs['Vertical Alignment'],
+			'align-items'    : block.attrs['Alignment'],
 		},
 	};
 
