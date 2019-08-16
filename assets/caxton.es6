@@ -944,7 +944,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					onBlur({target}) {
 						const $t = $( target );
 						const attrs = {};
-						const prop = $t.data( 'caxtonEditableProp' );
+						const prop = $t.attr( 'data-caxtonEditableProp' );
 						attrs[prop] = $t.html();
 						that.focussedProps.setAttributes( attrs );
 					},
