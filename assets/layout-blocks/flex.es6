@@ -61,6 +61,10 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 		blkProps.style['flex-direction'] = block.attrs['Content direction'];
 	}
 
+	if ( block.attrs['Items margin'] ) {
+		blkProps.style['--caxton-gap'] = block.attrs['Items margin'] + 'px';
+	}
+
 	if ( block.attrs['Content justify'] ) {
 		blkProps.style['justify-content'] = block.attrs['Content justify'];
 	}

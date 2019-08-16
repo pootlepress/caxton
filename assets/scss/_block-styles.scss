@@ -55,10 +55,7 @@ body:not(.wp-admin) {
 .caxton-flex-block {
 	flex-wrap: wrap;
 	display: flex;
-	> *:not( .ml-auto ) {
-		margin-left: 1.6em;
-		&:first-child {
-			margin-left: 0;
-		}
+	> * {
+		margin: var( --caxton-gap );
 	}
 }

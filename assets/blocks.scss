@@ -35,20 +35,15 @@ $caxton-width: 1060px;
 .caxton-flex-block {
 	.editor-inner-blocks,
 	.editor-block-list__layout {
+		margin: 0;
 		display: inherit;
 		justify-content: inherit;
 		flex-direction: inherit;
 		align-items: inherit;
 		flex-wrap: wrap;
 		width: 100%;
-		> *:not( .mr-auto ) {
-			margin-right: 0;
-		}
-		> *:not( .ml-auto ) {
-			margin-left: 1.6em;
-			&:first-child {
-				margin-left: 0;
-			}
+		> .wp-block {
+			margin: var( --caxton-gap );
 		}
 		.block-list-appender {
 			width: 100%;

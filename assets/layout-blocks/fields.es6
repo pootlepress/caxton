@@ -188,6 +188,10 @@ export const flexFields = {
 			{value: 'flex-end', label: 'End',},
 		],
 	},
+	'Items margin'                 : {
+		type   : 'range',
+		section: 'Layout',
+	},
 	'Minimum content height'                 : {
 		type   : 'range',
 		section: 'Layout',
