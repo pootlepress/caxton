@@ -50,3 +50,18 @@ body:not(.wp-admin) {
 		display: block;
 	}
 }
+
+.caxton-listing-block,
+.caxton-flex-block {
+	display: flex;
+	flex-direction: inherit;
+	justify-content: inherit;
+	align-items: inherit;
+	flex-wrap: wrap;
+	> *:not( .ml-auto ) {
+		margin-left: 1.6em;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+}

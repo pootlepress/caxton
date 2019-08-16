@@ -31,14 +31,28 @@ $caxton-width: 1060px;
 	font-weight: 400;
 }
 
-.caxton-listing-block {
+.caxton-listing-block,
+.caxton-flex-block {
 	.editor-inner-blocks,
 	.editor-block-list__layout {
 		display: inherit;
 		justify-content: inherit;
 		flex-direction: inherit;
 		align-items: inherit;
+		flex-wrap: wrap;
 		width: 100%;
+		> *:not( .mr-auto ) {
+			margin-right: 0;
+		}
+		> *:not( .ml-auto ) {
+			margin-left: 1.6em;
+			&:first-child {
+				margin-left: 0;
+			}
+		}
+		.block-list-appender {
+			width: 100%;
+		}
 	}
 }
 

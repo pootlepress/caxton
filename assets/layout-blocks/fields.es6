@@ -1,5 +1,5 @@
 export const gridFields = {
-	'Background'         : {
+	'Background'                     : {
 		type   : 'background',
 		section: 'Background',
 	},
@@ -81,7 +81,7 @@ export const gridFields = {
 };
 
 export const sectionFields = {
-	'Background'         : {
+	'Background'                     : {
 		type   : 'background',
 		section: 'Background',
 	},
@@ -157,11 +157,11 @@ export const sectionFields = {
 };
 
 export const flexFields = {
-	'Background'         : {
+	'Background'                     : {
 		type   : 'background',
 		section: 'Background',
 	},
-	'Content direction'                      : {
+	'Content direction'              : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
@@ -169,7 +169,7 @@ export const flexFields = {
 			{value: 'column', label: 'Vertical'},
 		],
 	},
-	'Content Justify'                      : {
+	'Content justify'                : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
@@ -179,7 +179,7 @@ export const flexFields = {
 			{value: 'space-between', label: 'Justify',},
 		],
 	},
-	'Alignment'             : {
+	'Alignment'                      : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
@@ -187,6 +187,20 @@ export const flexFields = {
 			{value: 'center', label: 'Center',},
 			{value: 'flex-end', label: 'End',},
 		],
+	},
+	'Minimum content height'                 : {
+		type   : 'range',
+		section: 'Layout',
+	},
+	'Content height unit'             : {
+		type   : 'select',
+		options: [
+			{value: 'px', label: 'Pixels x 10',},
+			{value: 'vh', label: 'Screen Height %',},
+			{value: 'vw', label: 'Screen Width %',},
+		],
+		default: 'vh',
+		section: 'Layout',
 	},
 	'Inner Padding top'              : {
 		type   : 'range',
@@ -240,7 +254,6 @@ export const flexFields = {
 			{value: 'flex-end', label: 'Right'},
 			{value: 'space-between', label: 'Justify'},
 		],
-		default: 1,
 	},
 	'Mobile Alignment'               : {
 		type   : 'select',
@@ -251,12 +264,11 @@ export const flexFields = {
 			{value: 'flex-end', label: 'Right'},
 			{value: 'space-between', label: 'Justify'},
 		],
-		default: 1,
 	},
 };
 
 export const tplFields = {
-	'Background'         : {
+	'Background'                     : {
 		type   : 'background',
 		section: 'Background',
 	},

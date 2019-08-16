@@ -37,22 +37,33 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 		key      : 'caxton-section-block',
 		style    : {
 			'justify-content': block.attrs['Alignment'],
+			'min-height': block.attrs['Minimum content height'],
 			'align-items'    : block.attrs['Vertical Alignment'],
 		},
 	};
+
+	if ( block.attrs['Content height unit'] === 'px' ) {
+		elProps.style['min-height'] = ( elProps.style['min-height'] * 10 ) + 'px';
+	} else {
+		elProps.style['min-height'] = elProps.style['min-height'] + block.attrs['Content height unit'];
+	}
 
 	if ( block.attrs['Content direction'] ) {
 		elProps.style['flex-direction'] = block.attrs['Content direction'];
 	}
 
+	if ( block.attrs['Content justify'] ) {
+		elProps.style['justify-content'] = block.attrs['Content justify'];
+	}
+
 	if ( block.attrs['Mobile Alignment'] ) {
 		elProps['data-mobile-css'] = 'justify-content:' + block.attrs['Mobile Alignment'] + ';';
-		elProps['data-desktop-css'] = 'justify-content:' + block.attrs['Alignment'] + ';';
+		elProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
 	}
 
 	if ( block.attrs['Tablet Alignment'] ) {
 		elProps['data-tablet-css'] = 'justify-content:' + block.attrs['Tablet Alignment'] + ';';
-		elProps['data-desktop-css'] = 'justify-content:' + block.attrs['Alignment'] + ';';
+		elProps['data-desktop-css'] = 'justify-content:' + block.attrs['Content justify'] + ';';
 	}
 
 	return el(
