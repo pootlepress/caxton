@@ -56,9 +56,9 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 	};
 
 	if ( block.attrs['Content height unit'] === 'px' ) {
-		wrapProps.style['min-height'] = ( wrapProps.style['min-height'] * 10 ) + 'px';
+		blkProps.style['min-height'] = ( blkProps.style['min-height'] * 10 ) + 'px';
 	} else {
-		wrapProps.style['min-height'] = wrapProps.style['min-height'] + block.attrs['Content height unit'];
+		blkProps.style['min-height'] = blkProps.style['min-height'] + block.attrs['Content height unit'];
 	}
 
 	if ( block.attrs['Content direction'] ) {
