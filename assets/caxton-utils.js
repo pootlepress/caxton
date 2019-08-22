@@ -22,6 +22,14 @@ function caxtonDetectIE() {
 	return false
 }
 
+var CaxtonUtils = {
+	closest(el, predicate) {
+		return predicate(el) ? el : (
+			el && CaxtonUtils.closest(el.parentNode, predicate)
+		);
+	}
+};
+
 var isMSBrowser = caxtonDetectIE();
 
 if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
@@ -40,7 +48,7 @@ jQuery( function ( $ ) {
 
 	function applyStylesFromCSS( css, $t, saveCurrentStyles ) {
 		var styles = {},
-			attributes = css.split( ';' );
+				attributes = css.split( ';' );
 
 		for ( var i = 0; i < attributes.length; i ++ ) {
 			var entry = attributes[i].split( ':' );
@@ -188,16 +196,31 @@ jQuery( function ( $ ) {
 		$target.classList.toggle( toggleClass )
 	}
 
+	var effects = {
+		'toggle-class' : affectToggleClass,
+		'toggle-slide' : affectToggleSlide,
+		'toggle-fade' : affectToggleFade,
+		'toggle' : affectToggle,
+	};
+
 	$b.on( 'click', function ( e ) {
 
-		if ( e.target.hasAttribute( 'data-toggle-class' ) ) {
-			affectToggleClass( e.target );
-		} else if ( e.target.hasAttribute( 'data-toggle-slide' ) ) {
-			affectToggleSlide( e.target );
-		} else if ( e.target.hasAttribute( 'data-toggle-fade' ) ) {
-			affectToggleFade( e.target );
-		} else if ( e.target.hasAttribute( 'data-toggle' ) ) {
-			affectToggle( e.target );
+		var $t = $( e.target );
+
+		var actions = [
+			'toggle-class',
+			'toggle-slide',
+			'toggle-fade',
+			'toggle',
+		];
+
+		for ( var i = 0; i < actions.length; i ++ ) {
+			var feat = actions[i];
+			var $target = $t.closest( '[data-' + feat + ']' );
+			if ( $target.length ) {
+				e.preventDefault();
+				effects[ feat ]( $target[0] );
+			}
 		}
 	} );
 
