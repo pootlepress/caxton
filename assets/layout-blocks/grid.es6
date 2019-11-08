@@ -288,7 +288,7 @@ export function responsiveLayoutPicker( field, that ) {
 							let lyt = $lyt.data( 'layout' );
 							lyt = lyt ? lyt.split( '|' ) : [];
 
-							let blk = wp.data.select( 'core/editor' ).getBlocksByClientId( props.clientId )[ 0 ];
+							let blk = wp.data.select( 'core/block-editor' ).getBlocksByClientId( props.clientId )[ 0 ];
 
 							if ( blk && lyt ) {
 								let children = blk.innerBlocks;

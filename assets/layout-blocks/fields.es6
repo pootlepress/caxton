@@ -136,7 +136,6 @@ export const sectionFields = {
 			{value: 'center', label: 'Center',},
 			{value: 'flex-end', label: 'Bottom',},
 		],
-		default: 1,
 	},
 	'Grid area'                      : {
 		type       : 'text',
@@ -295,7 +294,6 @@ export const tplFields = {
 			{value: 'center', label: 'Center',},
 			{value: 'flex-end', label: 'Bottom',},
 		],
-		default: 1,
 	},
 	'Inner Padding top'              : {
 		type   : 'range',

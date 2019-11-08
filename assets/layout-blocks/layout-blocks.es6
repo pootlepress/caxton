@@ -141,7 +141,6 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 		}
 
 
-
 		let blockProps = {
 			icon      : 'screenoptions',
 			category  : 'caxton',
@@ -180,7 +179,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 				}
 
 				return el( 'div', {}, [
-					el( 'h4', {key: 'heading'}, 'Select an layout' ),
+					el( 'h4', {key: 'heading'}, 'Select a layout' ),
 					el( 'div', {key: 'options', className: 'caxton-layout-options'}, optEls ),
 				] );
 			},
