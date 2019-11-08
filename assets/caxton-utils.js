@@ -4,6 +4,8 @@
  * @package Caxton
  * @version 1.0.0
  */
+
+// region Is IE
 function caxtonDetectIE() {
 	var ua = window.navigator.userAgent;
 	var msie = ua.indexOf( "MSIE " );
@@ -21,17 +23,7 @@ function caxtonDetectIE() {
 	}
 	return false
 }
-
-var CaxtonUtils = {
-	closest(el, predicate) {
-		return predicate(el) ? el : (
-			el && CaxtonUtils.closest(el.parentNode, predicate)
-		);
-	}
-};
-
 var isMSBrowser = caxtonDetectIE();
-
 if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
 	var head = document.head;
 	var link = document.createElement("link");
@@ -42,12 +34,65 @@ if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
 
 	head.appendChild(link);
 }
+// endregion Is IE
+
+// region UX Utilities
+var CaxtonUtils = {
+	closest    : function ( el, predicate ) {
+		return predicate( el ) ? el : (
+			el && CaxtonUtils.closest( el.parentNode, predicate )
+		);
+	},
+	watchScroll: function ( selector, startBuffer ) {
+		var watchOnScroll = function () {
+			var elems = document.querySelectorAll( selector );
+			startBuffer = startBuffer ? startBuffer : 0;
+			var docHeight = window.innerHeight;
+
+			for ( var i = 0; i < elems.length; ++ i ) {
+
+				var el = elems[i];
+
+				var boundingBox = el.getBoundingClientRect();
+
+				var inView = 0;
+				if ( boundingBox.top >= 0 && boundingBox.top <= docHeight ) {
+					el.classList.add( '-top-in-view' );
+					inView = 1;
+				} else {
+					el.classList.remove( '-top-in-view' );
+				}
+
+				if ( boundingBox.bottom >= 0 && boundingBox.bottom <= docHeight ) {
+					el.classList.add( '-bottom-in-view' );
+					inView = 1;
+				} else {
+					el.classList.remove( '-bottom-in-view' );
+				}
+
+				if ( inView ) {
+					el.classList.add( '-in-view' );
+				} else {
+					el.classList.remove( '-in-view' );
+				}
+			}
+		};
+
+		window.onscroll = watchOnScroll;
+		watchOnScroll();
+	}
+};
+// endregion UX Utilities
+
+// region Init default UX watchers
+CaxtonUtils.watchScroll( '.caxton-scroll', Math.min( 50, window.innerHeight / 12 ) );
+// endregion Init default UX watchers
 
 jQuery( function ( $ ) {
 	var $b = $( 'body' );
 
 	function applyStylesFromCSS( css, $t, saveCurrentStyles ) {
-		var styles = {},
+		var styles     = {},
 				attributes = css.split( ';' );
 
 		for ( var i = 0; i < attributes.length; i ++ ) {
@@ -95,7 +140,7 @@ jQuery( function ( $ ) {
 				applyStylesFromCSS( $t.data( 'mobile-css' ), $t )
 			} );
 		}
-	}
+	};
 
 	$( window ).resize( function () {
 		caxtonResponsiveStyling();
@@ -141,10 +186,10 @@ jQuery( function ( $ ) {
 				$( this ).data( 'item-margin', 16 )
 			}
 			$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
-				animation: "slide",
+				animation    : "slide",
 				animationLoop: true,
-				itemWidth: 210,
-				itemMargin: $sliders.data( 'item-margin' ),
+				itemWidth    : 210,
+				itemMargin   : $sliders.data( 'item-margin' ),
 			} );
 		} )
 	};
@@ -197,10 +242,10 @@ jQuery( function ( $ ) {
 	}
 
 	var effects = {
-		'toggle-class' : affectToggleClass,
-		'toggle-slide' : affectToggleSlide,
+		'toggle-class': affectToggleClass,
+		'toggle-slide': affectToggleSlide,
 		'toggle-fade' : affectToggleFade,
-		'toggle' : affectToggle,
+		'toggle'      : affectToggle,
 	};
 
 	$b.on( 'click', function ( e ) {
@@ -219,7 +264,7 @@ jQuery( function ( $ ) {
 			var $target = $t.closest( '[data-' + feat + ']' );
 			if ( $target.length ) {
 				e.preventDefault();
-				effects[ feat ]( $target[0] );
+				effects[feat]( $target[0] );
 			}
 		}
 	} );
