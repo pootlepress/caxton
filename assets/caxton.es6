@@ -532,6 +532,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			)
 		}
 
+		customFieldEl(field, index) {
+			return el(
+				'div', {},
+				field.render( this.fieldProps( field ) )
+			)
+		}
+
 		textareaFieldEl(field, index) {
 			return el(
 				components.TextareaControl,
@@ -779,10 +786,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				key_suffix = this.keySuffix++;
 			}
 
-			if ( typeof f.render === 'function' ) {
-				return f.render( this.fieldProps( f, key_suffix ), this );
-			}
-
 			if ( ! func ) {
 				func = f['type'] + 'FieldEl';
 			}
@@ -803,10 +806,14 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				let func;
 
 				if ( functionSuffix.includes('Toolbar') ) {
-					f['type'] = f['type'].replace( 'Toolbar', '' )
+					f.type = f.type.replace( 'Toolbar', '' )
 				}
 
-				func = f['type'] + functionSuffix;
+				if ( typeof f.render === 'function' ) {
+					f.type = 'custom';
+				}
+
+				func = f.type + functionSuffix;
 
 
 				if ( typeof this[ func ] === 'function' ) {
@@ -822,7 +829,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							els.push( this.fieldEl( f, func, i ) );
 						}
 					}
-				} else if ( !f['type'].includes('Toolbar') ) {
+				} else if ( !f.type.includes('Toolbar') ) {
 					console.error( `${functionSuffix.replace( 'Init', '' )} ${f['id']} of type ${f['type']} and callback ${func} not supported.` );
 				}
 			}
