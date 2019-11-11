@@ -533,10 +533,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		customFieldEl(field, index) {
-			return el(
-				'div', {},
-				field.render( this.fieldProps( field ) )
-			)
+			return field.render( this.fieldProps( field ), this );
 		}
 
 		textareaFieldEl(field, index) {
