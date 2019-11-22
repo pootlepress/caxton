@@ -244,23 +244,25 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			const fieldProps = $.extend( {}, field );
 
 			fieldProps.key = `${fieldProps.type}-${index}`;
-			fieldProps.value = that.attrs[ id ];
-			fieldProps.onChange = (val, moreValues) => {
-				const attrs = {};
-				attrs[ id ] = val;
-				if ( field.type === 'checkbox' || field.type === 'toggle' ) {
-					attrs[ id ] = val ? field.value : '';
-				}
+			if ( ! fieldProps.onChange ) {
+				fieldProps.value = that.attrs[id];
+				fieldProps.onChange = (val, moreValues) => {
+					const attrs = {};
+					attrs[ id ] = val;
+					if ( field.type === 'checkbox' || field.type === 'toggle' ) {
+						attrs[ id ] = val ? field.value : '';
+					}
 
-				that.focussedProps.setAttributes( attrs );
+					that.focussedProps.setAttributes( attrs );
 
-				if ( typeof field.onChange === 'function' ) {
-					field.onChange( val, that, moreValues );
-				}
-			};
+					if ( typeof field.onChange === 'function' ) {
+						field.onChange( val, that, moreValues );
+					}
+				};
+				delete fieldProps.id;
+				delete fieldProps.type;
+			}
 
-			delete fieldProps.id;
-			delete fieldProps.type;
 			return fieldProps;
 		}
 
