@@ -23,6 +23,7 @@ function caxtonDetectIE() {
 	}
 	return false
 }
+
 var isMSBrowser = caxtonDetectIE();
 if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
 	var head = document.head;
@@ -80,6 +81,24 @@ var CaxtonUtils = {
 
 		window.onscroll = watchOnScroll;
 		watchOnScroll();
+	},
+	each: function( selector, callback ) {
+		var els = document.querySelectorAll( selector );
+		for ( var i = 0; i < els.length; i ++ ) {
+			callback.apply( els[i], [ i ] );
+		}
+	},
+	delegate: function( eventName, elementSelector, handler ) {
+		document.addEventListener( eventName, function ( e ) {
+			// loop parent nodes from the target to the delegation node
+			for ( var target = e.target; target && target != this; target = target.parentNode ) {
+				if ( target.matches( elementSelector ) ) {
+					handler.call( target, e );
+					break;
+				}
+			}
+		}, false );
+	},
 	}
 };
 // endregion UX Utilities
@@ -91,7 +110,13 @@ CaxtonUtils.watchScroll( '.caxton-scroll', Math.min( 50, window.innerHeight / 12
 jQuery( function ( $ ) {
 	var $b = $( 'body' );
 
-	function applyStylesFromCSS( css, $t, saveCurrentStyles ) {
+	function applyStylesFromCSS( css, that, saveCurrentStyles ) {
+		if ( css === 'default' ) {
+			that.setAttribute( 'style', that.getAttribute( 'data-default-css' ) );
+			that.removeAttribute( 'data-default-css' );
+			return;
+		}
+
 		var styles     = {},
 				attributes = css.split( ';' );
 
@@ -99,20 +124,16 @@ jQuery( function ( $ ) {
 			var entry = attributes[i].split( ':' );
 			styles[entry.splice( 0, 1 )[0]] = entry.join( ':' );
 		}
-		if ( $t ) {
+		if ( this ) {
 			if ( saveCurrentStyles ) {
-				if ( ! $t.data( 'defaultCss' ) ) {
-					var presetStyles = {};
-					for ( var prop in styles ) {
-						if ( styles.hasOwnProperty( prop ) ) {
-							presetStyles[prop] = $t.css( prop );
-						}
-					}
-					$t.data( 'defaultCss', presetStyles );
-					$t.css( styles );
+				if ( ! that.getAttribute( 'data-default-css' ) ) {
+					that.setAttribute( 'data-default-css', that.getAttribute( 'style' ) );
 				}
-			} else {
-				$t.css( styles );
+			}
+			for ( var prop in styles ) {
+				if ( prop && styles.hasOwnProperty( prop ) ) {
+					that.style[prop]=styles[prop];
+				}
 			}
 		}
 
@@ -123,42 +144,34 @@ jQuery( function ( $ ) {
 		width = isNaN( width ) ? window.innerWidth : width;
 		if ( width > 1024 ) {
 			// Desktop
-			$( '[data-desktop-css]' ).each( function () {
-				var $t = $( this );
-				applyStylesFromCSS( $t.data( 'desktop-css' ), $t )
+			CaxtonUtils.each( '[data-desktop-css]', function () {
+				applyStylesFromCSS( this.getAttribute( 'data-desktop-css' ), this )
 			} );
 		} else if ( width > 700 ) {
 			// Tab
-			$( '[data-tablet-css]' ).each( function () {
-				var $t = $( this );
-				applyStylesFromCSS( $t.data( 'tablet-css' ), $t )
+			CaxtonUtils.each( '[data-tablet-css]', function () {
+				applyStylesFromCSS( this.getAttribute( 'data-tablet-css' ), this )
 			} );
 		} else {
 			// Mobile
-			$( '[data-mobile-css]' ).each( function () {
-				var $t = $( this );
-				applyStylesFromCSS( $t.data( 'mobile-css' ), $t )
+			CaxtonUtils.each( '[data-mobile-css]', function () {
+				applyStylesFromCSS( this.getAttribute( 'data-mobile-css' ), this )
 			} );
 		}
 	};
 
-	$( window ).resize( function () {
-		caxtonResponsiveStyling();
-	} ).resize();
+	window.addEventListener( 'resize', caxtonResponsiveStyling );
+	caxtonResponsiveStyling();
 
-	$( '[data-hover-css]' ).on( {
-		mouseenter: function () {
-			var $t = $( this );
-			applyStylesFromCSS( $t.data( 'hover-css' ), $t, 'saveCurrentStyles' )
-		},
-		mouseleave: function () {
-			var $t = $( this );
-			$t.css( $t.data( 'defaultCss' ) );
-			$t.data( 'defaultCss', null );
-		}
+	CaxtonUtils.delegate( 'mouseover', '[data-hover-css]', function () {
+		applyStylesFromCSS( this.getAttribute( 'data-hover-css' ), this, 'saveCurrentStyles' )
 	} );
 
-	$( '.caxton-posts-slider' ).each( function () {
+	CaxtonUtils.delegate( 'mouseout', '[data-hover-css]', function () {
+		applyStylesFromCSS( 'default', this );
+	} );
+
+	CaxtonUtils.each( '.caxton-posts-slider', function () {
 		var $t = $( this );
 		$t.initSlider();// @TODO Get slider intiated here
 	} );
