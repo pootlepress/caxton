@@ -99,6 +99,22 @@ var CaxtonUtils = {
 			}
 		}, false );
 	},
+	loadFonts: function() {
+		if ( ! this.fontsLinkEl ) {
+			this.fontsLinkEl = document.createElement('link');
+			this.fontsLinkEl.setAttribute( 'id', 'caxton-google-fonts' );
+			this.fontsLinkEl.setAttribute( 'rel', 'stylesheet' );
+			document.querySelector( 'body' ).appendChild( this.fontsLinkEl );
+		}
+
+		var caxtonFontsToLoad = [];
+		CaxtonUtils.each( '[style*="font-family"]', function () {
+			var font = jQuery( this ).css( 'font-family' );
+			if ( - 1 === font.indexOf( ',' ) && caxtonFontsToLoad.indexOf( font ) === - 1 ) {
+				caxtonFontsToLoad.push( font );
+			}
+		} );
+		this.fontsLinkEl.setAttribute( 'href', 'https://fonts.googleapis.com/css?family=' + caxtonFontsToLoad.join( '|' ) );
 	}
 };
 // endregion UX Utilities
@@ -175,22 +191,6 @@ jQuery( function ( $ ) {
 		var $t = $( this );
 		$t.initSlider();// @TODO Get slider intiated here
 	} );
-
-	$b.append( "<link rel='stylesheet' id='caxton-google-fonts'>" );
-	var $caxtonFontsLink = $( "#caxton-google-fonts" );
-
-	function caxtonLoadFonts() {
-		var caxtonFontsToLoad = [];
-		$( '[style*="font-family"]' ).each( function () {
-			var font = $( this ).css( 'font-family' );
-			if ( - 1 === font.indexOf( ',' ) && caxtonFontsToLoad.indexOf( font ) === - 1 ) {
-				caxtonFontsToLoad.push( font );
-			}
-		} );
-		if ( caxtonFontsToLoad.length ) {
-			$caxtonFontsLink.attr( "href", "https://fonts.googleapis.com/css?family=" + caxtonFontsToLoad.join( '|' ) );
-		}
-	}
 
 	caxtonSetupCarousel = function () {
 		var $sliders = $( '.caxton-carousel-pending-setup' );
@@ -282,12 +282,12 @@ jQuery( function ( $ ) {
 		}
 	} );
 
-	caxtonLoadFonts();
+	CaxtonUtils.loadFonts();
 	caxtonSetupCarousel();
 	caxtonSetupSlider();
 
-	setTimeout( caxtonLoadFonts, 1100 );
-	setTimeout( caxtonLoadFonts, 2000 );
-	setTimeout( caxtonLoadFonts, 3200 );
-	setTimeout( caxtonLoadFonts, 5000 );
+	setTimeout( function () { CaxtonUtils.loadFonts() }, 1100 );
+	setTimeout( function () { CaxtonUtils.loadFonts() }, 2000 );
+	setTimeout( function () { CaxtonUtils.loadFonts() }, 3200 );
+	setTimeout( function () { CaxtonUtils.loadFonts() }, 5000 );
 } );
