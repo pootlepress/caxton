@@ -124,8 +124,6 @@ CaxtonUtils.watchScroll( '.caxton-scroll', Math.min( 50, window.innerHeight / 12
 // endregion Init default UX watchers
 
 jQuery( function ( $ ) {
-	var $b = $( 'body' );
-
 	function applyStylesFromCSS( css, that, saveCurrentStyles ) {
 		if ( css === 'default' ) {
 			that.setAttribute( 'style', that.getAttribute( 'data-default-css' ) );
@@ -187,16 +185,38 @@ jQuery( function ( $ ) {
 		applyStylesFromCSS( 'default', this );
 	} );
 
-	CaxtonUtils.each( '.caxton-posts-slider', function () {
-		var $t = $( this );
-		$t.initSlider();// @TODO Get slider intiated here
+	function findTarget( el, selector ) {
+		if ( ! selector ) {
+			return el.parentElement;
+		}
+		var target = el.parentElement.querySelector( selector );
+		if ( ! target ) {
+			target = document.querySelector( selector );
+		}
+		return target;
+	}
+
+	CaxtonUtils.delegate( 'click', '[data-toggle-class]', function affectToggleClass() {
+		var el          = this,
+				target      = findTarget( el, el.getAttribute( 'data-toggle-target' ) ),
+				toggleClass = el.getAttribute( 'data-toggle-class' ) || 'toggle';
+
+		target.classList.toggle( toggleClass )
 	} );
 
+	CaxtonUtils.delegate( 'click', '[data-toggle]', function ( e ) {
+		var el     = this,
+				target = findTarget( el, el.getAttribute( 'data-toggle' ) );
+		target.style.display = target.style.display === 'none' ? '' : 'none';
+	} );
+
+	CaxtonUtils.loadFonts();
+
+	// region @TODO Maybe use a non jQuery slider instead of flexslider
 	caxtonSetupCarousel = function () {
-		var $sliders = $( '.caxton-carousel-pending-setup' );
-		$sliders.each( function () {
-			if ( ! $( this ).data( 'item-margin' ) ) {
-				$( this ).data( 'item-margin', 16 )
+		CaxtonUtils.each( '.caxton-carousel-pending-setup', function () {
+			if ( ! el.getAttribute( 'data-item-margin' ) ) {
+				el.setAttribute( 'data-item-margin', 16 )
 			}
 			$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
 				animation    : "slide",
@@ -204,87 +224,17 @@ jQuery( function ( $ ) {
 				itemWidth    : 210,
 				itemMargin   : $sliders.data( 'item-margin' ),
 			} );
-		} )
+		} );
 	};
 
 	caxtonSetupSlider = function () {
-		var $sliders = $( '.caxton-slider-pending-setup' );
-		$sliders.each( function () {
+		CaxtonUtils.each( '.caxton-slider-pending-setup', function () {
 			$( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
-		} )
+		} );
 	};
-
-	function findTarget( el, selector ) {
-		var target = el.parentElement.querySelector( selector );
-		if ( ! target ) {
-			target = document.querySelector( selector );
-		}
-
-		return target;
-	}
-
-	function affectToggleSlide( el ) {
-		$( findTarget( el, el.getAttribute( 'data-toggle-slide' ) ) ).slideToggle();
-	}
-
-	function affectToggleFade( el ) {
-		$( findTarget( el, el.getAttribute( 'data-toggle-fade' ) ) ).fadeToggle();
-	}
-
-	function affectToggle( el ) {
-		$( findTarget( el, el.getAttribute( 'data-toggle' ) ) ).toggle();
-	}
-
-	function affectToggleClass( el ) {
-		var
-			target      = el.getAttribute( 'data-toggle-target' ),
-			$target,
-			toggleClass = el.getAttribute( 'data-toggle-class' );
-
-		if ( ! target ) {
-			$target = el.parentElement;
-		} else {
-			$target = findTarget( this, target );
-		}
-
-		if ( ! toggleClass ) {
-			toggleClass = 'toggle'
-		}
-
-		$target.classList.toggle( toggleClass )
-	}
-
-	var effects = {
-		'toggle-class': affectToggleClass,
-		'toggle-slide': affectToggleSlide,
-		'toggle-fade' : affectToggleFade,
-		'toggle'      : affectToggle,
-	};
-
-	$b.on( 'click', function ( e ) {
-
-		var $t = $( e.target );
-
-		var actions = [
-			'toggle-class',
-			'toggle-slide',
-			'toggle-fade',
-			'toggle',
-		];
-
-		for ( var i = 0; i < actions.length; i ++ ) {
-			var feat = actions[i];
-			var $target = $t.closest( '[data-' + feat + ']' );
-			if ( $target.length ) {
-				e.preventDefault();
-				effects[feat]( $target[0] );
-			}
-		}
-	} );
-
-	CaxtonUtils.loadFonts();
 	caxtonSetupCarousel();
 	caxtonSetupSlider();
+	// endregion @TODO Maybe use a non jQuery slider instead of flexslider
 
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 1100 );
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 2000 );
