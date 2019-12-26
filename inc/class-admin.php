@@ -59,33 +59,21 @@ class Caxton_Admin {
 	 * @action wp_enqueue_scripts
 	 */
 	public function enqueue() {
-		$url   = $this->url;
-		$this->enqueue_public();
+		$url   = $this->url . 'assets/';
+		Caxton::instance()->public->enqueue();
 
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
-		wp_enqueue_script( "caxton", $url . 'assets/caxton.js', array( 'wp-blocks', 'wp-block-library' ) );
+		wp_enqueue_script( "caxton", $url . 'caxton.js', array( 'wp-blocks', 'wp-block-library' ) );
 
-		wp_enqueue_script( "caxton-blocks", $url . 'assets/blocks.js', array( "caxton" ) );
-		wp_enqueue_style( "caxton-blocks", $url . 'assets/blocks.css' );
+		wp_enqueue_script( "caxton-blocks", $url . 'blocks.js', array( "caxton" ) );
+		wp_enqueue_style( "caxton-blocks", $url . 'blocks.css' );
 
-		$this->localize_scripts();
+		$this->localize_scripts( $url );
 
 		$this->hide_disable_blocks();
 	}
 
-	protected function enqueue_public() {
-		$url   = $this->url;
-
-		wp_enqueue_style( 'flexslider', $url . 'assets/flexslider.css' );
-		wp_enqueue_script( 'flexslider', $url . 'assets/flexslider.min.js', array( 'jquery' ) );
-
-		wp_enqueue_style( 'caxton-front', $url . 'assets/front.css' );
-		wp_enqueue_style( 'fontawesome', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css' );
-
-		wp_enqueue_script( 'caxton-utils', $url . 'assets/caxton-utils.js', array( 'flexslider' ) );
-	}
-
-	protected function localize_scripts() {
+	protected function localize_scripts( $url ) {
 		$caxton_fonts = $categories = [
 			[
 				'label' => 'Please choose...',
