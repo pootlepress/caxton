@@ -59,3 +59,17 @@ body:not(.wp-admin) {
 		margin: var( --caxton-gap );
 	}
 }
+
+.caxton-icon {
+	vertical-align: middle;
+	display: inline-block;
+	svg {
+		height: 1em;
+		width: auto;
+		display: block;
+	}
+	path {
+		fill: currentColor;
+		stroke: currentColor;
+	}
+}

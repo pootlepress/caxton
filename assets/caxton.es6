@@ -1,5 +1,3 @@
-import FAIcons from './icons.json';
-
 function initCaxton( $, blocks, el, i18n, components ) {
 	window.caxtonWPEditor = wp.blockEditor ? wp.blockEditor : wp.editor;
 	const editor = caxtonWPEditor;
@@ -62,6 +60,25 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 		}
 		return content;
+	};
+
+	const getFAIconSvg = ( icon, el = {} ) => {
+		let svg = caxtonFAIconsSvg[icon];
+		if ( ! svg ) {
+			svg = caxtonFAIconsSvg[icon + '-solid'];
+			if ( ! svg ) {
+				svg = caxtonFAIconsSvg[icon + '-brand'];
+				if ( ! svg ) {
+					svg = caxtonFAIconsSvg[icon + '-regular'];
+				}
+			}
+		}
+
+		if ( el ) {
+			let elProps = typeof el === 'object' ? el : {};
+			return elementFromHTML( svg, elProps );
+		}
+		return svg;
 	};
 
 	class CxB {
@@ -560,8 +577,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.className = 'caxton-icon-picker-panel';
 
 			for ( let i = 0; i < 100; i ++ ) {
-				const ico = caxton.fontAwesome[i];
-				defaultIcons.push( el( 'i', {className: `fas fa-${ico.n}`, key: ico.n, title: ico.n.replace( ' fab', '' ) } ) );
+				let ico = caxtonFAIconsData[i];
+				defaultIcons.push( getFAIconSvg( ico.n, {key: i, className: 'icon-choice', 'data-icon': ico.n}, 'i' ) );
 			}
 			defaultIcons.push( el( 'p', {key: 'helptext'}, 'Search icons for more from all Font Awesome icons' ) );
 
@@ -571,8 +588,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				el( 'div', {
 						className: 'caxton-icon-picker',
 						onClick({target}) {
-							if ( target.tagName === 'I' ) {
-								props.onChange( ` ${target.className.replace( ' o-70', '' )}` );
+							const $p = $( target ).closest( '.icon-choice' );
+							if ( $p.length ) {
+								console.log( $p.html() );
+								props.onChange( $p.html() );
 							}
 						}
 					},
@@ -586,14 +605,14 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							searchTerm = searchTerm.toLowerCase();
 							$wrp = $( target ).siblings( '.caxton-matching-icons' );
 							$wrp.html( '' );
-							for ( let i = 0; iconsMatched < 50 && i < caxton.fontAwesome.length; i ++ ) {
-								const ico = caxton.fontAwesome[i];
+							for ( let i = 0; iconsMatched < 50 && i < caxtonFAIconsData.length; i ++ ) {
+								const ico = caxtonFAIconsData[i];
 								if ( ico.n.includes(searchTerm) ) {
 									iconsMatched ++;
-									$wrp.append( `<i class="fas fa-${ico.n}"></i>` )
+									$wrp.append( `<i data-icon="${ico.n}" class="icon-choice">` + getFAIconSvg( ico.n, false ) + '</i>' )
 								} else if ( iconsMatched < 34 && ico.s.includes(searchTerm) ) {
 									iconsMatched ++;
-									$wrp.append( `<i class="fas fa-${ico.n} o-70"></i>` )
+									$wrp.append( `<i data-icon="${ico.n}" class="icon-choice order-2">` + getFAIconSvg( ico.n, false ) + '</i>' )
 								}
 							}
 						}
@@ -907,7 +926,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					}
 
 					if ( ( val || typeof val === 'number' ) && fld.tpl ) {
-						val = fld.tpl.replace( /%s/g, val );
+						val = this.getTpl( fld.tpl, val ).replace( /%s/g, val );
 					}
 					html = html.split( `{{_${fld.id}}}` ).join( _val );
 					html = html.split( `{{${fld.id}}}` ).join( val );
@@ -923,12 +942,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return { __html: html };
 		}
 
+		getTpl( tpl, payload ) {
+			return typeof tpl === 'function' ? tpl( payload, this ) : tpl;
+		}
+
 		getBlockTpl( props ) {
-			if ( typeof this.tpl === 'function' ) {
-				return this.tpl( props, this );
-			} else {
-				return this.tpl;
-			}
+			return this.getTpl( this.tpl, props );
 		}
 
 		edit(props) {
@@ -940,14 +959,14 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				return el( 'div', {
 					key: 'block',
 					dangerouslySetInnerHTML: that.outputHTML( that.getBlockTpl( props ), 'edit' ),
-					onClick(e) {
+					onClick( e ) {
 						e.preventDefault();
 					},
-					onKeyDown({target}) {
+					onKeyDown( {target} ) {
 						const $def = $( target ).find( '.default' );
 						if ( $def.length ) $def.remove();
 					},
-					onBlur({target}) {
+					onBlur( {target} ) {
 						const $t = $( target );
 						const attrs = {};
 						const prop = $t.attr( 'data-caxtonEditableProp' );
@@ -1150,6 +1169,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		html2el: elementFromHTML,
 		copyObj: caxtonCopy,
 		tplProc: processTemplate,
+		iconSvg: getFAIconSvg,
 	};
 }
 
@@ -1187,4 +1207,7 @@ jQuery( $ => {
 	}, 2500 );
 } );
 
-caxton.fontAwesome = FAIcons;
+setTimeout( function() {
+	caxtonHeadAsset( 'icons-data.js' );
+	caxtonHeadAsset( 'icons-svg.js' );
+}, 2500 );
