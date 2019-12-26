@@ -24,16 +24,37 @@ function caxtonDetectIE() {
 	return false
 }
 
+function caxtonHeadAsset( _url, callback ) {
+	var head = document.head;
+
+	url = _url.indexOf( '//' ) > - 1 ? _url : caxtonUtilProps.assetsUrl + _url;
+
+	if ( url.indexOf( '.css' ) > -1 ) {
+		var el = document.createElement("link");
+
+		el.type = "text/css";
+		el.rel = "stylesheet";
+		el.href = url;
+	} else if ( url.indexOf( '.js' ) > -1 ) {
+		var el = document.createElement("script");
+		el.type = "text/javascript";
+		el.src = url;
+	} else {
+		return console.error( 'Unhandled URL, neither JS nor CSS ' + _url );
+	}
+
+	if ( callback && el ) {
+		el.onload = callback;
+	}
+
+	head.appendChild(el);
+
+	return el;
+}
+
 var isMSBrowser = caxtonDetectIE();
 if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
-	var head = document.head;
-	var link = document.createElement("link");
-
-	link.type = "text/css";
-	link.rel = "stylesheet";
-	link.href = caxtonUtilProps.url + 'assets/ie.css';
-
-	head.appendChild(link);
+	caxtonHeadAsset( 'ie.css' );
 }
 // endregion Is IE
 
@@ -212,7 +233,7 @@ jQuery( function ( $ ) {
 
 	CaxtonUtils.loadFonts();
 
-	// region @TODO Maybe use a non jQuery slider instead of flexslider
+	// region Init Flexslider
 	caxtonSetupCarousel = function () {
 		CaxtonUtils.each( '.caxton-carousel-pending-setup', function () {
 			if ( ! el.getAttribute( 'data-item-margin' ) ) {
@@ -232,10 +253,21 @@ jQuery( function ( $ ) {
 			$( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
 		} );
 	};
-	caxtonSetupCarousel();
-	caxtonSetupSlider();
-	// endregion @TODO Maybe use a non jQuery slider instead of flexslider
+	if ( document.querySelector( '.caxton-carousel-pending-setup, .caxton-slider-pending-setup' ) ) {
+		if ( typeof jQuery === 'undefined' ) {
+			caxtonHeadAsset( 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js' );
+		}
+		caxtonHeadAsset( 'flexslider.css' );
+		caxtonHeadAsset( 'flexslider.min.js', function () {
+			caxtonSetupCarousel();
+			caxtonSetupSlider();
+		} );
+	}
+	// endregion Init Flexslider
 
+	if ( document.querySelector( '.fas, .fab, .far' ) ) {
+		caxtonHeadAsset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
+	}
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 1100 );
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 2000 );
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 3200 );
