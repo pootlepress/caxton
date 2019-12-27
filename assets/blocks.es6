@@ -1,4 +1,5 @@
-import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
+import CaxtonLayoutBlocksSetup from './layout-blocks/layout-blocks.es6';
+import CaxtonHTMLBlockSetup from './layout-blocks/html-block.es6';
 
 /**
  * Plugin front end scripts
@@ -19,6 +20,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 		const __ = i18n.__;
 
 		CaxtonLayoutBlocksSetup( $, wp );
+		CaxtonHTMLBlockSetup( $, wp );
 
 		CaxtonBlock( {
 			id: 'hero',

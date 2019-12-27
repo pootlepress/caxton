@@ -4,7 +4,7 @@ import {sectionRender} from './section.es6';
 import {flexRender} from './flex.es6';
 import {tplRender, tplContent} from './tpl.es6';
 
-export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
+export default function CaxtonLayoutBlocksSetup ( $, {element} ) {
 	let editor = caxtonWPEditor;
 	const el = element.createElement;
 

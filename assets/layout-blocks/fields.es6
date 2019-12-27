@@ -339,3 +339,73 @@ export const tplFields = {
 		section: 'Layout',
 	},
 };
+
+export const htmlFields = {
+	'Background'                     : {
+		type   : 'background',
+		section: 'Background',
+	},
+	'Alignment'                      : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Left',},
+			{value: 'center', label: 'Center',},
+			{value: 'flex-end', label: 'Right',},
+			{value: 'space-between', label: 'Justify',},
+		],
+		default: 1,
+	},
+	'Vertical Alignment'             : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Top',},
+			{value: 'center', label: 'Center',},
+			{value: 'flex-end', label: 'Bottom',},
+		],
+	},
+	'Inner Padding top'              : {
+		type   : 'range',
+		section: 'Layout',
+		default: 1,
+	},
+	'Inner Padding bottom'           : {
+		type   : 'range',
+		section: 'Layout',
+		default: 1,
+	},
+	'Inner Padding left'             : {
+		type   : 'range',
+		max    : 50,
+		section: 'Layout',
+		default: 1,
+	},
+	'Inner Padding right'            : {
+		type   : 'range',
+		max    : 50,
+		section: 'Layout',
+		default: 1,
+	},
+	'Inner Padding left/right tablet': {
+		type   : 'range',
+		max    : 50,
+		section: 'Layout',
+		default: 1,
+	},
+	'Inner Padding left/right mobile': {
+		type   : 'range',
+		max    : 50,
+		section: 'Layout',
+		default: 1,
+	},
+	'Inner Padding unit'             : {
+		type   : 'select',
+		options: [
+			{value: 'vw', label: 'Responsive',},
+			{value: 'px', label: 'Pixels x 5',},
+		],
+		default: 'px',
+		section: 'Layout',
+	},
+};
