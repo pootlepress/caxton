@@ -73,3 +73,8 @@ body:not(.wp-admin) {
 		stroke: currentColor;
 	}
 }
+
+.caxton-carousel-pending-setup,
+.caxton-slider-pending-setup {
+	opacity: 0;
+}
