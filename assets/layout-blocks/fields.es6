@@ -424,7 +424,7 @@ export const htmlFields = {
 		section: 'Layout',
 		default: 0,
 	},
-	Super content block ready for preview
+	'Inner Padding unit'             : {
 		type   : 'select',
 		options: [
 			{value: 'vw', label: 'Responsive',},
