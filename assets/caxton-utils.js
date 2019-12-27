@@ -24,53 +24,6 @@ function caxtonDetectIE() {
 	return false
 }
 
-function caxtonHeadAsset( _url, callback ) {
-	var head = document.head, el;
-
-	url = _url.indexOf( '//' ) > - 1 ? _url : caxtonUtilProps.assetsUrl + _url;
-
-
-	if ( ! callback ) {
-		callback = function() {};
-	}
-
-	if ( url.indexOf( '.css' ) > -1 ) {
-		el = head.querySelector( 'link[href="' + url + '"]' );
-
-		if ( ! el ) {
-			el = document.createElement("link");
-
-			el.type = "text/css";
-			el.rel = "stylesheet";
-			el.href = url;
-		} else {
-			callback( el );
-			return el;
-		}
-
-	} else if ( url.indexOf( '.js' ) > -1 ) {
-		el = head.querySelector( 'script[src="' + url + '"]' );
-
-		if ( ! el ) {
-			el = document.createElement( "script" );
-			el.type = "text/javascript";
-			el.src = url;
-		} else {
-			callback( el );
-			return el;
-		}
-	} else {
-		return console.error( 'Unhandled URL, neither JS nor CSS ' + _url );
-	}
-
-	head.appendChild(el);
-
-	if ( el ) {
-		el.onload = function() { callback( el ) };
-	}
-
-	return el;
-}
 
 var isMSBrowser = caxtonDetectIE();
 if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
@@ -153,7 +106,53 @@ var CaxtonUtils = {
 			CaxtonUtils.asset( gfUrl );
 		}
 	},
-	asset: caxtonHeadAsset,
+	asset: function ( _url, callback ) {
+		var head = document.head, el;
+
+		url = _url.indexOf( '//' ) > - 1 ? _url : caxtonUtilProps.assetsUrl + _url;
+
+
+		if ( ! callback ) {
+			callback = function() {};
+		}
+
+		if ( url.indexOf( '.css' ) > -1 ) {
+			el = head.querySelector( 'link[href="' + url + '"]' );
+
+			if ( ! el ) {
+				el = document.createElement("link");
+
+				el.type = "text/css";
+				el.rel = "stylesheet";
+				el.href = url;
+			} else {
+				callback( el );
+				return el;
+			}
+
+		} else if ( url.indexOf( '.js' ) > -1 ) {
+			el = head.querySelector( 'script[src="' + url + '"]' );
+
+			if ( ! el ) {
+				el = document.createElement( "script" );
+				el.type = "text/javascript";
+				el.src = url;
+			} else {
+				callback( el );
+				return el;
+			}
+		} else {
+			return console.error( 'Unhandled URL, neither JS nor CSS ' + _url );
+		}
+
+		head.appendChild(el);
+
+		if ( el ) {
+			el.onload = function() { callback( el ) };
+		}
+
+		return el;
+	},
 	ready: function ( fn ) {
 		if ( document.readyState != 'loading' ) {
 			fn();
@@ -179,7 +178,7 @@ var CaxtonUtils = {
 		if ( document.querySelector( '.caxton-slider-pending-setup' ) ) {
 			CaxtonUtils.addFlexslider( function () {
 				CaxtonUtils.each( '.caxton-slider-pending-setup', function () {
-					jQuery( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
+					jQuery( this ).flexslider().removeClass( 'caxton-slider-pending-setup' )
 				} );
 			} );
 		}
@@ -187,7 +186,7 @@ var CaxtonUtils = {
 			CaxtonUtils.addFlexslider( function () {
 				CaxtonUtils.each( '.caxton-carousel-pending-setup', function () {
 					var $t = jQuery( this );
-					$t.removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
+					$t.flexslider( {
 						move         : 1,
 						animation    : "slide",
 						animationLoop: false,
@@ -195,7 +194,7 @@ var CaxtonUtils = {
 						itemMargin   : + ( $t.data( 'item-margin' ) || 16 ),
 						minItems     : 1.6,
 						maxItems     : 4.3,
-					} );
+					} ).removeClass( 'caxton-carousel-pending-setup' )
 				} );
 			} );
 		}
