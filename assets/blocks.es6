@@ -20,7 +20,7 @@ import CaxtonHTMLBlockSetup from './layout-blocks/html-block.es6';
 		const __ = i18n.__;
 
 		CaxtonLayoutBlocksSetup( $, wp );
-		CaxtonHTMLBlockSetup( $, wp );
+		CaxtonHTMLBlockSetup( el, wp );
 
 		CaxtonBlock( {
 			id: 'hero',

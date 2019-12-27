@@ -225,6 +225,16 @@ $caxton-width: 1060px;
 	}
 }
 
-@import 'scss/ordered-select-control';
+.editor-styles-wrapper {
+	.nav-tab {
+		color: inherit;
+	}
+	.nav-tab-active {
+		background: #ffffff;
+		border-bottom-color: #ffffff;
+	}
+}
 
-@import 'scss/caxton-section-grid';
+	@import 'scss/ordered-select-control';
+
+	@import 'scss/caxton-section-grid';

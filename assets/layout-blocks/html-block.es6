@@ -1,7 +1,8 @@
-import {htmlFields} from "./fields";
+import {htmlFields} from "./fields.es6";
 
 
-export default function CaxtonHTMLBlockSetup() {
+export default function CaxtonHTMLBlockSetup( el ) {
+	let editor = caxtonWPEditor;
 
 	function render( props, block, childrenBlocks ) {
 		const el = wp.element.createElement;
@@ -43,12 +44,11 @@ export default function CaxtonHTMLBlockSetup() {
 			'paddingLeft'  : padL,
 			'paddingBottom': padB,
 			'paddingRight' : padR,
-			'justify-content': block.attrs['Alignment'],
-			'min-height': block.attrs['Minimum content height'],
-			'align-items'    : block.attrs['Alignment'],
+			'justifyContent': block.attrs['Alignment'],
+			'alignItems'    : block.attrs['Alignment'],
 		};
 
-		blkProps['data-desktop-css'] = 'padding-left:' + padL + 'em;padding-right:' + padR + 'em;';
+		blkProps['data-desktop-css'] = 'padding-left:' + padL + ';padding-right:' + padR + ';';
 		blkProps['data-mobile-css'] = 'padding-left:' + padMob + 'em;padding-right:' + padMob + 'em;';
 		blkProps['data-tablet-css'] = 'padding-left:' + padTab + 'em;padding-right:' + padTab + 'em;';
 
@@ -56,14 +56,15 @@ export default function CaxtonHTMLBlockSetup() {
 			blkProps.className += ' ' + block.attrs['Column gap'];
 		}
 
+		const minHi = block.attrs['Minimum content height'];
 		if ( block.attrs['Content height unit'] === 'px' ) {
-			blkProps.style['min-height'] = ( blkProps.style['min-height'] * 10 ) + 'px';
+			blkProps.style['minHeight'] = ( minHi * 10 ) + 'px';
 		} else {
-			blkProps.style['min-height'] = blkProps.style['min-height'] + block.attrs['Content height unit'];
+			blkProps.style['minHeight'] = minHi + block.attrs['Content height unit'];
 		}
 
 		if ( block.attrs['Content direction'] ) {
-			blkProps.style['flex-direction'] = block.attrs['Content direction'];
+			blkProps.style['flexDirection'] = block.attrs['Content direction'];
 		}
 
 		if ( block.attrs['Items margin'] ) {
@@ -71,17 +72,17 @@ export default function CaxtonHTMLBlockSetup() {
 		}
 
 		if ( block.attrs['Content justify'] ) {
-			blkProps.style['justify-content'] = block.attrs['Content justify'];
+			blkProps.style['justifyContent'] = block.attrs['Content justify'];
 		}
 
 		if ( block.attrs['Mobile Alignment'] ) {
 			blkProps['data-mobile-css'] += 'justify-content:' + block.attrs['Mobile Alignment'] + ';';
-			blkProps['data-desktop-css'] += 'justify-content:' + block.attrs['Content justify'] + ';';
+			blkProps['data-desktop-css'] += 'justify-content:' + blkProps.style['justifyContent'] + ';';
 		}
 
 		if ( block.attrs['Tablet Alignment'] ) {
 			blkProps['data-tablet-css'] += 'justify-content:' + block.attrs['Tablet Alignment'] + ';';
-			blkProps['data-desktop-css'] += 'justify-content:' + block.attrs['Content justify'] + ';';
+			blkProps['data-desktop-css'] += 'justify-content:' + blkProps.style['justifyContent'] + ';';
 		}
 
 		return el(
@@ -106,25 +107,64 @@ export default function CaxtonHTMLBlockSetup() {
 		icon        : 'text',
 		category    : 'caxton',
 		fields      : htmlFields,
+		attributes  : {
+			content: {
+				type: 'string',
+			}
+		},
 		edit        : function ( props, block ) {
-			return render(
-				props, block,
-				[el( editor.RichText, {key: 'innerblocks', templateLock: false,} )]
+			let
+				tabStateMan = wp.element.useState( 'rich' ),
+				activeTab = tabStateMan[0],
+				setActiveTab = tabStateMan[1],
+				children = [],
+				tabContent,
+				updateContent = function ( newContent ) {
+					props.setAttributes( {content: newContent} );
+				},
+				tabProps = {
+					href   : '#_',
+					onClick: function ( e ) {
+						e.preventDefault();
+						setActiveTab( e.target.getAttribute( 'data-tab' ) );
+					}
+				},
+				tabs = [
+					el( 'a', Object.assign( tabProps, {className: 'nav-tab' + (activeTab === 'rich' ? ' nav-tab-active' : ''),key: 'i', 'data-tab': 'rich'} ), 'Editor' ),
+					el( 'a', Object.assign( tabProps, {className: 'nav-tab' + (activeTab === 'code' ? ' nav-tab-active' : ''),key: 'c', 'data-tab': 'code'} ), 'Code' ),
+				];
+			children.push( el( 'header', {className: "nav-tab-wrapper", key: 'nav'}, tabs ) );
+
+			if ( activeTab === 'rich' ) {
+				tabContent = render( props, block, el(
+					editor.RichText, {
+						tagname : 'div',
+						value   : props.attributes.content || 'Put in your content here!',
+						onChange: updateContent
+					}
+				) );
+			} else {
+				tabContent = el(
+					editor.PlainText,
+					{
+						value   : props.attributes.content || 'Put in your content here!',
+						onChange: updateContent
+					}
+				);
+			}
+
+			children.push(
+				el( 'div', {key: 'tabcontent', className: 'pv4 ph3',}, tabContent )
 			);
+			return children;
 		},
 		save        : function ( props, block ) {
-			return render(
-				props, block,
-				[el( editor.RichText.Content, {key: 'richTextContent'} )]
+			return render( props, block, el(
+				'div', {},
+				el( editor.RichText.Content, {tagname: 'div', value: props.attributes.content} )
+				)
 			);
 		},
-		transforms: {
-			from: [
-				{
-					type: 'caxton/horizontal',
-				},
-			]
-		}
 	} );
 
 }

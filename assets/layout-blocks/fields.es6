@@ -345,61 +345,86 @@ export const htmlFields = {
 		type   : 'background',
 		section: 'Background',
 	},
+	'Content direction'              : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: '', label: 'Horizontal'},
+			{value: 'column', label: 'Vertical'},
+		],
+	},
+	'Content justify'                : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Start',},
+			{value: 'center', label: 'Center',},
+			{value: 'flex-end', label: 'End',},
+			{value: 'space-between', label: 'Justify',},
+		],
+	},
 	'Alignment'                      : {
 		type   : 'select',
 		section: 'Layout',
 		options: [
-			{value: 'flex-start', label: 'Left',},
+			{value: 'flex-start', label: 'Start',},
 			{value: 'center', label: 'Center',},
-			{value: 'flex-end', label: 'Right',},
-			{value: 'space-between', label: 'Justify',},
+			{value: 'flex-end', label: 'End',},
 		],
-		default: 1,
 	},
-	'Vertical Alignment'             : {
-		type   : 'select',
+	'Items margin'                 : {
+		type   : 'range',
 		section: 'Layout',
+	},
+	'Minimum content height'                 : {
+		type   : 'range',
+		section: 'Layout',
+	},
+	'Content height unit'             : {
+		type   : 'select',
 		options: [
-			{value: 'flex-start', label: 'Top',},
-			{value: 'center', label: 'Center',},
-			{value: 'flex-end', label: 'Bottom',},
+			{value: 'px', label: 'Pixels x 10',},
+			{value: 'vh', label: 'Screen Height %',},
+			{value: 'vw', label: 'Screen Width %',},
 		],
+		default: 'vh',
+		section: 'Layout',
 	},
 	'Inner Padding top'              : {
 		type   : 'range',
 		section: 'Layout',
-		default: 1,
+		default: 0,
 	},
 	'Inner Padding bottom'           : {
 		type   : 'range',
 		section: 'Layout',
-		default: 1,
+		default: 0,
 	},
 	'Inner Padding left'             : {
 		type   : 'range',
 		max    : 50,
 		section: 'Layout',
-		default: 1,
+		default: 0,
 	},
 	'Inner Padding right'            : {
 		type   : 'range',
 		max    : 50,
 		section: 'Layout',
-		default: 1,
+		default: 0,
 	},
 	'Inner Padding left/right tablet': {
 		type   : 'range',
 		max    : 50,
 		section: 'Layout',
-		default: 1,
+		default: 0,
 	},
 	'Inner Padding left/right mobile': {
 		type   : 'range',
 		max    : 50,
 		section: 'Layout',
-		default: 1,
+		default: 0,
 	},
-	'Inner Padding unit'             : {
+	Super content block ready for preview
 		type   : 'select',
 		options: [
 			{value: 'vw', label: 'Responsive',},
@@ -407,5 +432,25 @@ export const htmlFields = {
 		],
 		default: 'px',
 		section: 'Layout',
+	},
+	'Tablet Alignment'               : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Left'},
+			{value: 'center', label: 'Center'},
+			{value: 'flex-end', label: 'Right'},
+			{value: 'space-between', label: 'Justify'},
+		],
+	},
+	'Mobile Alignment'               : {
+		type   : 'select',
+		section: 'Layout',
+		options: [
+			{value: 'flex-start', label: 'Left'},
+			{value: 'center', label: 'Center'},
+			{value: 'flex-end', label: 'Right'},
+			{value: 'space-between', label: 'Justify'},
+		],
 	},
 };
