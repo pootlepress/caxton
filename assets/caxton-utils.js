@@ -25,36 +25,56 @@ function caxtonDetectIE() {
 }
 
 function caxtonHeadAsset( _url, callback ) {
-	var head = document.head;
+	var head = document.head, el;
 
 	url = _url.indexOf( '//' ) > - 1 ? _url : caxtonUtilProps.assetsUrl + _url;
 
-	if ( url.indexOf( '.css' ) > -1 ) {
-		var el = document.createElement("link");
 
-		el.type = "text/css";
-		el.rel = "stylesheet";
-		el.href = url;
+	if ( ! callback ) {
+		callback = function() {};
+	}
+
+	if ( url.indexOf( '.css' ) > -1 ) {
+		el = head.querySelector( 'link[href="' + url + '"]' );
+
+		if ( ! el ) {
+			el = document.createElement("link");
+
+			el.type = "text/css";
+			el.rel = "stylesheet";
+			el.href = url;
+		} else {
+			callback( el );
+			return el;
+		}
+
 	} else if ( url.indexOf( '.js' ) > -1 ) {
-		var el = document.createElement("script");
-		el.type = "text/javascript";
-		el.src = url;
+		el = head.querySelector( 'script[src="' + url + '"]' );
+
+		if ( ! el ) {
+			el = document.createElement( "script" );
+			el.type = "text/javascript";
+			el.src = url;
+		} else {
+			callback( el );
+			return el;
+		}
 	} else {
 		return console.error( 'Unhandled URL, neither JS nor CSS ' + _url );
 	}
 
-	if ( callback && el ) {
-		el.onload = callback;
-	}
-
 	head.appendChild(el);
+
+	if ( el ) {
+		el.onload = function() { callback( el ) };
+	}
 
 	return el;
 }
 
 var isMSBrowser = caxtonDetectIE();
 if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
-	caxtonHeadAsset( 'ie.css' );
+	CaxtonUtils.asset( 'ie.css' );
 }
 // endregion Is IE
 
@@ -106,7 +126,7 @@ var CaxtonUtils = {
 	each: function( selector, callback ) {
 		var els = document.querySelectorAll( selector );
 		for ( var i = 0; i < els.length; i ++ ) {
-			callback.apply( els[i], [ i ] );
+			callback.apply( els[i], [ els[i], i ] );
 		}
 	},
 	delegate: function( eventName, elementSelector, handler ) {
@@ -121,22 +141,67 @@ var CaxtonUtils = {
 		}, false );
 	},
 	loadFonts: function() {
-		if ( ! this.fontsLinkEl ) {
-			this.fontsLinkEl = document.createElement('link');
-			this.fontsLinkEl.setAttribute( 'id', 'caxton-google-fonts' );
-			this.fontsLinkEl.setAttribute( 'rel', 'stylesheet' );
-			document.querySelector( 'body' ).appendChild( this.fontsLinkEl );
-		}
-
 		var caxtonFontsToLoad = [];
 		CaxtonUtils.each( '[style*="font-family"]', function () {
-			var font = jQuery( this ).css( 'font-family' );
-			if ( - 1 === font.indexOf( ',' ) && caxtonFontsToLoad.indexOf( font ) === - 1 ) {
+			var font = this.style.fontFamily;
+			if ( font && -1 === font.indexOf( ',' ) && caxtonFontsToLoad.indexOf( font ) === - 1 ) {
 				caxtonFontsToLoad.push( font );
 			}
 		} );
-		this.fontsLinkEl.setAttribute( 'href', 'https://fonts.googleapis.com/css?family=' + caxtonFontsToLoad.join( '|' ) );
-	}
+		if ( caxtonFontsToLoad.length ) {
+			var gfUrl = 'https://fonts.googleapis.com/css?family=' + caxtonFontsToLoad.join( '|' ) + '#.css';
+			CaxtonUtils.asset( gfUrl );
+		}
+	},
+	asset: caxtonHeadAsset,
+	ready: function ( fn ) {
+		if ( document.readyState != 'loading' ) {
+			fn();
+		} else {
+			document.addEventListener( 'DOMContentLoaded', fn );
+		}
+	},
+
+	// region Flexslider
+	addFlexslider: function ( callback ) {
+		if ( typeof jQuery === 'undefined' ) {
+			CaxtonUtils.asset( 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js' );
+		}
+		CaxtonUtils.asset( 'flexslider.css' );
+		if ( typeof jQuery.flexslider === 'undefined' ) {
+			CaxtonUtils.asset( 'flexslider.min.js', callback );
+		} else {
+			callback();
+		}
+	},
+
+	flexslider: function () {
+		if ( document.querySelector( '.caxton-slider-pending-setup' ) ) {
+			CaxtonUtils.addFlexslider( function () {
+				CaxtonUtils.each( '.caxton-slider-pending-setup', function () {
+					jQuery( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
+				} );
+			} );
+		}
+		if ( document.querySelector( '.caxton-carousel-pending-setup' ) ) {
+			CaxtonUtils.addFlexslider( function () {
+				CaxtonUtils.each( '.caxton-carousel-pending-setup', function () {
+					var $t = jQuery( this );
+					$t.removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
+						move         : 1,
+						animation    : "slide",
+						animationLoop: false,
+						itemWidth    : 250,
+						itemMargin   : + ( $t.data( 'item-margin' ) || 16 ),
+						minItems     : 1.6,
+						maxItems     : 4.3,
+					} );
+				} );
+			} );
+		}
+	},
+	// endregion Flexslider
+
 };
 // endregion UX Utilities
 
@@ -144,7 +209,7 @@ var CaxtonUtils = {
 CaxtonUtils.watchScroll( '.caxton-scroll', Math.min( 50, window.innerHeight / 12 ) );
 // endregion Init default UX watchers
 
-jQuery( function ( $ ) {
+CaxtonUtils.ready( function () {
 	function applyStylesFromCSS( css, that, saveCurrentStyles ) {
 		if ( css === 'default' ) {
 			that.setAttribute( 'style', that.getAttribute( 'data-default-css' ) );
@@ -233,40 +298,10 @@ jQuery( function ( $ ) {
 
 	CaxtonUtils.loadFonts();
 
-	// region Init Flexslider
-	caxtonSetupCarousel = function () {
-		CaxtonUtils.each( '.caxton-carousel-pending-setup', function () {
-			if ( ! el.getAttribute( 'data-item-margin' ) ) {
-				el.setAttribute( 'data-item-margin', 16 )
-			}
-			$( this ).removeClass( 'caxton-carousel-pending-setup' ).flexslider( {
-				animation    : "slide",
-				animationLoop: true,
-				itemWidth    : 210,
-				itemMargin   : $sliders.data( 'item-margin' ),
-			} );
-		} );
-	};
-
-	caxtonSetupSlider = function () {
-		CaxtonUtils.each( '.caxton-slider-pending-setup', function () {
-			$( this ).removeClass( 'caxton-slider-pending-setup' ).flexslider();
-		} );
-	};
-	if ( document.querySelector( '.caxton-carousel-pending-setup, .caxton-slider-pending-setup' ) ) {
-		if ( typeof jQuery === 'undefined' ) {
-			caxtonHeadAsset( 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js' );
-		}
-		caxtonHeadAsset( 'flexslider.css' );
-		caxtonHeadAsset( 'flexslider.min.js', function () {
-			caxtonSetupCarousel();
-			caxtonSetupSlider();
-		} );
-	}
-	// endregion Init Flexslider
+	CaxtonUtils.flexslider();
 
 	if ( document.querySelector( '.fas, .fab, .far' ) ) {
-		caxtonHeadAsset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
+		CaxtonUtils.asset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
 	}
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 1100 );
 	setTimeout( function () { CaxtonUtils.loadFonts() }, 2000 );

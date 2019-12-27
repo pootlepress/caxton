@@ -947,7 +947,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 				BlockAlignment: 'BlockAlignToolbar',
 			},
 			afterEdit() {
-				setTimeout( caxtonSetupSlider, 700 );
+				setTimeout( CaxtonUtils.flexslider, 700 );
 			},
 			fields: {
 

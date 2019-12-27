@@ -1208,6 +1208,6 @@ jQuery( $ => {
 } );
 
 setTimeout( function() {
-	caxtonHeadAsset( 'icons-data.js' );
-	caxtonHeadAsset( 'icons-svg.js' );
+	CaxtonUtils.asset( 'icons-data.js' );
+	CaxtonUtils.asset( 'icons-svg.js' );
 }, 2500 );

@@ -41,6 +41,7 @@
 
 	.slides {
 		min-height: inherit;
+		display: flex;
 		li {
 			min-height: inherit;
 			position: relative;
@@ -100,6 +101,11 @@
 				bottom: 0;
 				right: 0;
 				background: center/cover;
+			}
+			&:after {
+				content: '';
+				display: block;
+				clear: both;
 			}
 		}
 	}
