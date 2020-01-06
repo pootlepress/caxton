@@ -79,29 +79,45 @@ export class CaxtonEditorToolbar {
 
 	addselectionHandler() {
 		const
-			that = this,
 			toolbar = this.toolbar,
 			$p = $( this.parent );
 
-		$p.on( 'blur mouseup keyup', '[data-caxtoneditableprop]', function () {
+		const maybeHideToolbar = () => {
+			const sel = window.getSelection();
+			if ( ! sel.toString() || ! $( sel.baseNode ).closest( '[data-caxtoneditableprop]' ).length ) {
+				this.range = null;
+				toolbar.hide();
+			}
+		};
+
+		const showToolbar = () => {
+			const rect = this.range.getBoundingClientRect();
+			toolbar.css( {
+				display: 'flex',
+				top : rect.y + $p.scrollTop() - $p.offset().top,
+				left: rect.x - $p.offset().left + rect.width / 2,
+			} );
+		};
+		$( 'body' ).on( 'blur', '[data-caxtoneditableprop]', e => {
+			debugger;
+			setTimeout( maybeHideToolbar, 100 );
+		} );
+		$p.on( 'click mouseup keyup', '[data-caxtoneditableprop]', e => {
 			const range = window.getSelection().getRangeAt( 0 );
 			if ( range.toString() ) {
-				that.range = range;
-				const rect = range.getBoundingClientRect();
-				toolbar.css( {
-					display: 'flex',
-					top : rect.y + $p.scrollTop() - $p.offset().top,
-					left: rect.x - $p.offset().left + rect.width / 2,
-				} );
+				this.range = range;
+				showToolbar();
 			} else {
-				that.range = null;
+				this.range = null;
 				toolbar.hide();
 			}
 		} );
 	}
 
 	addToolbar() {
-		const _buttons = this.getButtons();
+		const
+			that = this,
+			_buttons = this.getButtons();
 		let buttons = Object.keys( _buttons ).map( k => {
 			const btn = _buttons[k];
 			return `<button type="button" aria-label="${btn.label}" data-action="${k}" class="">${btn.html}</button>`
@@ -111,9 +127,19 @@ export class CaxtonEditorToolbar {
 
 		this.toolbar = $( '#caxton-toolbar' );
 
-		this.toolbar.on( 'click', '[data-action]', function ( e ) {
+		this.toolbar.on( 'mousedown', '[data-action]', function ( e ) {
 			e.preventDefault();
-			_buttons[ $( this ).data( 'action' ) ].callback();
+			e.stopPropagation();
+			const range = window.getSelection().getRangeAt( 0 );
+			if ( range.toString() ) {
+				that.range = range;
+				_buttons[$( this ).data( 'action' )].callback();
+			} else {
+				that.range = null;
+				that.toolbar.hide();
+			}
+
+			return false;
 		} );
 	}
 }
