@@ -14,5 +14,11 @@
 		"uglify-js": "^3.6.8",
 		"uglifyify": "^5.0.2"
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"babel": {
+		"presets": [
+			"@babel/preset-env"
+		],
+		"plugins": []
+	}
 }

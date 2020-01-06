@@ -7,15 +7,15 @@ export default function CaxtonHTMLBlockSetup( el ) {
 	function render( props, block, childrenBlocks ) {
 		const el = wp.element.createElement;
 		var
-			cls    = 'relative', padUnit, padT, padL, padB, padR,
+			cls      = 'relative', padUnit, padT, padL, padB, padR,
 			blkProps = {
-				className: 'relative caxton-flex-block',
+				className        : 'relative caxton-html-block',
 				'data-mobile-css': '',
 				'data-tablet-css': '',
 				key              : 'block',
 			},
-			padMob = block.attrs['Inner Padding left/right tablet'],
-			padTab = block.attrs['Inner Padding left/right mobile'];
+			padMob   = block.attrs['Inner Padding left/right tablet'],
+			padTab   = block.attrs['Inner Padding left/right mobile'];
 
 		if ( block.name === 'caxon/horizontal' ) {
 			blkProps.className = 'relative caxton-listing-block';
@@ -40,10 +40,10 @@ export default function CaxtonHTMLBlockSetup( el ) {
 		padR = padR ? padR + padUnit : 0;
 
 		blkProps.style = {
-			'paddingTop'   : padT,
-			'paddingLeft'  : padL,
-			'paddingBottom': padB,
-			'paddingRight' : padR,
+			'paddingTop'    : padT,
+			'paddingLeft'   : padL,
+			'paddingBottom' : padB,
+			'paddingRight'  : padR,
 			'justifyContent': block.attrs['Alignment'],
 			'alignItems'    : block.attrs['Alignment'],
 		};
@@ -58,7 +58,9 @@ export default function CaxtonHTMLBlockSetup( el ) {
 
 		const minHi = block.attrs['Minimum content height'];
 		if ( block.attrs['Content height unit'] === 'px' ) {
-			blkProps.style['minHeight'] = ( minHi * 10 ) + 'px';
+			blkProps.style['minHeight'] = (
+																			minHi * 10
+																		) + 'px';
 		} else {
 			blkProps.style['minHeight'] = minHi + block.attrs['Content height unit'];
 		}
@@ -92,7 +94,7 @@ export default function CaxtonHTMLBlockSetup( el ) {
 			},
 			[
 				// Background div
-				el( 'div', { key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' ) } ),
+				el( 'div', {key: 'bg', className: 'absolute absolute--fill', dangerouslySetInnerHTML: block.outputHTML( '{{Background}}' )} ),
 				// Blocks inserter
 				el( 'div', blkProps,
 					childrenBlocks
@@ -102,43 +104,47 @@ export default function CaxtonHTMLBlockSetup( el ) {
 	}
 
 	CaxtonBlock( {
-		id          : 'caxton/html',
-		title       : 'Super content',
-		icon        : 'text',
-		category    : 'caxton',
-		fields      : htmlFields,
-		attributes  : {
+		id        : 'caxton/html',
+		title     : 'Super content',
+		icon      : 'text',
+		category  : 'caxton',
+		fields    : htmlFields,
+		attributes: {
 			content: {
 				type: 'string',
 			}
 		},
-		edit        : function ( props, block ) {
+		edit      : function ( props, block ) {
 			let
-				tabStateMan = wp.element.useState( 'rich' ),
-				activeTab = tabStateMan[0],
-				setActiveTab = tabStateMan[1],
-				children = [],
+				tabStateMan   = wp.element.useState( 'rich' ),
+				activeTab     = tabStateMan[0],
+				setActiveTab  = tabStateMan[1],
+				children      = [],
 				tabContent,
-				updateContent = function ( newContent ) {
-					props.setAttributes( {content: newContent} );
-				},
-				tabProps = {
+				updateContent = newContent => props.setAttributes( {content: newContent} ),
+				tabProps      = {
 					href   : '#_',
 					onClick: function ( e ) {
 						e.preventDefault();
 						setActiveTab( e.target.getAttribute( 'data-tab' ) );
 					}
 				},
-				tabs = [
-					el( 'a', Object.assign( tabProps, {className: 'nav-tab' + (activeTab === 'rich' ? ' nav-tab-active' : ''),key: 'i', 'data-tab': 'rich'} ), 'Editor' ),
-					el( 'a', Object.assign( tabProps, {className: 'nav-tab' + (activeTab === 'code' ? ' nav-tab-active' : ''),key: 'c', 'data-tab': 'code'} ), 'Code' ),
+				tabs          = [
+					el( 'a', Object.assign( tabProps, {
+						className              : 'nav-tab' + (
+							activeTab === 'rich' ? ' nav-tab-active' : ''
+						), key: 'i', 'data-tab': 'rich'
+					} ), 'Editor' ),
+					el( 'a', Object.assign( tabProps, {
+						className              : 'nav-tab' + (
+							activeTab === 'code' ? ' nav-tab-active' : ''
+						), key: 'c', 'data-tab': 'code'
+					} ), 'Code' ),
 				];
-			children.push( el( 'header', {className: "nav-tab-wrapper", key: 'nav'}, tabs ) );
 
 			if ( activeTab === 'rich' ) {
 				tabContent = render( props, block, el(
-					editor.RichText, {
-						tagname : 'div',
+					Caxton.Editor, {
 						value   : props.attributes.content || 'Put in your content here!',
 						onChange: updateContent
 					}
@@ -153,18 +159,18 @@ export default function CaxtonHTMLBlockSetup( el ) {
 				);
 			}
 
-			children.push(
+			return el(
+				'div', { key: 'html-block-tabs'},
+				el( 'header', {className: "nav-tab-wrapper", key: 'nav'}, tabs ),
 				el( 'div', {key: 'tabcontent', className: 'pv4 ph3',}, tabContent )
 			);
-			return children;
 		},
-		save        : function ( props, block ) {
+		save      : function ( props, block ) {
 			return render( props, block, el(
 				'div', {},
-				el( editor.RichText.Content, {tagname: 'div', value: props.attributes.content} )
+				Caxton.html2el( props.attributes.content )
 				)
 			);
 		},
 	} );
-
 }

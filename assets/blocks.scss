@@ -53,7 +53,7 @@ $caxton-width: 1060px;
 
 .is-selected {
 	div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
-		> span[data-caxtonEditableProp] {
+		> span[data-caxtoneditableprop] {
 			display: block;
 			min-height: 1em;
 		}
@@ -163,6 +163,10 @@ $caxton-width: 1060px;
 	}
 }
 
+.caxton-html-block .rich-text {
+	white-space: normal !important;
+}
+
 .caxton-image-picker {
 	.image-button {
 		padding: 0;
@@ -235,6 +239,6 @@ $caxton-width: 1060px;
 	}
 }
 
-	@import 'scss/ordered-select-control';
-
-	@import 'scss/caxton-section-grid';
+@import 'scss/ordered-select-control';
+@import 'scss/caxton-section-grid';
+@import 'scss/caxton-toolbar';

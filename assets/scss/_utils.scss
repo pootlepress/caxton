@@ -106,6 +106,7 @@
 	transform: scale( 1, -1 );
 }
 
+.bg-black {background-color: rgba(0,0,0,.90); }
 .bg-black-90 {background-color: rgba(0,0,0,.90); }
 .bg-black-80 {background-color: rgba(0,0,0,.80); }
 .bg-black-70 {background-color: rgba(0,0,0,.70); }
@@ -116,6 +117,11 @@
 .bg-black-20 {background-color: rgba(0,0,0,.20); }
 .bg-black-10 {background-color: rgba(0,0,0,.10); }
 .bg-black-05 {background-color: rgba(0,0,0,.05); }
+
+.white-80 {color: rgba(255,255,255,.8);}
+.hover-white:hover {color: #fff;}
+
+.bg-white {background-color: rgba(255,255,255,.90); }
 .bg-white-90 {background-color: rgba(255,255,255,.90); }
 .bg-white-80 {background-color: rgba(255,255,255,.80); }
 .bg-white-70 {background-color: rgba(255,255,255,.70); }

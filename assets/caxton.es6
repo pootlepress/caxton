@@ -1,3 +1,5 @@
+import CaxtonEditor, {CaxtonEditorToolbar} from './caxton-editor.es6';
+
 function initCaxton( $, blocks, el, i18n, components ) {
 	window.caxtonWPEditor = wp.blockEditor ? wp.blockEditor : wp.editor;
 	const editor = caxtonWPEditor;
@@ -281,6 +283,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 
 			return fieldProps;
+		}
+
+		editableFieldEl(field, index) {
+			return null;
 		}
 
 		backgroundFieldEl(field, index) {
@@ -897,7 +903,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					val = `<${fld.tag} class="default">${val}</${fld.tag}>`;
 				}
 				val =
-					`<${fld.tag} contentEditable="true" title="${c2e}" data-caxtonEditableProp="${fld.id}">${val}</${fld.tag}>`;
+					`<${fld.tag} contentEditable="true" title="${c2e}" data-caxtoneditableprop="${fld.id}">${val}</${fld.tag}>`;
 			} else {
 				if ( val ) {
 					val = `<${fld.tag}>${val}</${fld.tag}>`;
@@ -969,7 +975,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					onBlur( {target} ) {
 						const $t = $( target );
 						const attrs = {};
-						const prop = $t.attr( 'data-caxtonEditableProp' );
+						const prop = $t.attr( 'data-caxtoneditableprop' );
 						attrs[prop] = $t.html();
 						that.focussedProps.setAttributes( attrs );
 					},
@@ -1160,9 +1166,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 	window.CaxtonBlock = block => new CxB( block );
 
-	window.caxtonRegisterFieldType = ( name, callback ) => {
-
-	};
+	new CaxtonEditorToolbar();
 
 	window.Caxton = {
 		el2html: HTMLFromElement,
@@ -1170,10 +1174,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		copyObj: caxtonCopy,
 		tplProc: processTemplate,
 		iconSvg: getFAIconSvg,
+		Editor: CaxtonEditor,
 	};
 }
 
-initCaxton( jQuery, wp.blocks, wp.element.createElement, window.wp.i18n, wp.components );
+initCaxton( jQuery, wp.blocks, wp.element.createElement, wp.i18n, wp.components );
 
 jQuery( $ => {
 	setTimeout( () => {

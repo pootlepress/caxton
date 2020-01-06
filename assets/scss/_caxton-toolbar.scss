@@ -1,0 +1,25 @@
+#caxton-toolbar {
+	border-left: none;
+	transform: translateX(-50%);
+	margin-top: -52px;
+	button {
+		padding: 7px;
+		margin: 0 0 0 -1px;
+		background: #fff;
+		cursor: pointer;
+		border: 1px solid #bbc;
+		&:hover {
+			background: #eee;
+		}
+
+		svg {
+			display: block;
+			width: 20px;
+			height: auto;
+		}
+	}
+}
+
+.edit-post-editor-regions__content {
+	position: relative;
+}
