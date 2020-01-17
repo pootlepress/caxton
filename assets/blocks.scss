@@ -239,6 +239,10 @@ $caxton-width: 1060px;
 	}
 }
 
+.wp-block[data-type="caxton/html"] {
+	max-width: 1024px;
+}
+
 @import 'scss/ordered-select-control';
 @import 'scss/caxton-section-grid';
 @import 'scss/caxton-toolbar';

@@ -140,12 +140,6 @@ export default function CaxtonHTMLBlockSetup( el ) {
 						), key: 'c', 'data-tab': 'code'
 					} ), 'Code' ),
 				];
-			return tabContent = render( props, block, el(
-				Caxton.Editor, {
-					value   : props.attributes.content || 'Put in your content here!',
-					onChange: updateContent
-				}
-			) );
 			if ( activeTab === 'rich' ) {
 				tabContent = render( props, block, el(
 					Caxton.Editor, {
@@ -166,7 +160,7 @@ export default function CaxtonHTMLBlockSetup( el ) {
 			console.log( Caxton.el2html( el(
 				'div', {key: 'html-block-tabs'},
 				el( 'header', {className: "nav-tab-wrapper", key: 'nav'}, tabs ),
-				el( 'div', {key: 'tabcontent', className: 'pv4 ph3',}, tabContent )
+				el( 'div', {key: 'tabcontent', className: 'pv4 ph3 bg-white',}, tabContent )
 			) ) );
 
 			return el(
