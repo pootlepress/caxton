@@ -106,6 +106,7 @@ var CaxtonUtils = {
 			CaxtonUtils.asset( gfUrl );
 		}
 	},
+	loadedAssets: {}, // Loaded assets record
 	asset: function ( _url, callback ) {
 		var head = document.head, el;
 
@@ -125,11 +126,8 @@ var CaxtonUtils = {
 				el.type = "text/css";
 				el.rel = "stylesheet";
 				el.href = url;
-			} else {
-				callback( el );
-				return el;
+				head.appendChild(el);
 			}
-
 		} else if ( url.indexOf( '.js' ) > -1 ) {
 			el = head.querySelector( 'script[src="' + url + '"]' );
 
@@ -137,18 +135,21 @@ var CaxtonUtils = {
 				el = document.createElement( "script" );
 				el.type = "text/javascript";
 				el.src = url;
-			} else {
-				callback( el );
-				return el;
+				head.appendChild(el);
 			}
 		} else {
 			return console.error( 'Unhandled URL, neither JS nor CSS ' + _url );
 		}
 
-		head.appendChild(el);
-
 		if ( el ) {
-			el.onload = function() { callback( el ) };
+			if ( ! CaxtonUtils.loadedAssets[url] ) {
+				el.addEventListener( 'load', function( e ) {
+					CaxtonUtils.loadedAssets[url] = true;
+					callback( el );
+				} );
+			} else {
+				callback( el );
+			}
 		}
 
 		return el;
