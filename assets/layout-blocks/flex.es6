@@ -34,13 +34,13 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 	padR = padR ? padR + padUnit : 0;
 
 	blkProps.style = {
-		'paddingTop'   : padT,
-		'paddingLeft'  : padL,
-		'paddingBottom': padB,
-		'paddingRight' : padR,
-		'justify-content': block.attrs['Alignment'],
-		'min-height': block.attrs['Minimum content height'],
-		'align-items'    : block.attrs['Alignment'],
+		paddingTop    : padT,
+		paddingLeft   : padL,
+		paddingBottom : padB,
+		paddingRight  : padR,
+		justifyContent: block.attrs['Alignment'],
+		minHeight     : block.attrs['Minimum content height'],
+		alignItems    : block.attrs['Alignment'],
 	};
 
 	blkProps['data-desktop-css'] = 'padding-left:' + padL + 'em;padding-right:' + padR + 'em;';
@@ -52,9 +52,9 @@ export const flexRender = function ( props, block, childrenBlocks ) {
 	}
 
 	if ( block.attrs['Content height unit'] === 'px' ) {
-		blkProps.style['min-height'] = ( blkProps.style['min-height'] * 10 ) + 'px';
+		blkProps.style.minHeight = parseInt( blkProps.style.minHeight ) * 10 + 'px';
 	} else {
-		blkProps.style['min-height'] = blkProps.style['min-height'] + block.attrs['Content height unit'];
+		blkProps.style.minHeight = parseInt( blkProps.style.minHeight ) + block.attrs['Content height unit'];
 	}
 
 	if ( block.attrs['Content direction'] ) {
