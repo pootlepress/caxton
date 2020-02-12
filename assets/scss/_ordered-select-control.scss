@@ -11,28 +11,6 @@
 		padding: 3px 0;
 	}
 }
-.caxton-orderedselect-selected {
-	border: 1px solid #ccc;
-	padding: 3px 20px 3px 5px;
-	position: relative;
-	.dashicons {
-		position: absolute;
-		right: 1px;
-		top: 50%;
-		transform: translateY(-52%);
-	}
-	.caxton-orderedselect-option {
-		display: inline-block;
-		background: #eee;
-		margin: 2px 3px 2px 0;
-		&:after {
-			content: "\f335";
-			font: 16px dashicons;
-			vertical-align: -3px;
-			margin: 0 0 0 3px;
-		}
-	}
-}
 
 .caxton-orderedselect-available {
 	max-height: 0;
@@ -48,6 +26,7 @@
 }
 
 .caxton-orderedselect-option {
+	display: flex;
 	padding: 3px 5px;
 	cursor: pointer;
 	&:hover {
@@ -55,7 +34,30 @@
 	}
 	img {
 		height: 21px;
-		margin: -3px 3px -3px 0;
+		margin: 0 3px 0 -2px;
 		vertical-align: middle;
+	}
+}
+
+.caxton-orderedselect-selected {
+	border: 1px solid #ccc;
+	padding: 3px 20px 3px 5px;
+	position: relative;
+	.dashicons {
+		position: absolute;
+		right: 1px;
+		top: 50%;
+		transform: translateY(-52%);
+	}
+	.caxton-orderedselect-option {
+		background: #eee;
+		border: 1px solid #ddd;
+		margin: 2px 3px 2px 0;
+		&:after {
+			content: "\f335";
+			font: 16px dashicons;
+			vertical-align: -3px;
+			margin: 0 0 0 auto;
+		}
 	}
 }

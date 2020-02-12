@@ -27,7 +27,6 @@ function caxton_init() {
 		Caxton::instance( __FILE__ );
 	}
 }
-
 add_action( 'plugins_loaded', 'caxton_init', 0 );
 
 // Create a helper function for easy SDK access.

@@ -5,32 +5,6 @@
  * @version 1.0.0
  */
 
-// region Is IE
-function caxtonDetectIE() {
-	var ua = window.navigator.userAgent;
-	var msie = ua.indexOf( "MSIE " );
-	if ( msie > 0 ) {
-		return 'IE/' + parseInt( ua.substring( msie + 5, ua.indexOf( ".", msie ) ), 10 )
-	}
-	var trident = ua.indexOf( "Trident/" );
-	if ( trident > 0 ) {
-		var rv = ua.indexOf( "rv:" );
-		return 'Trident/' + parseInt( ua.substring( rv + 3, ua.indexOf( ".", rv ) ), 10 )
-	}
-	var edge = ua.indexOf( "Edge/" );
-	if ( edge > 0 ) {
-		return 'Edge/' + parseInt( ua.substring( edge + 5, ua.indexOf( ".", edge ) ), 10 )
-	}
-	return false
-}
-
-
-var isMSBrowser = caxtonDetectIE();
-if ( isMSBrowser && -1 === isMSBrowser.indexOf( 'Edge' ) ) {
-	CaxtonUtils.asset( 'ie.css' );
-}
-// endregion Is IE
-
 // region UX Utilities
 var CaxtonUtils = {
 	closest    : function ( el, predicate ) {
@@ -39,8 +13,8 @@ var CaxtonUtils = {
 		);
 	},
 	watchScroll: function ( selector, startBuffer ) {
+		var elems = document.querySelectorAll( selector );
 		var watchOnScroll = function () {
-			var elems = document.querySelectorAll( selector );
 			startBuffer = startBuffer ? startBuffer : 0;
 			var docHeight = window.innerHeight;
 
@@ -72,9 +46,10 @@ var CaxtonUtils = {
 				}
 			}
 		};
-
-		window.onscroll = watchOnScroll;
-		watchOnScroll();
+		if ( elems.length ) {
+			window.onscroll = watchOnScroll;
+			watchOnScroll();
+		}
 	},
 	each: function( selector, callback ) {
 		var els = document.querySelectorAll( selector );
@@ -174,7 +149,6 @@ var CaxtonUtils = {
 			callback();
 		}
 	},
-
 	flexslider: function () {
 		if ( document.querySelector( '.caxton-slider-pending-setup' ) ) {
 			CaxtonUtils.addFlexslider( function () {
@@ -202,15 +176,7 @@ var CaxtonUtils = {
 	},
 	// endregion Flexslider
 
-};
-// endregion UX Utilities
-
-// region Init default UX watchers
-CaxtonUtils.watchScroll( '.caxton-scroll', Math.min( 50, window.innerHeight / 12 ) );
-// endregion Init default UX watchers
-
-CaxtonUtils.ready( function () {
-	function applyStylesFromCSS( css, that, saveCurrentStyles ) {
+	applyCSS: function ( css, that, saveCurrentStyles ) {
 		if ( css === 'default' ) {
 			that.setAttribute( 'style', that.getAttribute( 'data-default-css' ) );
 			that.removeAttribute( 'data-default-css' );
@@ -238,73 +204,71 @@ CaxtonUtils.ready( function () {
 		}
 
 		return styles;
-	}
-
-	window.caxtonResponsiveStyling = function ( width ) {
+	},
+	responsiveStyling: function ( width ) {
 		width = isNaN( width ) ? window.innerWidth : width;
 		if ( width > 1024 ) {
 			// Desktop
 			CaxtonUtils.each( '[data-desktop-css]', function () {
-				applyStylesFromCSS( this.getAttribute( 'data-desktop-css' ), this )
+				CaxtonUtils.applyCSS( this.getAttribute( 'data-desktop-css' ), this )
 			} );
 		} else if ( width > 700 ) {
 			// Tab
 			CaxtonUtils.each( '[data-tablet-css]', function () {
-				applyStylesFromCSS( this.getAttribute( 'data-tablet-css' ), this )
+				CaxtonUtils.applyCSS( this.getAttribute( 'data-tablet-css' ), this )
 			} );
 		} else {
 			// Mobile
 			CaxtonUtils.each( '[data-mobile-css]', function () {
-				applyStylesFromCSS( this.getAttribute( 'data-mobile-css' ), this )
+				CaxtonUtils.applyCSS( this.getAttribute( 'data-mobile-css' ), this )
 			} );
 		}
-	};
+	},
+	_stylesManager: function() {
+		window.addEventListener( 'resize', function() {
+			CaxtonUtils.responsiveStyling()
+		} );
+		CaxtonUtils.delegate( 'mouseover', '[data-hover-css]', function () {
+			CaxtonUtils.applyCSS( this.getAttribute( 'data-hover-css' ), this, 'saveCurrentStyles' )
+		} );
 
-	window.addEventListener( 'resize', caxtonResponsiveStyling );
-	caxtonResponsiveStyling();
-
-	CaxtonUtils.delegate( 'mouseover', '[data-hover-css]', function () {
-		applyStylesFromCSS( this.getAttribute( 'data-hover-css' ), this, 'saveCurrentStyles' )
-	} );
-
-	CaxtonUtils.delegate( 'mouseout', '[data-hover-css]', function () {
-		applyStylesFromCSS( 'default', this );
-	} );
-
-	function findTarget( el, selector ) {
-		if ( ! selector ) {
-			return el.parentElement;
+		CaxtonUtils.delegate( 'mouseout', '[data-hover-css]', function () {
+			CaxtonUtils.applyCSS( 'default', this );
+		} );
+	},
+	_interactionsManager() {
+		function findTarget( el, selector ) {
+			if ( ! selector ) {
+				return el.parentElement;
+			}
+			var target = el.parentElement.querySelector( selector );
+			if ( ! target ) {
+				target = document.querySelector( selector );
+			}
+			return target;
 		}
-		var target = el.parentElement.querySelector( selector );
-		if ( ! target ) {
-			target = document.querySelector( selector );
+
+		CaxtonUtils.delegate( 'click', '[data-toggle-class]', function( e ) {
+			var el          = this,
+					target      = findTarget( el, el.getAttribute( 'data-toggle-class' ) ),
+					toggleClass = el.getAttribute( 'data-toggle-classname' ) || 'toggle';
+
+			e.preventDefault();
+			target.classList.toggle( toggleClass )
+		} );
+	},
+	newContentManager: function() {
+		CaxtonUtils.loadFonts();
+		CaxtonUtils.flexslider();
+		CaxtonUtils.responsiveStyling();
+		if ( document.querySelector( '.fa,.fas,.fab,.far' ) ) {
+			CaxtonUtils.asset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
 		}
-		return target;
-	}
+		CaxtonUtils.watchScroll( '.cxp-scroll', Math.min( 50, window.innerHeight / 12 ) );
+	},
+};
+// endregion UX Utilities
 
-	CaxtonUtils.delegate( 'click', '[data-toggle-class]', function affectToggleClass() {
-		var el          = this,
-				target      = findTarget( el, el.getAttribute( 'data-toggle-target' ) ),
-				toggleClass = el.getAttribute( 'data-toggle-class' ) || 'toggle';
-
-		target.classList.toggle( toggleClass )
-	} );
-
-	CaxtonUtils.delegate( 'click', '[data-toggle]', function ( e ) {
-		var el     = this,
-				target = findTarget( el, el.getAttribute( 'data-toggle' ) );
-		target.style.display = target.style.display === 'none' ? '' : 'none';
-	} );
-
-	CaxtonUtils.loadFonts();
-
-	CaxtonUtils.flexslider();
-
-	if ( document.querySelector( '.fas, .fab, .far' ) ) {
-		CaxtonUtils.asset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
-	}
-	setTimeout( function () { CaxtonUtils.loadFonts() }, 1100 );
-	setTimeout( function () { CaxtonUtils.loadFonts() }, 2000 );
-	setTimeout( function () { CaxtonUtils.loadFonts() }, 3200 );
-	setTimeout( function () { CaxtonUtils.loadFonts() }, 5000 );
-} );
+CaxtonUtils._stylesManager();
+CaxtonUtils._interactionsManager();
+CaxtonUtils.ready( CaxtonUtils.newContentManager );

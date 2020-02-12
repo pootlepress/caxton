@@ -106,6 +106,60 @@
 	transform: scale( 1, -1 );
 }
 
+.toggle-close,
+.toggle-close-9999,
+.toggle-open,
+.toggle-open-9999 {
+	overflow: hidden;
+	transition: max-height .5s;
+	max-height: 0;
+}
+.toggle-close:not(.toggle),
+.toggle-close-9999:not(.toggle) {
+	max-height: 1920px;
+}
+
+.toggle-open:not(.toggle),
+.toggle-open-9999:not(.toggle) {
+	border-top-width: 0;
+	border-bottom-width: 0;
+	padding: 0;
+	margin: 0;
+	max-height: 0;
+}
+
+.toggle-close-9999:not(.toggle) {
+	max-height: 9999px;
+}
+
+.toggle-show:not(.toggle),
+.toggle-dib:not(.toggle) {
+	display: none !important;
+}
+
+.toggle {
+	.toggle-hide {
+		display: none;
+	}
+	.toggle-show {
+		display: block !important;
+	}
+	.toggle-dib {
+		display: inline-block !important;
+	}
+	.toggle-close, .toggle-close-9999 {
+		max-height: 0;
+		padding: 0;
+		margin: 0;
+	}
+	.toggle-open {
+		max-height: 1920px;
+	}
+	.toggle-open-9999 {
+		max-height: 9999px;
+	}
+}
+
 .bg-black-90 {background-color: rgba(0,0,0,.90); }
 .bg-black-80 {background-color: rgba(0,0,0,.80); }
 .bg-black-70 {background-color: rgba(0,0,0,.70); }
@@ -116,6 +170,8 @@
 .bg-black-20 {background-color: rgba(0,0,0,.20); }
 .bg-black-10 {background-color: rgba(0,0,0,.10); }
 .bg-black-05 {background-color: rgba(0,0,0,.05); }
+.bg-black {background-color: #000; }
+
 .bg-white-90 {background-color: rgba(255,255,255,.90); }
 .bg-white-80 {background-color: rgba(255,255,255,.80); }
 .bg-white-70 {background-color: rgba(255,255,255,.70); }
@@ -125,3 +181,4 @@
 .bg-white-30 {background-color: rgba(255,255,255,.30); }
 .bg-white-20 {background-color: rgba(255,255,255,.20); }
 .bg-white-10 {background-color: rgba(255,255,255,.10); }
+.bg-white {background-color: #fff; }
