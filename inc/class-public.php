@@ -48,22 +48,22 @@ class Caxton_Public{
 	 * @action wp_enqueue_scripts
 	 */
 	public function enqueue() {
-		$token = $this->token;
 		$ver = $this->version;
 		$assets = $this->url . 'assets';
 
-		wp_enqueue_style( 'caxton-front', "$assets/front.css", $ver );
-		wp_enqueue_script( 'caxton-utils', "$assets/caxton-utils.min.js", $ver, 'in_footer' );
+		wp_enqueue_style( 'caxton-front', "$assets/front.css", [], $ver );
+		wp_enqueue_script( 'caxton-utils', "$assets/caxton-utils.min.js", [], $ver, 'in_footer' );
 
 		$this->localize();
 		$this->enqueue_compat();
 	}
 
 	private function enqueue_compat() {
+		$ver = $this->version;
 		$url = $this->url . 'assets/compat';
 
 		if ( function_exists( 'twentynineteen_setup' ) ) {
-			wp_enqueue_style( 'caxton-2019', "$url/2019.css", $ver, 'in_footer' );
+			wp_enqueue_style( 'caxton-2019', "$url/2019.css", [], $ver, 'in_footer' );
 		}
 	}
 
