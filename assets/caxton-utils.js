@@ -12,6 +12,23 @@ var CaxtonUtils = {
 			el && CaxtonUtils.closest( el.parentNode, predicate )
 		);
 	},
+	watchMouse: function ( selector ) {
+		var monitorMouse = document.querySelectorAll( selector );
+
+		if ( 0 < monitorMouse.length ) {
+
+			document.body.style.setProperty( '--cxp-msx', 0 );
+			document.body.style.setProperty( '--cxp-msy', 0 );
+			document.addEventListener( 'mousemove', function ( e ) {
+				var
+					x = ( 2 * e.pageX / window.innerWidth ) - 1,
+					y = ( 2 * e.pageY / window.innerHeight ) - 1,
+					el = e.target;
+				document.body.style.setProperty( '--cxp-msx', x );
+				document.body.style.setProperty( '--cxp-msy', y );
+			} );
+		}
+	},
 	watchScroll: function ( selector, startBuffer ) {
 		var elems = document.querySelectorAll( selector );
 		var watchOnScroll = function () {
@@ -47,7 +64,7 @@ var CaxtonUtils = {
 			}
 		};
 		if ( elems.length ) {
-			window.onscroll = watchOnScroll;
+			window.addEventListener( 'scroll', watchOnScroll );
 			watchOnScroll();
 		}
 	},
@@ -236,7 +253,7 @@ var CaxtonUtils = {
 			CaxtonUtils.applyCSS( 'default', this );
 		} );
 	},
-	_interactionsManager() {
+	_interactionsManager: function() {
 		function findTarget( el, selector ) {
 			if ( ! selector ) {
 				return el.parentElement;
@@ -265,6 +282,7 @@ var CaxtonUtils = {
 			CaxtonUtils.asset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
 		}
 		CaxtonUtils.watchScroll( '.cxp-scroll', Math.min( 50, window.innerHeight / 12 ) );
+		CaxtonUtils.watchMouse( '.cxp-mouse', Math.min( 50, window.innerHeight / 12 ) );
 	},
 };
 // endregion UX Utilities
