@@ -49,10 +49,11 @@ class Caxton_Public{
 	 */
 	public function enqueue() {
 		$token = $this->token;
+		$ver = $this->version;
 		$assets = $this->url . 'assets';
 
-		wp_enqueue_style( 'caxton-front', "$assets/front.css" );
-		wp_enqueue_script( 'caxton-utils', "$assets/caxton-utils.js" );
+		wp_enqueue_style( 'caxton-front', "$assets/front.css", $ver );
+		wp_enqueue_script( 'caxton-utils', "$assets/caxton-utils.min.js", $ver, 'in_footer' );
 
 		$this->localize();
 		$this->enqueue_compat();
@@ -62,7 +63,7 @@ class Caxton_Public{
 		$url = $this->url . 'assets/compat';
 
 		if ( function_exists( 'twentynineteen_setup' ) ) {
-			wp_enqueue_style( 'caxton-2019', "$url/2019.css" );
+			wp_enqueue_style( 'caxton-2019', "$url/2019.css", $ver, 'in_footer' );
 		}
 	}
 
