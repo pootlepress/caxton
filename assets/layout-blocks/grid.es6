@@ -2,7 +2,9 @@ import layoutsData from './layouts.json';
 import altLayoutsData from './alt-layouts.json';
 
 export function gridRender ( props, block, childrenBlocks ) {
-	const el = wp.element.createElement;
+	const
+		el = wp.element.createElement,
+		$ = jQuery;
 	var cls    = 'relative ', bgHTML, padUnit, padT, padL, padB, padR,
 			colCls = 'relative caxton-columns caxton-grid-block',
 			padMob = block.attrs['Inner Padding left/right tablet'],
