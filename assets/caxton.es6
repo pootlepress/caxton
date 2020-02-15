@@ -105,6 +105,18 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			} else {
 				block.toolbars = {};
 			}
+
+			// region Resizable attributes
+			if ( block.resizable ) {
+				if ( block.resizable.height ) {
+					this.block.attributes[block.resizable.height] = {type: 'string'};
+				}
+				if ( block.resizable.width ) {
+					this.block.attributes[block.resizable.width] = {type: 'string'};
+				}
+			}
+			// endregion Resizable attributes
+
 			th.fields = th.processFields( block.fields );
 			th.sections = block.sections ? block.sections : {};
 			th.sectionsFields = th.processSections( th.fields );
@@ -854,6 +866,84 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return els;
 		}
 
+		resizableElement( resizable, children ) {
+			const
+				props           = this.props,
+				attrs           = this.attrs,
+				toggleSelection = props.toggleSelection,
+				setAttributes = props.setAttributes,
+				isSelected      = props.isSelected,
+				heightProp      = resizable.height,
+				widthProp       = resizable.width,
+				DEFAULTS        = {
+					enable: [],
+				};
+			let height, width = '100%', enableStr;
+
+			if ( heightProp || widthProp ) {
+				resizable = jQuery.extend( DEFAULTS, resizable );
+				enableStr = resizable.enable.toString().toLowerCase();
+
+				const enable = {
+					top        : false,
+					right      : false,
+					bottom     : false,
+					left       : false,
+					topRight   : false,
+					bottomRight: false,
+					bottomLeft : false,
+					topLeft    : false,
+				};
+				const RESIZABLE_PROPS = {
+					className: {
+						'is-selected': isSelected,
+					},
+					size: {},
+//					onResizeStop : ( event, direction, elt, delta ) => {
+					onResize : ( event, direction, elt, delta ) => {
+						let atts = {};
+						if ( heightProp ) {
+							atts[heightProp] = elt.clientHeight;
+						}
+						if ( widthProp ) {
+							atts[widthProp] = elt.clientWidth;
+						}
+						setAttributes( atts );
+//						toggleSelection( true );
+					},
+					onResizeStart: () => {
+//						toggleSelection( false );
+					},
+				};
+
+				if ( heightProp ) {
+					attrs[heightProp] && ( RESIZABLE_PROPS.size.height = attrs[heightProp] );
+					RESIZABLE_PROPS.minHeight = resizable.minHeight || 100;
+					enableStr.indexOf( 'top' ) > - 1 || enableStr.indexOf( 'bottom' ) > - 1 || resizable.enable.push( 'bottom' );
+				}
+
+				if ( widthProp ) {
+					attrs[widthProp] && ( RESIZABLE_PROPS.size.width = attrs[widthProp] );
+					RESIZABLE_PROPS.minWidth = resizable.minWidth || 70;
+					enableStr.indexOf( 'left' ) > - 1 || enableStr.indexOf( 'right' ) > - 1 || resizable.enable.push( 'right' );
+				}
+
+				resizable.enable.forEach( handle => {
+					if ( enable.hasOwnProperty( handle ) ) {
+						enable[handle] = true;
+					}
+				} );
+
+				RESIZABLE_PROPS.enable = enable;
+
+				console.log( RESIZABLE_PROPS );
+
+				return el( components.ResizableBox, RESIZABLE_PROPS, children );
+			}
+
+			return children;
+		}
+
 		toolbarElements() {
 			const els = this.renderFields( this.toolbars, false, 'ToolbarInit' );
 
@@ -1047,7 +1137,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					els.push( that.toolbarElements() );
 				}
 
-				els.push( that.edit( props ) );
+				let content = that.edit( props );
+
+				if ( that.block.resizable ) {
+					content = that.resizableElement( that.block.resizable, content );
+				}
+				els.push( content );
 
 				if ( typeof that.block.afterEdit === 'function' ) {
 					const afterCallback = that.block.afterEdit( props, that );
