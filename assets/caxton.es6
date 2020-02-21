@@ -916,6 +916,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					},
 				};
 
+				if ( resizable.size ) {
+					RESIZABLE_PROPS.size = resizable.size;
+				}
+
 				if ( heightProp ) {
 					attrs[heightProp] && ( RESIZABLE_PROPS.size.height = attrs[heightProp] );
 					RESIZABLE_PROPS.minHeight = resizable.minHeight || 100;
