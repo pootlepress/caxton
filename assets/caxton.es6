@@ -866,18 +866,21 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return els;
 		}
 
-		resizableElement( resizable, children ) {
+		resizableElement( resizable, children, props ) {
+			props = props || this.props;
 			const
-				props           = this.props,
-				attrs           = this.attrs,
-				toggleSelection = props.toggleSelection,
+				attrs         = props.attributes,
 				setAttributes = props.setAttributes,
-				isSelected      = props.isSelected,
-				heightProp      = resizable.height,
-				widthProp       = resizable.width,
-				DEFAULTS        = {
-					enable: [],
+				isSelected    = props.isSelected,
+				heightProp    = resizable.height,
+				widthProp     = resizable.width,
+				DEFAULTS      = {
+					enable       : [],
+					onResizeStop : () => {},
+					onResize     : () => {},
+					onResizeStart: () => {},
 				};
+			const [ isResizing, setIsResizing ] = wp.element.useState( false );
 			let height, width = '100%', enableStr;
 
 			if ( heightProp || widthProp ) {
@@ -895,12 +898,19 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					topLeft    : false,
 				};
 				const RESIZABLE_PROPS = {
+					key:'caxton-resizable',
 					className: {
+						'caxton-resizable': true,
 						'is-selected': isSelected,
+						'is-resizing': isResizing,
 					},
 					size: {},
-//					onResizeStop : ( event, direction, elt, delta ) => {
-					onResize : ( event, direction, elt, delta ) => {
+					onResizeStop: ( event, direction, elt, delta ) => {
+						resizable.onResizeStop( event, direction, elt, delta );
+						setIsResizing( false );
+					},
+					onResize: ( event, direction, elt, delta ) => {
+						resizable.onResize( event, direction, elt, delta );
 						let atts = {};
 						if ( heightProp ) {
 							atts[heightProp] = elt.clientHeight;
@@ -911,8 +921,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						setAttributes( atts );
 //						toggleSelection( true );
 					},
-					onResizeStart: () => {
-//						toggleSelection( false );
+					onResizeStart: ( event, direction, elt, delta ) => {
+						resizable.onResizeStart( event, direction, elt, delta );
+						setIsResizing( true );
 					},
 				};
 
@@ -922,13 +933,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 				if ( heightProp ) {
 					attrs[heightProp] && ( RESIZABLE_PROPS.size.height = attrs[heightProp] );
-					RESIZABLE_PROPS.minHeight = resizable.minHeight || 100;
+					RESIZABLE_PROPS.minHeight = resizable.minHeight || 50;
 					enableStr.indexOf( 'top' ) > - 1 || enableStr.indexOf( 'bottom' ) > - 1 || resizable.enable.push( 'bottom' );
 				}
 
 				if ( widthProp ) {
 					attrs[widthProp] && ( RESIZABLE_PROPS.size.width = attrs[widthProp] );
-					RESIZABLE_PROPS.minWidth = resizable.minWidth || 70;
+					RESIZABLE_PROPS.minWidth = resizable.minWidth || 50;
 					enableStr.indexOf( 'left' ) > - 1 || enableStr.indexOf( 'right' ) > - 1 || resizable.enable.push( 'right' );
 				}
 
@@ -940,9 +951,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 				RESIZABLE_PROPS.enable = enable;
 
-				console.log( RESIZABLE_PROPS );
-
-				return el( components.ResizableBox, RESIZABLE_PROPS, children );
+				return el(
+					components.ResizableBox, RESIZABLE_PROPS,
+					el( 'div', { className: 'caxton-resizable-contents h-100 overflow-hidden'}, children )
+				);
 			}
 
 			return children;

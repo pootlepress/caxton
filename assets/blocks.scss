@@ -56,11 +56,16 @@ $caxton-width: 1060px;
 	}
 }
 
+.caxton-resizable:not(.is-resizing) {
+	height: auto !important;
+}
+
 [data-caxtoneditableprop] {
 	min-height: 1em;
 	min-width: 1em;
 	display: inline-block;
 }
+
 div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 	> span[data-caxtonEditableProp] {
 		display: block;
