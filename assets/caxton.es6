@@ -28,6 +28,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	const elementFromHTML = (html, props, tag) => {
+		if ( html.__html ) {
+			html = html.__html;
+		}
 		if ( ! props ) {
 			props = {};
 		}
@@ -82,11 +85,14 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	class CxB {
+		setProps() {
+			this.keySuffix = 0;
+		}
 
 		constructor(block) {
 			const th = this;
 
-			this.keySuffix = 0;
+			this.setProps();
 
 			if ( ! block.id ) {
 				console.error( 'Parameter `id` is required for CaxtonBlock' )
@@ -125,42 +131,25 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			th.registerBlock();
 		}
 
-		preprocessField_background( id, fields ) {
-
-			let tpl =
-						'<div class="cover bg-center absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background image}}{{Background image position}}{{Background parallax}}"></div>' +
-						'<div class="absolute absolute--fill" style="background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}"></div>';
-
-			Object.assign( fields[id], {
-				section: 'Background',
-				tpl    : tpl
-			} );
-
+		preprocessField_overlay( id, fields ) {
 			let f = fields[id];
+			let
+				tplStyle = 'background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}',
+				tpl      = '<div class="absolute absolute--fill" style="' + tplStyle + '"></div>';
+
+			console.log( this.block.id, fields[id] );
+			fields[id] = Object.assign( { section: 'Overlay', tpl }, fields[id] );
+
+			let section = fields[id].section;
 
 			Object.assign( fields, {
-				'Background image'         : {
-					type   : 'image',
-					section: f.section,
-					tpl    : 'background-image:url(%s);',
-				},
-				'Background image position': {
-					type   : 'position',
-					section: f.section,
-					tpl    : 'background-position:%s;',
-				},
-				'Background parallax'      : {
-					type   : 'toggle',
-					value  : 'background-attachment:fixed;',
-					section: f.section,
-				},
 				'Background color'         : {
 					type   : 'color',
-					section: f.section,
+					section,
 				},
 				'Gradient color'           : {
 					type   : 'color',
-					section: f.section,
+					section,
 					tpl    : ', %s',
 				},
 				'Gradient type'            : {
@@ -173,7 +162,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						{value: 'radial-gradient( ', label: 'Radial gradient',},
 					],
 					default: 'linear-gradient( ',
-					section: f.section,
+					section,
 					tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
 				},
 				'Background colors opacity': {
@@ -183,10 +172,47 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					step   : .05,
 					help   : 'Reduce opacity to have transparent colors over image',
 					default: '1',
-					section: f.section,
+					section,
 					tpl    : 'opacity:%s;',
+				}
+			} );
+		}
+
+		preprocessField_background( id, fields ) {
+
+			let
+				colorStyle = 'background-color:{{Background color}};{{Gradient type}}',
+				imgStyle = '{{Background image}}{{Background image position}}{{Background parallax}}',
+				tpl =
+						'<div class="absolute absolute--fill cover bg-center" style="' + colorStyle + imgStyle + '"></div>' +
+						'<div class="absolute absolute--fill" style="' + colorStyle + '{{Background colors opacity}}"></div>';
+
+			fields[id] = Object.assign( { section: 'Background', tpl }, fields[id] );
+
+			let section = fields[id].section;
+
+			Object.assign( fields, {
+				'Background image'         : {
+					type   : 'image',
+					section,
+					tpl    : 'background-image:url(%s);',
+				},
+				'Background image position': {
+					type   : 'position',
+					section,
+					tpl    : 'background-position:%s;',
+				},
+				'Background parallax'      : {
+					type   : 'toggle',
+					value  : 'background-attachment:fixed;',
+					section,
 				},
 			} );
+
+			// Add overlay fields
+			this.preprocessField_overlay( id, fields );
+
+			fields[id].tpl = tpl;
 		}
 
 		preprocessFields(fields) {
@@ -293,6 +319,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 
 			return fieldProps;
+		}
+
+		overlayFieldEl(field, index) {
+			return null;
 		}
 
 		backgroundFieldEl(field, index) {
@@ -676,29 +706,35 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		AlignmentToolbarInit(field, index) {
 			const props = this.fieldProps( field, index );
 
+			const values = $.extend( {
+				left: ' tl',
+				right: ' tr',
+				center: ' tc',
+			}, props.values || {} );
+
 			props.controls = [
 				{
 					icon: 'editor-alignleft',
 					title: __( 'Align left' ),
-					isActive: props.value === ' tl',
+					isActive: props.value === values.left,
 					onClick() {
-						props.onChange( ' tl' );
+						props.onChange( values.left );
 					}
 				},
 				{
 					icon: 'editor-aligncenter',
 					title: __( 'Align center' ),
-					isActive: props.value === ' tc',
+					isActive: props.value === values.left,
 					onClick() {
-						props.onChange( ' tc' );
+						props.onChange( values.left );
 					}
 				},
 				{
 					icon: 'editor-alignright',
 					title: __( 'Align right' ),
-					isActive: props.value === ' tr',
+					isActive: props.value === values.center,
 					onClick() {
-						props.onChange( ' tr' );
+						props.onChange( values.center );
 					}
 				},
 			];
@@ -1011,6 +1047,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			}
 
 			return val;
+		}
+
+		populateField_overlay( val, f ) {
+			return '1';
 		}
 
 		populateField_background( val, f ) {
