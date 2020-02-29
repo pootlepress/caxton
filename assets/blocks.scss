@@ -60,6 +60,10 @@ $caxton-width: 1060px;
 	height: auto !important;
 }
 
+.caxton-resizable.is-resizing {
+	overflow: hidden;
+}
+
 [data-caxtoneditableprop] {
 	min-height: 1em;
 	min-width: 1em;

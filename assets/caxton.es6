@@ -989,7 +989,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 				return el(
 					components.ResizableBox, RESIZABLE_PROPS,
-					el( 'div', { className: 'caxton-resizable-contents h-100 overflow-hidden'}, children )
+					el( 'div', { className: 'caxton-resizable-contents h-100'}, children )
 				);
 			}
 
