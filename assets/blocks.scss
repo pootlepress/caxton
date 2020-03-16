@@ -36,9 +36,7 @@ $caxton-width: 1060px;
 	.rich-text {
 		min-width: 100px; // Keep width on the rich text, becomes 0 width and inaccessible without it.
 	}
-	.editor-inner-blocks,
 	.block-editor-inner-blocks,
-	.editor-block-list__layout,
 	.block-editor-block-list__layout {
 		margin: 0;
 		display: inherit;
@@ -76,14 +74,13 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 	}
 }
 
-.block-editor .editor-block-list__block[data-type*='caxton/'],
 .block-editor .block-editor-block-list__block[data-type*='caxton/'] {
 	&, .wp-block {
 		max-width: $caxton-width;
 	}
 }
 
-.edit-post-visual-editor .editor-block-list__block {
+.edit-post-visual-editor .block-editor-block-list__block {
 	&[data-type="caxton/grid"] {
 		&:hover {
 			// Add hover styles here for easy selection
@@ -96,7 +93,6 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 	}
 }
 
-.edit-post-visual-editor .editor-block-list__block,
 .edit-post-visual-editor .block-editor-block-list__block {
 	&[caxton-float=" fl"], &[caxton-float=" fr"] {
 		z-index: 20;
@@ -107,11 +103,9 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 		}
 
 	}
-	&[caxton-float=" fl"] .editor-block-list__block-edit,
 	&[caxton-float=" fl"] .block-editor-block-list__block-edit {
 		float: left;
 	}
-	&[caxton-float=" fr"] .editor-block-list__block-edit,
 	&[caxton-float=" fr"] .block-editor-block-list__block-edit {
 		float: right;
 	}
@@ -204,27 +198,22 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 }
 
 // 2018 fix
-.editor-styles-wrapper div.wp-block,
 .block-editor-styles-wrapper div.wp-block {
 	width: auto;
 }
 
-.editor-block-list__layout .layout-caxton-col .editor-block-list__block,
 .block-editor-block-list__layout .layout-caxton-col .block-editor-block-list__block {
 	padding-left: 36px;
 	padding-right: 36px;
-	.editor-block-drop-zone,
 	.block-editor-block-drop-zone {
 		margin: 0;
 	}
-	.editor-block-list__breadcrumb,
 	.block-editor-block-list__breadcrumb {
 		margin-left: -38px;
 		margin-right: -38px;
 	}
 }
 
-.caxton-columns .editor-block-list__layout.layout-caxton-col,
 .caxton-columns .block-editor-block-list__layout.layout-caxton-col {
 	overflow: visible;
 }

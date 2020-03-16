@@ -275,7 +275,7 @@ class Caxton_Admin {
 		if ( $disabled_blocks ) {
 			?>
 			<style id="caxton-hidden-block-styles">
-				.editor-block-list-item-<?php echo str_replace( '/', '-', implode( ', .editor-block-list-item-', $disabled_blocks ) ); ?> {
+				.block-editor-block-list-item-<?php echo str_replace( '/', '-', implode( ', .block-editor-block-list-item-', $disabled_blocks ) ); ?> {
 					display: none !important;
 				}
 			</style>
