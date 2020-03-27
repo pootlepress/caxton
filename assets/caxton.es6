@@ -137,7 +137,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				tplStyle = 'background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}',
 				tpl      = '<div class="absolute absolute--fill" style="' + tplStyle + '"></div>';
 
-			console.log( this.block.id, fields[id] );
 			fields[id] = Object.assign( { section: 'Overlay', tpl }, fields[id] );
 
 			let section = fields[id].section;
@@ -650,7 +649,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						onClick({target}) {
 							const $p = $( target ).closest( '.icon-choice' );
 							if ( $p.length ) {
-								console.log( $p.html() );
 								props.onChange( $p.html() );
 							}
 						}
@@ -1263,55 +1261,39 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				return that.save( props );
 			};
 
-			if ( 'function' === typeof block.apiCallback ) {
+			if ( 'undefined' !== typeof block.apiUrl ) {
 				if ( 'function' !== typeof block.apiUrl ) {
-					block.apiUrl = () => (
-						{
-							apiData: block.apiUrl,
-						}
-					);
+					block.apiUrl = () => ( {apiData: block.apiUrl,} );
 				}
-				that.block.edit = block.apiCallback;
+				if ( 'function' === typeof block.apiCallback ) {
+					that.block.edit = block.apiCallback;
+				}
 
-				class CaxtonAPIDataComponent extends React.Component {
-					constructor( props ) {
-						super( ...arguments );
-						this.state = {
-							dataProps: caxtonCopy( {}, props ),
-							block: block,
-							editCallback: editCallback,
-						};
-					}
-					fetchUrls() {
-						let
-							state = this.state,
-							urls = this.state.block.apiUrl( state.dataProps ),
-							cmp = this;
+				const APIWrapper = function ( props ) {
+					const [_apiData, setApiData] = wp.element.useState( '{}' );
+					let
+						apiData = JSON.parse( _apiData ),
+						urls = block.apiUrl( props );
 
-						for ( const dataKey in urls ) {
-							if ( urls.hasOwnProperty( dataKey ) ) {
-								if ( ! state.dataProps[dataKey] || urls[dataKey] !== state.dataProps[dataKey].path ) {
-									state.dataProps[dataKey] = {};
-									wp.apiFetch( {path: urls[dataKey]} ).then( data => {
-										if ( cmp && state.dataProps[dataKey].data !== data ) {
-											state.dataProps[dataKey].data = data;
-											state.dataProps[dataKey].path = urls[dataKey];
-											cmp.setState( state );
-										}
-									} );
-								}
+					for ( const dataKey in urls ) {
+						if ( urls.hasOwnProperty( dataKey ) ) {
+							if ( ! apiData[dataKey] || urls[dataKey] !== apiData[dataKey].path ) {
+								apiData[dataKey] = {};
+								wp.apiFetch( {path: urls[dataKey]} ).then( data => {
+									if ( apiData[dataKey].data !== data ) {
+										apiData[dataKey].data = data;
+										apiData[dataKey].path = urls[dataKey];
+										setApiData( JSON.stringify( apiData ) );
+									}
+								} );
 							}
 						}
 					}
 
-					render() {
-						caxtonCopy( this.state.dataProps, this.props );
-						this.fetchUrls();
-						return this.state.editCallback( this.state.dataProps );
-					}
-				}
+					return editCallback( caxtonCopy( props, apiData ) );
+				};
 
-				registerBlockProps.edit = CaxtonAPIDataComponent;
+				registerBlockProps.edit = APIWrapper;
 				if ( typeof this.block.save !== 'function' ) {
 					registerBlockProps.save = () => null;
 				}
