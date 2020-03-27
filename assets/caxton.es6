@@ -321,6 +321,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return fieldProps;
 		}
 
+		editableFieldEl(field, index) {
+			return null;
+		}
+
 		overlayFieldEl(field, index) {
 			return null;
 		}
@@ -602,6 +606,20 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				components.TextareaControl,
 				this.fieldProps( field, index )
 			)
+		}
+
+		dateTimeFieldEl(field, index) {
+			return datetimeFieldEl( field, index );
+		}
+
+		datetimeFieldEl(field, index) {
+			const fieldProps = this.fieldProps( field, index );
+			fieldProps.currentDate = fieldProps.value;
+			return el(
+				components.PanelBody,
+				{ title: fieldProps.label, },
+				el( components.DateTimePicker, fieldProps )
+			);
 		}
 
 		toggleFieldEl(field, index) {
@@ -1294,7 +1312,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				}
 
 				registerBlockProps.edit = CaxtonAPIDataComponent;
-				registerBlockProps.save = () => null;
+				if ( typeof this.block.save !== 'function' ) {
+					registerBlockProps.save = () => null;
+				}
 			}
 
 			if ( !block.id.includes('/') ) {
