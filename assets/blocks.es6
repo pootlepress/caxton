@@ -732,7 +732,6 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 
 			},
 		} );
-
 		CaxtonBlock( {
 			id: 'super-icon',
 			title: 'Icon',
@@ -908,7 +907,7 @@ import { CaxtonLayoutBlocksSetup } from './layout-blocks/layout-blocks.es6';
 
 				'Hover icon color': {
 					type: 'color',
-					default: '#555',
+					default: '',
 					tpl: 'color:%s;',
 					section: 'Hover Colors',
 				},
