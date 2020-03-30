@@ -1290,7 +1290,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						}
 					}
 
-					return editCallback( caxtonCopy( props, apiData ) );
+					return editCallback( caxtonCopy( { ...props }, apiData ) );
 				};
 
 				registerBlockProps.edit = APIWrapper;
