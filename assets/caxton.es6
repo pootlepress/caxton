@@ -20,14 +20,26 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return tpl;
 	};
 
-	const caxtonCopy = ( target, obj ) => {
+	const styleObject = ( styles ) => {
+		let
+			stOb  = {},
+			rules = styles.split( ';' );
+
+		for ( var i = 0; i < rules.length; i ++ ) {
+			var rule = rules[i].split( /:(.+)/ );
+			stOb[rule[0]] = rule[1];
+		}
+		return stOb;
+	};
+
+	const copyObj = ( target, obj ) => {
 		for ( var ki in obj ) {
 			if ( obj.hasOwnProperty( ki ) ) target[ ki ] = obj[ ki ];
 		}
 		return target;
 	};
 
-	const elementFromHTML = (html, props, tag) => {
+	const html2el = (html, props, tag) => {
 		if ( html.__html ) {
 			html = html.__html;
 		}
@@ -45,7 +57,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		return el( tag, _props );
 	};
 
-	const HTMLFromElement = els => {
+	const el2html = els => {
 		let content = '';
 		if ( els ) {
 			if ( ! els.length ) {
@@ -79,7 +91,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		if ( el ) {
 			let elProps = typeof el === 'object' ? el : {};
-			return elementFromHTML( svg, elProps );
+			return html2el( svg, elProps );
 		}
 		return svg;
 	};
@@ -132,7 +144,14 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		preprocessField_overlay( id, fields ) {
-			let f = fields[id];
+
+			let defaults = copyObj( {
+				'color'   : '',
+				'color2'  : '',
+				'gradient': 'linear-gradient( ',
+				'opacity' : '1',
+			}, fields[id].defaults || {} );
+
 			let
 				tplStyle = 'background-color:{{Background color}};{{Gradient type}}{{Background colors opacity}}',
 				tpl      = '<div class="absolute absolute--fill" style="' + tplStyle + '"></div>';
@@ -145,11 +164,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				'Background color'         : {
 					type   : 'color',
 					section,
+					default: defaults['color']
 				},
 				'Gradient color'           : {
 					type   : 'color',
 					section,
 					tpl    : ', %s',
+					default: defaults['color2']
 				},
 				'Gradient type'            : {
 					type   : 'select',
@@ -160,9 +181,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						{value: 'linear-gradient( -45deg, ', label: 'Linear 45 deg anticlockwise',},
 						{value: 'radial-gradient( ', label: 'Radial gradient',},
 					],
-					default: 'linear-gradient( ',
 					section,
 					tpl    : 'background-image:%s{{Background color}}{{Gradient color}});',
+					default: defaults['gradient']
 				},
 				'Background colors opacity': {
 					type   : 'range',
@@ -170,14 +191,20 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					max    : 1,
 					step   : .05,
 					help   : 'Reduce opacity to have transparent colors over image',
-					default: '1',
 					section,
 					tpl    : 'opacity:%s;',
-				}
+					default: defaults['opacity']
+				},
 			} );
 		}
 
 		preprocessField_background( id, fields ) {
+
+			let defaults = copyObj( {
+				'image'         : '',
+				'image_position': '',
+				'parallax'      : '',
+			}, fields[id].defaults || {} );
 
 			let
 				colorStyle = 'background-color:{{Background color}};{{Gradient type}}',
@@ -195,16 +222,19 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					type   : 'image',
 					section,
 					tpl    : 'background-image:url(%s);',
+					default: defaults['image'],
 				},
 				'Background image position': {
 					type   : 'position',
 					section,
 					tpl    : 'background-position:%s;',
+					default: defaults['image_position'],
 				},
 				'Background parallax'      : {
 					type   : 'toggle',
 					value  : 'background-attachment:fixed;',
 					section,
+					default: defaults['parallax'],
 				},
 			} );
 
@@ -247,6 +277,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 					if ( ! field.default && isNaN( field.default ) ) {
 						field.default = '';
+					} else {
+						// Make sure default is string
+						field.default = '' + field.default;
 					}
 					if ( field.attr ) {
 						this.block.attributes[id] = field.attr;
@@ -380,7 +413,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							return el( 'span', { className: 'v-mid dib'},
 								removeBtn,
 								el( components.Button, {
-										className: props.value ? 'image-button' : 'button button-large',
+										className: props.value ? 'image-button' : 'ml3 button button-large ',
 										onClick  : open,
 									},
 									btnContent
@@ -1088,7 +1121,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					}
 
 					if ( ( val || typeof val === 'number' ) && fld.tpl ) {
-						val = this.getTpl( fld.tpl, val ).replace( /%s/g, val );
+						val = this.callbackValue( fld.tpl, val ).replace( /%s/g, val );
 					}
 					html = html.split( `{{_${fld.id}}}` ).join( _val );
 					html = html.split( `{{${fld.id}}}` ).join( val );
@@ -1098,18 +1131,43 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			return html;
 		}
 
-		outputHTML( html, editing ) {
+		parseTpl( html, editing ) {
 			html = this.populateFields( html, editing );
-			html = this.populateFields( html, editing ); // Twice to allow using dynamic fields in
-			return { __html: html };
+			return this.populateFields( html, editing );
 		}
 
-		getTpl( tpl, payload ) {
+		outputHTML( html, editing ) {
+			return { __html: this.parseTpl( html, editing ) };
+		}
+
+		callbackValue( tpl, payload ) {
 			return typeof tpl === 'function' ? tpl( payload, this ) : tpl;
 		}
 
-		getBlockTpl( props ) {
-			return this.getTpl( this.tpl, props );
+		editableTpl(props, tpl, elProps = {} ) {
+			const that = this;
+			tpl = this.callbackValue( tpl, props );
+
+			elProps = copyObj( {
+				key: 'block',
+				dangerouslySetInnerHTML: that.outputHTML( tpl, 'edit' ),
+				onClick( e ) {
+					e.preventDefault();
+				},
+				onKeyDown( {target} ) {
+					const $def = $( target ).find( '.default' );
+					if ( $def.length ) $def.remove();
+				},
+				onBlur( {target} ) {
+					const $t = $( target );
+					const attrs = {};
+					const prop = $t.attr( 'data-caxtonEditableProp' );
+					attrs[prop] = $t.html();
+					that.focussedProps.setAttributes( attrs );
+				},
+			}, elProps );
+
+			return el( 'div', elProps );
 		}
 
 		edit(props) {
@@ -1118,24 +1176,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				if ( typeof that.block.edit === 'function' ) {
 					return that.block.edit( props, that );
 				}
-				return el( 'div', {
-					key: 'block',
-					dangerouslySetInnerHTML: that.outputHTML( that.getBlockTpl( props ), 'edit' ),
-					onClick( e ) {
-						e.preventDefault();
-					},
-					onKeyDown( {target} ) {
-						const $def = $( target ).find( '.default' );
-						if ( $def.length ) $def.remove();
-					},
-					onBlur( {target} ) {
-						const $t = $( target );
-						const attrs = {};
-						const prop = $t.attr( 'data-caxtonEditableProp' );
-						attrs[prop] = $t.html();
-						that.focussedProps.setAttributes( attrs );
-					},
-				} );
+				return this.editableTpl( props, this.tpl );
 			}
 		}
 
@@ -1145,7 +1186,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				if ( typeof this.block.save === 'function' ) {
 					return this.block.save( props, this );
 				}
-				return el( 'div', {dangerouslySetInnerHTML: this.outputHTML( this.getBlockTpl( props ) )} );
+				return el( 'div', {dangerouslySetInnerHTML: this.outputHTML( this.callbackValue( this.tpl, props ) )} );
 			}
 		}
 
@@ -1183,7 +1224,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				} );
 				props.height = 20;
 				props.width = 20;
-				block.icon = elementFromHTML( $icon.html(), props, 'svg' );
+				block.icon = html2el( $icon.html(), props, 'svg' );
 			}
 
 			delete registerBlockProps.fields;
@@ -1290,7 +1331,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						}
 					}
 
-					return editCallback( caxtonCopy( { ...props }, apiData ) );
+					return editCallback( copyObj( { ...props }, apiData ) );
 				};
 
 				registerBlockProps.edit = APIWrapper;
@@ -1299,7 +1340,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				}
 			}
 
-			if ( !block.id.includes('/') ) {
+			if ( -1 === block.id.indexOf( '/' ) ) {
 				block.id = `caxton/${block.id}`;
 			}
 
@@ -1313,14 +1354,80 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 	window.CaxtonBlock = block => new CxB( block );
 
+
+	window.CaxtonContentBlock = function ( block ) {
+		const args = Caxton.copyObj( {
+			tag        : 'div',
+			props      : {},
+			tplProps   : {},
+			innerProps : {classname: 'caxton-content-wrapper'},
+			prefix     : '',
+			prefixProps: {},
+			suffix     : '',
+			suffixProps: {},
+			template   : [],
+		}, block );
+
+		const knownProps = [
+			'tag',
+			'props',
+			'innerProps',
+			'template',
+			'prefix',
+			'prefixProps',
+			'tplProps',
+			'suffix',
+			'suffixProps',
+		];
+
+		for ( var i = 0; i < knownProps.length; i ++ ) {
+			const prop = knownProps[i];
+			delete block[prop];
+		}
+
+		block.edit = function ( props, block ) {
+			const processVal = val => block.callbackValue( val, props );
+			return el(
+				args.tag,
+				processVal( args.props ),
+				args.prefix && block.editableTpl( props, processVal( args.prefix ), processVal( args.prefixProps ) ),
+				args.tpl && block.editableTpl( props, processVal( args.tpl ), processVal( args.tplProps ) ),
+				el ( 'div',
+					processVal( args.innerProps ),
+					el( editor.InnerBlocks, {template: args.template} )
+				),
+				args.suffix && block.editableTpl( props, processVal( args.suffix ), processVal( args.suffixProps ) )
+			);
+		};
+
+		block.save = function ( props, block ) {
+			const processVal = val => block.callbackValue( val, props );
+
+			return el(
+				args.tag,
+				block.callbackValue( args.props ),
+				args.prefix && html2el( block.outputHTML( processVal( args.prefix ) ), processVal( args.prefixProps ) ),
+				args.tpl && html2el( block.outputHTML( processVal( args.tpl ) ), processVal( args.tplProps ) ),
+				el ( 'div',
+					processVal( args.innerProps ),
+					el( editor.InnerBlocks.Content )
+				),
+				args.suffix && html2el( block.outputHTML( processVal( args.suffix ) ), processVal( args.suffixProps ) )
+			);
+		};
+
+		return new CxB( block );
+	};
+
 	window.caxtonRegisterFieldType = ( name, callback ) => {
 
 	};
 
 	window.Caxton = {
-		el2html: HTMLFromElement,
-		html2el: elementFromHTML,
-		copyObj: caxtonCopy,
+		el2html: el2html,
+		html2el: html2el,
+		copyObj: copyObj,
+		styleObject: styleObject,
 		tplProc: processTemplate,
 		iconSvg: getFAIconSvg,
 	};
