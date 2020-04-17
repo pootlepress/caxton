@@ -1424,12 +1424,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	window.Caxton = {
-		el2html: el2html,
-		html2el: html2el,
-		copyObj: copyObj,
-		styleObject: styleObject,
-		tplProc: processTemplate,
-		iconSvg: getFAIconSvg,
+		el,
+		el2html,
+		html2el,
+		copyObj,
+		styleObject,
+		tplProc    : processTemplate,
+		iconSvg    : getFAIconSvg,
 	};
 }
 
