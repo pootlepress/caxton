@@ -110,7 +110,7 @@ var CaxtonUtils = {
 		}
 
 		if ( url.indexOf( '.css' ) > -1 ) {
-			el = head.querySelector( 'link[href="' + url + '"]' );
+			el = head.querySelector( 'link[href="' + url.replace( /"/g, '\\"' ) + '"]' );
 
 			if ( ! el ) {
 				el = document.createElement("link");
@@ -121,7 +121,7 @@ var CaxtonUtils = {
 				head.appendChild(el);
 			}
 		} else if ( url.indexOf( '.js' ) > -1 ) {
-			el = head.querySelector( 'script[src="' + url + '"]' );
+			el = head.querySelector( 'script[src="' + url.replace( /"/g, '\\"' ) + '"]' );
 
 			if ( ! el ) {
 				el = document.createElement( "script" );
