@@ -40,7 +40,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	const html2el = (html, props, tag) => {
-		if ( html.__html ) {
+		if ( ! html ) {
+			html = '';
+		} else if ( html.__html ) {
 			html = html.__html;
 		}
 		if ( ! props ) {
@@ -1420,7 +1422,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 	};
 
 	window.caxtonRegisterFieldType = ( name, callback ) => {
-
 	};
 
 	window.Caxton = {
