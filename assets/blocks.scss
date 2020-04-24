@@ -238,12 +238,6 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 		}
 	}
 }
-#wpwrap {
-	.caxton-fancy-grid, .caxton-fancy-grid a, .caxton-square-grid, .caxton-square-grid a {
-		color: inherit;
-		font: inherit;
-	}
-}
 @import 'scss/ordered-select-control';
 
 @import 'scss/caxton-section-grid';

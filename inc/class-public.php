@@ -172,30 +172,6 @@ HTML;
 		return ob_get_clean();
 	}
 
-	public static function create_fancy_grid( $items, $data = false ) {
-		$grid_items = [];
-		$num_items = 0;
-
-		foreach ( $items as $item ) {
-			$num_items++;
-			$style = 'background-image: url("' . $item['image'] . '")';
-			$classes = "caxton-grid-item-$num_items";
-			$grid_items[] =
-				"<a class='$classes' style='$style' href='$item[link]'><span class='caxton-grid-item-content'>$item[label]</span></a>";
-
-		}
-
-		if ( $data ) {
-			return [
-				'class' => 'caxton-fancy-grid caxton-fancy-grid-' . $num_items,
-				'items' => $grid_items,
-			];
-		}
-
-		return '<div class="caxton-fancy-grid caxton-fancy-grid-' . $num_items . '">' . implode( '', $grid_items ) . '</div>';
-
-	}
-
 	public static function processTemplate( $template, $properties ) {
 		$search = $replace = [];
 		foreach ( $properties as $k => $v ) {
