@@ -1293,7 +1293,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				}
 
 				if ( typeof that.block.wrapperProps === 'function' ) {
-					attrs = that.block.wrapperProps( attrs, attributes, this );
+					attrs = that.block.wrapperProps( attrs, attributes, that );
 				}
 
 				return attrs;
