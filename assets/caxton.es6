@@ -1194,7 +1194,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		saveBlockProperties( props ) {
 			this.props = props;
-			this.attrs = this.props.attributes;
+			this.saveBlockAttributes( this.props.attributes );
+		}
+
+		saveBlockAttributes( attributes ) {
+			this.attrs = attributes;
 
 			for ( let f in this.fields ) {
 				if ( this.fields.hasOwnProperty( f ) ) {
@@ -1271,6 +1275,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			registerBlockProps.edit = editCallback;
 
 			registerBlockProps.getEditWrapperProps = function( attributes ) {
+				that.saveBlockAttributes( attributes );
+
 				let attrs = {};
 				const layout = attributes.Layout;
 				let float = attributes.BlockAlignment;
