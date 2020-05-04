@@ -224,18 +224,22 @@ var CaxtonUtils = {
 	},
 	responsiveStyling: function ( width ) {
 		width = isNaN( width ) ? window.innerWidth : width;
+		var body = document.querySelector( 'body' );
 		if ( width > 1024 ) {
 			// Desktop
+			body.setAttribute( 'data-rwd', 'desktop' );
 			CaxtonUtils.each( '[data-desktop-css]', function () {
 				CaxtonUtils.applyCSS( this.getAttribute( 'data-desktop-css' ), this )
 			} );
 		} else if ( width > 700 ) {
 			// Tab
+			body.setAttribute( 'data-rwd', 'tablet' );
 			CaxtonUtils.each( '[data-tablet-css]', function () {
 				CaxtonUtils.applyCSS( this.getAttribute( 'data-tablet-css' ), this )
 			} );
 		} else {
 			// Mobile
+			body.setAttribute( 'data-rwd', 'mobile' );
 			CaxtonUtils.each( '[data-mobile-css]', function () {
 				CaxtonUtils.applyCSS( this.getAttribute( 'data-mobile-css' ), this )
 			} );
