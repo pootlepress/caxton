@@ -5,7 +5,7 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 5.4.0
 Requires PHP: 5.6.0
-Stable tag: 1.22.0
+Stable tag: 1.23.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,6 +97,12 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 
 == Changelog ==
 
+Version 1.23.0
+* 2020-05-12
+* Fix - Caxton block difficult to select (hover label not showing up)
+* Internal - Wrapper props callback called after setting block attributes
+* Tweak - New attribute `data-rwd` on body set to mobile, tablet or desktop
+
 Version 1.22.0
 * 2020-04-24
 * New - Datepicker control `datetime` type.
@@ -105,7 +111,6 @@ Version 1.22.0
 * Fix - Google fonts not working (for fonts with space character).
 * Tweak - Resizable and dynamic conflict resolved.
 * Dev - Caxton.el to create react element.
-
 
 Version 1.21.0
 * 2020-03-16
