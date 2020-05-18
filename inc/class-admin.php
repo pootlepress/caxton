@@ -63,9 +63,9 @@ class Caxton_Admin {
 		Caxton::instance()->public->enqueue();
 
 //		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
-		wp_enqueue_script( "caxton", $url . 'caxton.js', array( 'wp-blocks', 'wp-block-library' ) );
+		wp_enqueue_script( "caxton", $url . 'caxton.min.js', array( 'wp-blocks', 'wp-block-library' ) );
 
-		wp_enqueue_script( "caxton-blocks", $url . 'blocks.js', array( "caxton" ) );
+		wp_enqueue_script( "caxton-blocks", $url . 'blocks.min.js', array( "caxton" ) );
 		wp_enqueue_style( "caxton-blocks", $url . 'blocks.css' );
 
 		$this->localize_scripts( $url );
