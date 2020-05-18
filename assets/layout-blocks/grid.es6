@@ -266,7 +266,8 @@ export function responsiveLayoutPicker( field, that ) {
 	field.title = field.label;
 	const
 		props   = that.props,
-		el      = wp.element.createElement;
+		el      = wp.element.createElement,
+		$ = jQuery;
 	if ( ! that.attrs.tpl ) {
 		return el( 'div', {}, 'Please select a layout to get started.' ) ;
 	}
