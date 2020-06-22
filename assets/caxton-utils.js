@@ -283,7 +283,7 @@ var CaxtonUtils = {
 		CaxtonUtils.flexslider();
 		CaxtonUtils.responsiveStyling();
 		if ( document.querySelector( '.fa,.fas,.fab,.far' ) ) {
-			CaxtonUtils.asset( '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
+			CaxtonUtils.asset( 'font-awesome.css' );
 		}
 		CaxtonUtils.watchScroll( '.cxp-scroll', Math.min( 50, window.innerHeight / 12 ) );
 		CaxtonUtils.watchMouse( '.cxp-mouse', Math.min( 50, window.innerHeight / 12 ) );
