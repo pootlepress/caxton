@@ -12,6 +12,10 @@ $caxton-width: 1060px;
 	margin: auto;
 }
 
+.block-editor-inner-blocks {
+	min-height: inherit;
+}
+
 .caxton-grid {
 	.grid-image h3.grid-title {
 		font-size: 16px;
