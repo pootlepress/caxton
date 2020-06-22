@@ -758,9 +758,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			const props = this.fieldProps( field, index );
 
 			const values = $.extend( {
-				left: ' tl',
-				right: ' tr',
-				center: ' tc',
+				left: 'tl',
+				right: 'tr',
+				center: 'tc',
+				justify: 'tj',
 			}, props.values || {} );
 
 			props.controls = [
@@ -775,17 +776,25 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				{
 					icon: 'editor-aligncenter',
 					title: __( 'Align center' ),
-					isActive: props.value === values.left,
+					isActive: props.value === values.center,
 					onClick() {
-						props.onChange( values.left );
+						props.onChange( values.center );
 					}
 				},
 				{
 					icon: 'editor-alignright',
 					title: __( 'Align right' ),
-					isActive: props.value === values.center,
+					isActive: props.value === values.right,
 					onClick() {
-						props.onChange( values.center );
+						props.onChange( values.right );
+					}
+				},
+				{
+					icon: 'editor-justify',
+					title: __( 'Align justify' ),
+					isActive: props.value === values.justify,
+					onClick() {
+						props.onChange( values.justify );
 					}
 				},
 			];
@@ -1000,10 +1009,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						resizable.onResize( event, direction, elt, delta );
 						let atts = {};
 						if ( heightProp ) {
-							atts[heightProp] = elt.clientHeight;
+							atts[heightProp] = elt.style.height;
 						}
 						if ( widthProp ) {
-							atts[widthProp] = elt.clientWidth;
+							atts[widthProp] = elt.style.width;
 						}
 						setAttributes( atts );
 //						toggleSelection( true );
