@@ -1,5 +1,15 @@
 .caxton-orderedselect-wrap {
 	position: relative;
+	.caxton-orderedselect-search {
+		padding: 3px 5px;
+		margin: 3px 5px 11px;
+		border: 1px solid #ccc;
+		display: block;
+		width: calc( 100% - 10px );
+		+ .caxton-placeholder {
+			padding: 3px 5px;
+		}
+	}
 }
 .caxton-orderedselect-open {
 	.caxton-orderedselect-selected .dashicons-arrow-down:before {

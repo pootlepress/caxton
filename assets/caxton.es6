@@ -1,3 +1,4 @@
+import MultiSelectComponent from './es6/multiSelectComponent.es6';
 function initCaxton( $, blocks, el, i18n, components ) {
 	window.caxtonWPEditor = wp.blockEditor ? wp.blockEditor : wp.editor;
 	const editor = caxtonWPEditor;
@@ -494,112 +495,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		orderedSelectFieldEl(field, index) {
-			const
-				props = this.fieldProps( field, index ),
-				delimiter = props.delimiter ? props.delimiter : ',',
-				multiple = typeof props.multiple === 'undefined' ? true : props.multiple,
-				selectedOptionsData = {},
-				selectedOptions = [],
-				availableOption = [];
-
-			let
-				opt, optEl,
-				controlValue = props.value ? props.value.split( delimiter ) : [];
-
-			for ( var i = 0; i < props.options.length; i ++ ) {
-				opt = props.options[i];
-				optEl = el(
-					'div',
-					{
-						className: 'caxton-orderedselect-option',
-						'data-val': opt.value,
-						key: `option-${opt.value}`,
-					},
-					(
-						opt.image ? el( 'img', {src: opt.image} ) : null
-					),
-					opt.label
-				);
-
-				if ( typeof opt.value === 'number' ) {
-					opt.value = opt.value.toString();
-				}
-
-				if ( !controlValue.includes(opt.value) ) {
-					availableOption.push( optEl );
-				} else {
-					selectedOptionsData[ opt.value ] = opt;
-				}
-			}
-
-			for ( var i = 0; i < controlValue.length; i ++ ) {
-				opt = selectedOptionsData[controlValue[i]];
-				optEl = el(
-					'div',
-					{
-						className: 'caxton-orderedselect-option',
-						'data-val': opt.value,
-						key: `option-${opt.value}`,
-					},
-					(
-						opt.image ? el( 'img', {src: opt.image} ) : null
-					),
-					opt.label
-				);
-
-				selectedOptions.push( optEl );
-			}
-
-			if ( ! selectedOptions.length ) {
-				selectedOptions.push( el( 'span', {
-					className: 'caxton-placeholder o70',
-					key: 'placeholder',
-				}, 'Please choose...' ) )
-			}
-
-			selectedOptions.push( el( 'i', {
-				className: 'dashicons dashicons-arrow-down',
-				key: 'down-arrow-icon',
-			} ) );
-
+			const props = this.fieldProps( field, index );
 			return el(
 				components.BaseControl,
 				props,
-				el(
-					'div',
-					{
-						className: 'caxton-orderedselect-wrap',
-						key: 'orderedselect-wrap',
-					},
-					el( 'div', {
-						className: 'caxton-orderedselect-selected',
-						key: 'selected-options',
-						onClick({target}) {
-							let val;
-							const $target = $( target );
-							if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
-								val = $target.attr( 'data-val' );
-								controlValue.splice( controlValue.indexOf( val ), 1 );
-								props.onChange( controlValue.join( delimiter ) );
-							} else {
-								$target.closest( '.caxton-orderedselect-wrap' ).toggleClass( 'caxton-orderedselect-open' );
-							}
-						},
-					}, selectedOptions ),
-					el( 'div', {
-						className: 'caxton-orderedselect-available',
-						key: 'available-options',
-						onClick({target}) {
-							let val;
-							const $target = $( target );
-							if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
-								val = $target.attr( 'data-val' );
-								multiple ? controlValue.push( val ) : ( controlValue = [ val ] );
-								props.onChange( controlValue.join( delimiter ) );
-							}
-						},
-					}, availableOption )
-				),
+				el( MultiSelectComponent, props )
 			);
 		}
 
@@ -921,7 +821,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		renderFields(fields, section, functionSuffix) {
 			const els = [];
-			const panelsRenderd = [];
+			const panelsRendered = [];
 
 			if ( ! functionSuffix ) {
 				functionSuffix = 'FieldEl';
@@ -947,8 +847,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						if ( ! section ) {
 							if ( ! f.section ) {
 								els.push( this.fieldEl( f, func, i ) );
-							} else if ( !panelsRenderd.includes(f.section) ) {
-								panelsRenderd.push( f.section );
+							} else if ( !panelsRendered.includes(f.section) ) {
+								panelsRendered.push( f.section );
 								els.push( this.renderPanel( f.section ) );
 							}
 						} else if ( f.section == section ) {
