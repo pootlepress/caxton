@@ -20,6 +20,19 @@ export default class SortableItems extends wp.element.Component {
 		this.dragOver = this.dragOver.bind(this);
 	}
 
+	componentWillMount() {
+		this.setState( {data: [...this.props.data]} );
+	}
+
+	componentDidUpdate( prevProps ) {
+		if (
+			this.props.data.length !== this.state.data.length ||
+			JSON.stringify( this.props.data ) !== JSON.stringify( prevProps.data )
+			) {
+			this.setState( {data: [...this.props.data]} );
+		}
+	}
+
 	sortData(from, to) {
 		let data = [...this.state.data];
 		data.splice(to, 0, data.splice(from, 1)[0]);
@@ -79,15 +92,13 @@ export default class SortableItems extends wp.element.Component {
 		}
 
 		let relY = this.dragged.offsetTop - this.over.offsetTop;
-		let height = this.over.offsetHeight / 2;
+		let mid = this.over.offsetHeight / 2;
 		let parent = this.over.parentNode;
 
-		console.log( `${relY} > ${height}` );
-
-		if (relY > height) {
+		if (relY > mid) {
 			this.nodePlacement = 'after';
 			parent.insertBefore(this.state.placeholder, this.over.nextElementSibling);
-		} else if (relY < height) {
+		} else if (relY < mid) {
 			this.nodePlacement = 'before';
 			parent.insertBefore(this.state.placeholder, this.over);
 		}

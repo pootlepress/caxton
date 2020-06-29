@@ -51,7 +51,7 @@ export default function MultiSelectComponent( props ) {
 			}
 		}
 	}
-	if ( ! availableOption.length < 2 ) {
+	if ( availableOption.length < 2 ) {
 		availableOption.push( el( 'span', {
 			className: 'caxton-placeholder o70',
 			key      : 'placeholder',

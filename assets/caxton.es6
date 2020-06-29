@@ -841,7 +841,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 				func = f.type + functionSuffix;
 
-
 				if ( typeof this[ func ] === 'function' ) {
 					if ( ! f.hide ) {
 						if ( ! section ) {
