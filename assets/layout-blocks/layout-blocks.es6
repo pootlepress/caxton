@@ -192,7 +192,9 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 		};
 
 		for ( let prop in blockArgs ) {
-			blockProps[ prop ] = blockArgs[ prop ];
+			if ( blockArgs.hasOwnProperty( prop ) ) {
+				blockProps[ prop ] = blockArgs[ prop ];
+			}
 		}
 
 		CaxtonBlock( blockProps );

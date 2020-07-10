@@ -25,7 +25,7 @@ export default function MultiSelectComponent( props ) {
 		multiple            = typeof props.multiple === 'undefined' ? true : props.multiple,
 		selectedOptionsData = {},
 		selectedOptions     = {},
-		availableOption     = [];
+		availableOptions     = [];
 
 	let
 		opt, optEl,
@@ -43,22 +43,22 @@ export default function MultiSelectComponent( props ) {
 			selectedOptionsData[opt.value] = opt;
 			selectedOptions[opt.value] = optEl;
 		} else {
-			if ( availableOption.length > 9 ) {
+			if ( availableOptions.length > 99 ) {
 				continue;
 			}
 			if ( ! search || opt.label.toLowerCase().indexOf( search.toLowerCase() ) > - 1 ) {
-				availableOption.push( optEl );
+				availableOptions.push( optEl );
 			}
 		}
 	}
-	if ( availableOption.length < 2 ) {
-		availableOption.push( el( 'span', {
+	if ( availableOptions.length < 2 ) {
+		availableOptions.push( el( 'span', {
 			className: 'caxton-placeholder o70',
 			key      : 'placeholder',
 		}, `No items found${search && ' for ' + search}...` ) )
 	}
 
-	availableOption.splice( 0, 0, el( 'input', {
+	availableOptions.splice( 0, 0, el( 'input', {
 		className  : 'caxton-orderedselect-search',
 		placeholder: 'Search...',
 		value      : search,
@@ -119,6 +119,6 @@ export default function MultiSelectComponent( props ) {
 					props.onChange( controlValue.join( delimiter ) );
 				}
 			},
-		}, availableOption )
+		}, availableOptions )
 	);
 };
