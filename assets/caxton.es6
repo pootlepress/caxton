@@ -525,6 +525,15 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			)
 		}
 
+		numberFieldEl(field, index) {
+			const fieldProps = this.fieldProps( field, index );
+			fieldProps.type = 'number';
+			return el(
+				components.TextControl,
+				fieldProps
+			)
+		}
+
 		textFieldEl(field, index) {
 			return el(
 				components.TextControl,
