@@ -12,10 +12,6 @@ $caxton-width: 1060px;
 	margin: auto;
 }
 
-.block-editor-inner-blocks {
-	min-height: inherit;
-}
-
 .caxton-grid {
 	.grid-image h3.grid-title {
 		font-size: 16px;
@@ -23,6 +19,11 @@ $caxton-width: 1060px;
 	p {
 		font-size: 14px;
 	}
+}
+
+.block-editor-inner-blocks,
+.block-editor-block-list__layout {
+	min-height: inherit;
 }
 
 .edit-post-block-inspector-panel .components-panel__body.caxton-section {
@@ -42,6 +43,7 @@ $caxton-width: 1060px;
 	}
 	.block-editor-inner-blocks,
 	.block-editor-block-list__layout {
+		min-height: inherit;
 		margin: 0;
 		display: inherit;
 		justify-content: inherit;
@@ -64,6 +66,9 @@ $caxton-width: 1060px;
 
 .caxton-resizable.is-resizing {
 	overflow: hidden;
+	.caxton-resizable-contents {
+		height: 100%;
+	}
 }
 
 [data-caxtoneditableprop] {
@@ -241,7 +246,44 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 			padding-left: calc( 50vw - 50% - 240px );
 		}
 	}
+
+	.caxton-layout-options-heading {
+		font: 25px sans-serif;
+	}
+
+	.caxton-layout-options {
+		column-count: 2;
+		column-gap: .7em;
+	}
+
+	.caxton-layout-option {
+		padding: .5em;
+		border: 1px solid #ccc;
+		margin-bottom: .7em;
+		-webkit-column-break-inside: avoid;
+		page-break-inside: avoid;
+		break-inside: avoid;
+		text-align: center;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+		img {
+			margin-bottom: .5em;
+		}
+		h5 {
+			font: 18px sans-serif;
+			margin: 0;
+			line-height: 1;
+		}
+	}
 }
+
+@media (min-width:1024px) {
+	.wp-core-ui {
+		.caxton-layout-options {
+			column-count: 3;
+		}
+	}
+}
+
 @import 'scss/ordered-select-control';
 
 @import 'scss/caxton-section-grid';

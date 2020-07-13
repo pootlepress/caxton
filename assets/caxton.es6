@@ -481,9 +481,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		}
 
 		rangeFieldEl(field, index) {
+			const fieldProps = this.fieldProps( field, index );
 			return el(
 				components.RangeControl,
-				this.fieldProps( field, index )
+				fieldProps
 			)
 		}
 
@@ -908,10 +909,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						resizable.onResize( event, direction, elt, delta );
 						let atts = {};
 						if ( heightProp ) {
-							atts[heightProp] = elt.style.height;
+							atts[heightProp] = resizable.keepUnits ? elt.style.height : elt.clientHeight + '';
 						}
 						if ( widthProp ) {
-							atts[widthProp] = elt.style.width;
+							atts[widthProp] = resizable.keepUnits ? elt.style.width : elt.clientWidth + '';
 						}
 						setAttributes( atts );
 //						toggleSelection( true );
@@ -948,7 +949,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 				return el(
 					components.ResizableBox, RESIZABLE_PROPS,
-					el( 'div', { className: 'caxton-resizable-contents h-100'}, children )
+					el( 'div', { className: 'caxton-resizable-contents'}, children )
 				);
 			}
 
@@ -1177,7 +1178,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						els.push( afterCallback );
 					}
 				}
-				return el( 'div', { key: 'block-content'}, els );
+				return el( wp.element.Fragment, { key: 'block-content'}, els );
 			};
 
 			registerBlockProps.edit = editCallback;
@@ -1333,9 +1334,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		};
 
 		return new CxB( block );
-	};
-
-	window.caxtonRegisterFieldType = ( name, callback ) => {
 	};
 
 	window.Caxton = {
