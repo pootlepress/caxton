@@ -169,7 +169,7 @@
 	display: none !important;
 }
 
-.block-editor-block-list__block[data-type='caxton/grid'].has-selected-ui:hover > div:first-child:after {
+.block-editor-block-list__block[data-type='caxton/grid']:hover > div:first-child:after {
 	content: "Caxton Layout";
 	display: block;
 	width: 106px;

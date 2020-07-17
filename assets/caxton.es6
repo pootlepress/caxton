@@ -482,6 +482,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		rangeFieldEl(field, index) {
 			const fieldProps = this.fieldProps( field, index );
+			fieldProps.value = parseFloat( fieldProps.value );
 			return el(
 				components.RangeControl,
 				fieldProps
