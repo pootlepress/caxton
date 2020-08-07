@@ -5,7 +5,7 @@ import {flexRender} from './flex.es6';
 import {tplRender, tplContent} from './tpl.es6';
 
 export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
-	let editor = caxtonWPEditor;
+	const {InnerBlocks} = caxtonWPEditor;
 	const el = element.createElement;
 
 	gridFields['Mobile layout'].render = responsiveLayoutPicker;
@@ -23,7 +23,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 			return gridRender( props, block, gridContent( props, block ) );
 		},
 		save      : function ( props, block ) {
-			return gridRender( props, block, el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} ) );
+			return gridRender( props, block, el( InnerBlocks.Content, {key: 'innerblockscontent'} ) );
 		}
 	} );
 	// endregion grid block
@@ -43,7 +43,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 				tpl = JSON.parse( props.attributes.tpl );
 			}
 			const content = el(
-				caxtonWPEditor.InnerBlocks,
+				InnerBlocks,
 				{
 					template     : tpl,
 					templateLock : false,
@@ -55,7 +55,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 		save        : function ( props, block ) {
 			return sectionRender(
 				props, block,
-				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]
+				[el( InnerBlocks.Content, {key: 'innerblockscontent'} )]
 			);
 		},
 		wrapperProps: function ( attrs, props ) {
@@ -86,13 +86,13 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 		edit        : function ( props, block ) {
 			return flexRender(
 				props, block,
-				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
+				[el( InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
 			);
 		},
 		save        : function ( props, block ) {
 			return flexRender(
 				props, block,
-				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]
+				[el( InnerBlocks.Content, {key: 'innerblockscontent'} )]
 			);
 		},
 	} );
@@ -108,13 +108,17 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 		edit        : function ( props, block ) {
 			return flexRender(
 				props, block,
-				[el( editor.InnerBlocks, {key: 'innerblocks', templateLock: false,} )]
+				[el( InnerBlocks, {
+					key: 'innerblocks',
+					templateLock: false,
+					renderAppender: () => el( InnerBlocks.ButtonBlockAppender )
+				} )]
 			);
 		},
 		save        : function ( props, block ) {
 			return flexRender(
 				props, block,
-				[el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} )]
+				[el( InnerBlocks.Content, {key: 'innerblockscontent'} )]
 			);
 		},
 		transforms: {
@@ -187,7 +191,7 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 				return tplRender( props, block, tplContent( props, block, blockProps.optionsRenderer ) );
 			},
 			save      : function ( props, block ) {
-				return tplRender( props, block, el( editor.InnerBlocks.Content, {key: 'innerblockscontent'} ) );
+				return tplRender( props, block, el( InnerBlocks.Content, {key: 'innerblockscontent'} ) );
 			},
 		};
 

@@ -51,11 +51,29 @@ $caxton-width: 1060px;
 		align-items: inherit;
 		flex-wrap: wrap;
 		width: 100%;
+		position: static;
 		> .wp-block {
 			margin: var( --caxton-gap );
 		}
 		.block-list-appender {
+			display: none;
 			width: 100%;
+			position: absolute;
+			top: 100%;
+			z-index: 999;
+			margin: 5px 0 0;
+			button {
+				padding: 2px;
+				background: #eee;
+			}
+		}
+	}
+}
+
+.has-child-selected, .is-selected {
+	.caxton-listing-block, .caxton-flex-block {
+		.block-editor-block-list__layout .block-list-appender {
+			display: block;
 		}
 	}
 }
