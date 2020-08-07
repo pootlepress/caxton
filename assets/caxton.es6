@@ -956,6 +956,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				} );
 
 				RESIZABLE_PROPS.enable = enable;
+				RESIZABLE_PROPS.showHandle= isSelected;
 
 				return el(
 					components.ResizableBox, RESIZABLE_PROPS,
