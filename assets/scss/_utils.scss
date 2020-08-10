@@ -2,6 +2,13 @@
 	position: absolute;
 }
 
+.br-i {
+	border-radius: inherit;
+	> .absolute--fill {
+		border-radius: inherit;
+	}
+}
+
 .fixed {
 	position: fixed;
 }
