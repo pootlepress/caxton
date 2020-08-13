@@ -13,6 +13,10 @@
 	position: fixed;
 }
 
+a.no-underline {
+	text-decoration: none !important;
+}
+
 .nowrap {
 	white-space: nowrap;
 }
@@ -105,10 +109,6 @@
 
 .blur-children {
 	overflow: hidden;
-}
-
-.cf:before, .cf:after {
-	display: block;
 }
 
 .flip {

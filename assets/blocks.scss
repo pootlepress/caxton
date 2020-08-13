@@ -213,6 +213,7 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 		padding: 0;
 		flex-direction: column;
 		align-items: center;
+		height: auto;
 	}
 	a.caxton-remove-image {
 		position: absolute;
@@ -250,6 +251,11 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 }
 
 .wp-core-ui {
+	.block-editor-block-list__layout:before {
+		content: '';
+		display: block;
+		padding-top: 1px;
+	}
 	.vw-100, .vw-100-bg {
 		width: calc( 100vw - 200px ) !important;
 		margin-left: calc( -50vw + 50% + 100px ) !important;

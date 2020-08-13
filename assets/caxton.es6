@@ -777,9 +777,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				{
 					icon: 'align-right',
 					title: __( 'Align right' ),
-					isActive: props.value === ' rl',
+					isActive: props.value === ' fr',
 					onClick() {
-						props.onChange( ' rl' );
+						props.onChange( ' fr' );
 					}
 				},
 			];
