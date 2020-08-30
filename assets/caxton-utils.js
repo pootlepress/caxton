@@ -29,43 +29,50 @@ var CaxtonUtils = {
 			} );
 		}
 	},
-	watchScroll: function ( selector, startBuffer ) {
-		var elems = document.querySelectorAll( selector );
-		var watchOnScroll = function () {
-			startBuffer = startBuffer ? startBuffer : 0;
+	watchScrollSetup: function () {
+		if ( this.setupDone ) return;
+		console.log( 'scroll setup' );
+		var ticking = false;
+		this.setupDone = true;
+		CaxtonUtils.watchScrollSetup
+		var watchScroll = function () {
 			var docHeight = window.innerHeight;
-
-			for ( var i = 0; i < elems.length; ++ i ) {
-
-				var el = elems[i];
-
-				var boundingBox = el.getBoundingClientRect();
-
-				var inView = 0;
-				if ( boundingBox.top >= 0 && boundingBox.top <= docHeight ) {
-					el.classList.add( '-top-in-view' );
-					inView = 1;
-				} else {
-					el.classList.remove( '-top-in-view' );
-				}
-
-				if ( boundingBox.bottom >= 0 && boundingBox.bottom <= docHeight ) {
-					el.classList.add( '-bottom-in-view' );
-					inView = 1;
-				} else {
-					el.classList.remove( '-bottom-in-view' );
-				}
-
-				if ( inView ) {
+			for ( var i = 0; i < CaxtonUtils.watchScrollSetup.targets.length; ++ i ) {
+				var el = CaxtonUtils.watchScrollSetup.targets[i];
+				var
+					boundingBox = el.getBoundingClientRect(),
+					height      = boundingBox.height,
+					top         = boundingBox.top;
+				if ( top >= - 1 * height && top <= docHeight ) {
+					scrollArea = docHeight + height;
 					el.classList.add( '-in-view' );
+					// height + top will max out at docHeight + height
+					// So this would be between -1 to 1
+					el.style.setProperty( '--scroll', 2 * (
+						height + top
+					) / scrollArea - 1 );
 				} else {
 					el.classList.remove( '-in-view' );
 				}
 			}
 		};
-		if ( elems.length ) {
-			window.addEventListener( 'scroll', watchOnScroll );
-			watchOnScroll();
+		window.addEventListener( 'scroll', function ( e ) {
+			console.log( 'scroll' );
+
+			if ( !ticking ) {
+				window.requestAnimationFrame( function () {
+					watchScroll( e );
+					ticking = false;
+				} );
+				ticking = true;
+			}
+		} );
+		watchScroll();
+	},
+	watchScroll: function ( selector ) {
+		CaxtonUtils.watchScrollSetup.targets = document.querySelectorAll( selector );
+		if ( CaxtonUtils.watchScrollSetup.targets.length ) {
+			CaxtonUtils.watchScrollSetup();
 		}
 	},
 	each: function( selector, callback ) {
@@ -285,8 +292,8 @@ var CaxtonUtils = {
 		if ( document.querySelector( '.fa,.fas,.fab,.far' ) ) {
 			CaxtonUtils.asset( 'font-awesome.css' );
 		}
-		CaxtonUtils.watchScroll( '.cxp-scroll', Math.min( 50, window.innerHeight / 12 ) );
-		CaxtonUtils.watchMouse( '.cxp-mouse', Math.min( 50, window.innerHeight / 12 ) );
+		CaxtonUtils.watchScroll( '.cxp-scroll' );
+		CaxtonUtils.watchMouse( '.cxp-mouse' );
 	},
 };
 // endregion UX Utilities
