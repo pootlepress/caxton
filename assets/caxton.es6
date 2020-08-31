@@ -294,14 +294,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					ret.push( field );
 				}
 			}
-
 			return ret;
 		}
 
 		fieldAttrType({type}) {
 			const attrTypeByFieldType = {
-				'number': 'number',
-				'range': 'number',
+//				'number': 'number',
+//				'range': 'number',
 			};
 
 			if ( attrTypeByFieldType[ type ] ) {
