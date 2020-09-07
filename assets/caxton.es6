@@ -272,7 +272,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						field.type = type;
 					}
 					field.id = id;
-					field.label = field.label ? field.label : id;
+					field.label = field.label || id;
+					field.section = field.section || '_caxtonDefaultSection_';
 
 					if ( field.type === 'checkbox' || field.type === 'toggle' ) {
 						field.value = field.value || '1';
@@ -566,6 +567,15 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			);
 		}
 
+		timeFieldEl(field, index) {
+			const fieldProps = this.fieldProps( field, index );
+			fieldProps.type = 'time';
+			return el(
+				components.TextControl,
+				fieldProps
+			)
+		}
+
 		toggleFieldEl(field, index) {
 			const fieldProps = this.fieldProps( field, index );
 			fieldProps.checked = !! this.attrs[ field.id ];
@@ -813,6 +823,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 			panelFields = th.renderFields( th.sectionsFields[id], id );
 
+			if ( '_caxtonDefaultSection_' === id ) {
+				return el( 'div', {className: 'components-panel__body is-opened'}, panelFields );
+			}
 			return el( components.PanelBody, panelProps, panelFields );
 		}
 
@@ -991,7 +1004,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				return el(
 					editor.InspectorControls,
 					{ key: 'inspector' },
-					els
+					...els
 				);
 			}
 		}
