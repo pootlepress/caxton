@@ -137,6 +137,10 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 			console.error( 'Function CaxtonLayoutOptionsBlock requires `id` and `title` properties on first parameter object.' );
 		}
 
+		if ( typeof blockArgs.fields !== 'function' ) {
+			blockArgs.fields = fields => fields;
+		}
+
 		if ( blockArgs.debug ) {
 			tplFields.tpl = {
 				type   : 'textarea',
@@ -145,10 +149,11 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 		}
 
 
+
 		let blockProps = {
 			icon      : 'screenoptions',
 			category  : 'caxton',
-			fields    : tplFields,
+			fields    : blockArgs.fields( tplFields, blockArgs ), // Call the fields function
 			attributes: {tpl: {type: 'string'},},
 			chooseLayoutTitle: 'Please choose a layout',
 			optionsRenderer: ( props, block ) => {
@@ -183,17 +188,20 @@ export const CaxtonLayoutBlocksSetup = ( $, {element} ) => {
 				}
 
 				return el( 'div', {}, [
-					el( 'h4', {key: 'heading'}, 'Select a layout' ),
+					el( 'h4', {key: 'heading'}, blockProps.chooseLayoutTitle ),
 					el( 'div', {key: 'options', className: 'caxton-layout-options'}, optEls ),
 				] );
 			},
+			render: ( props, block, childrenBlocks ) => tplRender( props, block, childrenBlocks ),
 			edit      : function ( props, block ) {
-				return tplRender( props, block, tplContent( props, block, blockProps.optionsRenderer ) );
+				return blockProps.render( props, block, tplContent( props, block, blockProps.optionsRenderer ) );
 			},
 			save      : function ( props, block ) {
-				return tplRender( props, block, el( InnerBlocks.Content, {key: 'innerblockscontent'} ) );
+				return blockProps.render( props, block, el( InnerBlocks.Content, {key: 'innerblockscontent'} ) );
 			},
 		};
+
+		delete blockArgs.fields;
 
 		for ( let prop in blockArgs ) {
 			if ( blockArgs.hasOwnProperty( prop ) ) {
