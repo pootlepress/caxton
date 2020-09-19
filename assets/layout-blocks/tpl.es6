@@ -75,7 +75,8 @@ export function tplContent( props, block, optionsRenderer  ) {
 			{
 				template     : tpl,
 				templateLock : false,
-				key          : 'innerblocks'
+				key          : 'innerblocks',
+				renderAppender: () => el( caxtonWPEditor.InnerBlocks.ButtonBlockAppender ),
 			}
 		);
 	} else {
