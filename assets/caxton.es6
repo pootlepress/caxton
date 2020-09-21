@@ -338,9 +338,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				fieldProps.value = that.attrs[id];
 				fieldProps.onChange = (val, moreValues) => {
 					const attrs = {};
-					attrs[ id ] = val;
+					attrs[ id ] = val + '';
 					if ( field.type === 'checkbox' || field.type === 'toggle' ) {
-						attrs[ id ] = val ? field.value : '';
+						attrs[ id ] = val ? field.value + '' : '';
 					}
 
 					that.focussedProps.setAttributes( attrs );
@@ -931,10 +931,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						resizable.onResize( event, direction, elt, delta );
 						let atts = {};
 						if ( heightProp ) {
-							atts[heightProp] = resizable.keepUnits ? elt.style.height : elt.clientHeight + '';
+							atts[heightProp] = resizable.keepUnits ? elt.style.height + '' : elt.clientHeight + '';
 						}
 						if ( widthProp ) {
-							atts[widthProp] = resizable.keepUnits ? elt.style.width : elt.clientWidth + '';
+							atts[widthProp] = resizable.keepUnits ? elt.style.width + '' : elt.clientWidth + '';
 						}
 						setAttributes( atts );
 //						toggleSelection( true );
