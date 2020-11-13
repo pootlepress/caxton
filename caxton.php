@@ -9,7 +9,6 @@
  * @developer shramee <shramee.srivastav@gmail.com>
  * TACHYONS v4.9.0 | http://tachyons.io - MIT License
  */
-
 function caxton_init() {
 	if ( function_exists( 'register_block_type' ) ) {
 		define( 'CAXTON_VERSION', '1.27.0' );

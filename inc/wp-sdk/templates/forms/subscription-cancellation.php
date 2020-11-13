@@ -96,7 +96,7 @@ HTML;
 $downgrading_plan_text                      = fs_text_inline( 'Downgrading your plan', 'downgrading-plan', $slug );
 $cancelling_subscription_text               = fs_text_inline( 'Cancelling the subscription', 'cancelling-subscription', $slug );
 /* translators: %1$s: Either 'Downgrading your plan' or 'Cancelling the subscription' */
-$downgrade_x_confirm_text                   = fs_text_inline( '%1$s will immediately stop all future recurring payments and your %s plan license will expire in %s.', 'downgrade-x-confirm', $slug );
+$downgrade_x_confirm_text                   = fs_text_inline( '%1$s will immediately stop all future recurring payments and your %2$s plan license will expire in %3$s.', 'downgrade-x-confirm', $slug );
 $prices_increase_text                       = fs_text_inline( 'Please note that we will not be able to grandfather outdated pricing for renewals/new subscriptions after a cancellation. If you choose to renew the subscription manually in the future, after a price increase, which typically occurs once a year, you will be charged the updated price.', 'pricing-increase-warning', $slug );
 $after_downgrade_non_blocking_text          = fs_text_inline( 'You can still enjoy all %s features but you will not have access to %s security & feature updates, nor support.', 'after-downgrade-non-blocking', $slug );
 $after_downgrade_blocking_text              = fs_text_inline( 'Once your license expires you can still use the Free version but you will NOT have access to the %s features.', 'after-downgrade-blocking', $slug );
@@ -133,7 +133,7 @@ fs_enqueue_local_style( 'fs_dialog_boxes', '/admin/dialog-boxes.css' );
             '<div class="fs-modal fs-modal-subscription-cancellation fs-modal-subscription-cancellation-<?php echo $fs->get_id() ?>">'
             + '	<div class="fs-modal-dialog">'
             + '		<div class="fs-modal-header">'
-            + '		    <h4><?php echo esc_attr( sprintf( fs_text_inline( 'Cancel %s?', 'cancel-x', $slug ), ucfirst( $subscription_cancellation_context ) ) ) ?></h4>'
+            + '		    <h4><?php echo esc_html( sprintf( fs_text_inline( 'Cancel %s?', 'cancel-x', $slug ), ucfirst( $subscription_cancellation_context ) ) ) ?></h4>'
             + '		</div>'
             + '		<div class="fs-modal-body">'
             + '			<div class="fs-modal-panel active">' + <?php echo json_encode( $subscription_cancellation_html ) ?> + '<p class="fs-price-increase-warning" style="display: none;">' + <?php echo json_encode( $prices_increase_text ) ?> + '</p></div>'

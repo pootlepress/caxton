@@ -176,9 +176,13 @@ class Caxton_Admin {
 		update_post_meta( $post_id, 'caxton_data', filter_input( INPUT_POST, 'caxton_data' ) );
 	}
 
+	public function rest_permission() {
+		return is_user_logged_in();
+	}
+
 	public function rest_api_init() {
 		register_rest_route( 'caxton/v1', '/posts', array(
-			'permission_callback' => 'is_user_logged_in',
+			'permission_callback' => [ $this, 'rest_permission' ],
 			'methods'  => 'GET',
 			'callback' => [ $this, 'api_posts' ],
 		) );
