@@ -208,14 +208,14 @@ div, h1, h2, h3, h4, h5, h6, p, blockquote, header, footer, section {
 	}
 }
 
-.caxton-image-picker {
+.caxton-file-picker {
 	.image-button {
 		padding: 0;
 		flex-direction: column;
 		align-items: center;
 		height: auto;
 	}
-	a.caxton-remove-image {
+	a.caxton-remove-file {
 		position: absolute;
 		color: #fff;
 		background: rgba(0, 0, 0, 0.5);

@@ -76,7 +76,10 @@ class Caxton_Public{
 	public function register_blocks() {
 		register_block_type(
 			'caxton/posts-grid',
-			[ 'render_callback' => [ $this, 'post_grid' ] ]
+			[
+				'render_callback' => [ $this, 'post_grid' ],
+				'supports'        => [],
+			]
 		);
 
 
@@ -97,9 +100,12 @@ class Caxton_Public{
 			);
 		}
 
-		register_block_type( 'my-plugin/latest-post', array(
-			'render_callback' => 'my_plugin_render_block_latest_post',
-		) );
+		register_block_type(
+			'my-plugin/latest-post', array(
+				'render_callback' => 'my_plugin_render_block_latest_post',
+				'supports'        => [],
+			)
+		);
 	}
 
 	public function post_grid( $block ) {

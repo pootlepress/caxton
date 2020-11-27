@@ -374,31 +374,13 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				props.className = '';
 			}
 
-			let btnContent = __( 'Select image' );
-			let removeBtn = null;
-
 			if ( props.value ) {
 				if ( props.value.indexOf( 'featured_image' ) > -1 ) {
 					props.onChange( caxton.content_vars[props.value] );
 				}
-				btnContent = [
-					el( 'img', {src: props.value, key: 'image'} ),
-					__( 'Click the image to edit or update' ),
-				];
-				removeBtn = el(
-					'a', {
-						className: 'caxton-remove-image',
-						href     : '#',
-						onClick() {
-							props.onChange( '', {} )
-						},
-					},
-					el( 'i', {className: 'dashicons dashicons-no',} ),
-					'Remove'
-				);
 			}
 
-			props.className += ' caxton-image-picker';
+			props.className += ' caxton-file-picker';
 			return el(
 				components.BaseControl,
 				props,
@@ -409,40 +391,97 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						onSelect(media) {
 							props.onChange( media.url, media );
 						},
-						type: 'image',
+						allowedTypes: ['image'],
 						value: props.value,
 						label: props.label,
 						render({open}) {
-							return el( 'span', { className: 'v-mid dib'},
-								removeBtn,
+							if ( props.value ) {
+								return [
+									el( 'img', {src: props.value, className: 'mb2 db', key: 'image'} ),
+									el( 'button', {
+											className: 'components-button is-secondary is-small',
+											onClick  : open,
+											key: 'btn'
+										},
+										__( 'Change image' )
+									),
+									el( 'button', {
+											className: 'components-button is-tertiary is-small fr',
+											onClick() { props.onChange( '', {} ) },
+											key: 'btn'
+										},
+										__( 'Remove image' )
+									),
+								];
+							}
+							return el( 'span', { className: 'ml3 v-mid dib'},
 								el( components.Button, {
-										className: props.value ? 'image-button' : 'ml3 button button-large ',
+										className: 'is-primary is-small',
 										onClick  : open,
+										key: 'btn'
 									},
-									btnContent
+									'Select image'
 								)
 							);
 						},
 					}
 				),
-//				props.value ? null : el( 'span', {className: 'v-mid dib ph2'}, ' OR ' ),
-//				props.value ? null : el(
-//					'select',
-//					{
-//						key     : 'options',
-//						onChange: function ( e ) {
-//							if ( e.target.value ) {
-//								props.onChange( e.target.value );
-//							}
-//						}
-//					},
-//					[
-//						el( 'option', {disabled: 'disabled',selected: 'selected'}, __( 'Use featured image' ) ),
-//						el( 'option', {value: 'featured_image_medium_large',}, __( 'Size: Medium large' ) ),
-//						el( 'option', {value: 'featured_image_large',}, __( 'Size: Large' ) ),
-//						el( 'option', {value: 'featured_image_full',}, __( 'Size: Full' ) ),
-//					]
-//				)
+			);
+		}
+
+		fileFieldEl(field, index) {
+			field.item  = field.item || 'file';
+			const props = this.fieldProps( field, index );
+			if ( ! props.className ) {
+				props.className = '';
+			}
+
+			props.className += ' caxton-file-picker';
+			return el(
+				components.BaseControl,
+				props,
+				el(
+					editor.MediaUpload,
+					{
+						key         : 'filePicker',
+						onSelect( media ) {
+							props.onChange( media.url, media );
+						},
+						allowedTypes: field.allowedTypes,
+						value       : props.value,
+						label       : props.label,
+						render( {open} ) {
+							if ( props.value ) {
+								const urlParts = props.value.split( '/' );
+								return [
+									el( 'span', {className: 'b--dashed bw1 db pa2 tc mb2', key: 'file'}, urlParts[urlParts.length - 1] ),
+									el( 'button', {
+											className: 'components-button is-secondary is-small',
+											onClick  : open,
+											key      : 'btn'
+										},
+										__( 'Change image' )
+									),
+									el( 'button', {
+											className: 'components-button is-tertiary is-small fr',
+											onClick() { props.onChange( '', {} ) },
+											key      : 'btn'
+										},
+										__( 'Remove image' )
+									),
+								];
+							}
+							return el( 'span', {className: 'ml3 v-mid dib'},
+								el( components.Button, {
+										className: 'is-primary is-small',
+										onClick  : open,
+									},
+									'Select image'
+								)
+							);
+						},
+					}
+				),
 			);
 		}
 
