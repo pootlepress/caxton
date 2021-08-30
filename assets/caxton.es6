@@ -435,6 +435,9 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			if ( ! props.className ) {
 				props.className = '';
 			}
+			if ( ! props.item ) {
+				props.item = 'image';
+			}
 
 			props.className += ' caxton-file-picker';
 			return el(
@@ -460,14 +463,14 @@ function initCaxton( $, blocks, el, i18n, components ) {
 											onClick  : open,
 											key      : 'btn'
 										},
-										__( 'Change image' )
+										__( 'Change ' + props.item )
 									),
 									el( 'button', {
 											className: 'components-button is-tertiary is-small fr',
 											onClick() { props.onChange( '', {} ) },
 											key      : 'btn'
 										},
-										__( 'Remove image' )
+										__( 'Remove ' + props.item )
 									),
 								];
 							}
@@ -476,7 +479,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 										className: 'is-primary is-small',
 										onClick  : open,
 									},
-									'Select image'
+									'Select ' + props.item
 								)
 							);
 						},
@@ -863,7 +866,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			panelFields = th.renderFields( th.sectionsFields[id], id );
 
 			if ( '_caxtonDefaultSection_' === id ) {
-				return el( 'div', {className: 'components-panel__body is-opened'}, panelFields );
+				return panelFields;
 			}
 			return el( components.PanelBody, panelProps, panelFields );
 		}
@@ -963,11 +966,11 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					},
 					size: {},
 					onResizeStop: ( event, direction, elt, delta ) => {
-						resizable.onResizeStop( event, direction, elt, delta );
+						resizable.onResizeStop( event, direction, elt, delta, props );
 						setIsResizing( false );
 					},
 					onResize: ( event, direction, elt, delta ) => {
-						resizable.onResize( event, direction, elt, delta );
+						resizable.onResize( event, direction, elt, delta, props );
 						let atts = {};
 						if ( heightProp ) {
 							atts[heightProp] = resizable.keepUnits ? elt.style.height + '' : elt.clientHeight + '';
@@ -979,7 +982,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 //						toggleSelection( true );
 					},
 					onResizeStart: ( event, direction, elt, delta ) => {
-						resizable.onResizeStart( event, direction, elt, delta );
+						resizable.onResizeStart( event, direction, elt, delta, props );
 						setIsResizing( true );
 					},
 				};
