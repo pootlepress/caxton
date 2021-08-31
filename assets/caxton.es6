@@ -970,12 +970,12 @@ function initCaxton( $, blocks, el, i18n, components ) {
 						setIsResizing( false );
 					},
 					onResize: ( event, direction, elt, delta ) => {
-						resizable.onResize( event, direction, elt, delta, props );
-						let atts = {};
-						if ( heightProp ) {
+						let atts = resizable.onResize( event, direction, elt, delta, props );
+						atts = atts || {};
+						if ( heightProp && ! atts[heightProp] ) {
 							atts[heightProp] = resizable.keepUnits ? elt.style.height + '' : elt.clientHeight + '';
 						}
-						if ( widthProp ) {
+						if ( widthProp && ! atts[widthProp] ) {
 							atts[widthProp] = resizable.keepUnits ? elt.style.width + '' : elt.clientWidth + '';
 						}
 						setAttributes( atts );
