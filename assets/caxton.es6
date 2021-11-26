@@ -866,7 +866,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			panelFields = th.renderFields( th.sectionsFields[id], id );
 
 			if ( '_caxtonDefaultSection_' === id ) {
-				return panelFields;
+				return el( 'div', {className: 'components-panel__body is-opened'}, panelFields );
 			}
 			return el( components.PanelBody, panelProps, panelFields );
 		}
@@ -905,13 +905,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				}
 
 				func = f.type + functionSuffix;
-
 				if ( typeof this[ func ] === 'function' ) {
 					if ( ! f.hide ) {
 						if ( ! section ) {
-							if ( ! f.section ) {
-								els.push( this.fieldEl( f, func, i ) );
-							} else if ( !panelsRendered.includes(f.section) ) {
+							if ( ! panelsRendered.includes(f.section) ) {
 								panelsRendered.push( f.section );
 								els.push( this.renderPanel( f.section ) );
 							}
@@ -923,6 +920,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					console.error( `${functionSuffix.replace( 'Init', '' )} ${f['id']} of type ${f['type']} and callback ${func} not supported.` );
 				}
 			}
+
 			return els;
 		}
 
