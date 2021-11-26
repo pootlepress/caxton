@@ -22,7 +22,7 @@ export default function MultiSelectComponent( props ) {
 	const [search, setSearch] = wp.element.useState( '' );
 	const
 		delimiter           = props.delimiter ? props.delimiter : ',',
-		multiple            = typeof props.multiple === 'undefined' ? true : props.multiple,
+		isMultiple          = typeof props.multiple === 'undefined' ? true : props.multiple,
 		selectedOptionsData = {},
 		selectedOptions     = {},
 		availableOptions     = [];
@@ -69,7 +69,8 @@ export default function MultiSelectComponent( props ) {
 	return el(
 		'div',
 		{
-			className: 'caxton-orderedselect-wrap',
+			className: 'caxton-orderedselect-wrap caxton-orderedselect-' +
+								 ( isMultiple ? 'multiple' : 'single' ),
 			key      : 'orderedselect-wrap',
 		},
 		el(
@@ -79,7 +80,8 @@ export default function MultiSelectComponent( props ) {
 				onClick( {target} ) {
 					let val;
 					const $target = $( target );
-					if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
+					// Remove items only if multiple is set
+					if ( isMultiple && $target.hasClass( 'caxton-orderedselect-option' ) ) {
 						val = $target.attr( 'data-val' );
 						controlValue.splice( controlValue.indexOf( val ), 1 );
 						props.onChange( controlValue.join( delimiter ) );
@@ -113,9 +115,12 @@ export default function MultiSelectComponent( props ) {
 				const $target = $( target );
 				if ( $target.hasClass( 'caxton-orderedselect-option' ) ) {
 					val = $target.attr( 'data-val' );
-					multiple ? controlValue.push( val ) : (
-						controlValue = [val]
-					);
+					if ( isMultiple ) {
+						controlValue.push( val );
+					} else {
+						controlValue = [val];
+						$target.closest( '.caxton-orderedselect-wrap' ).toggleClass( 'caxton-orderedselect-open' );
+					}
 					props.onChange( controlValue.join( delimiter ) );
 				}
 			},
