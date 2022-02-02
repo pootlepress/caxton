@@ -300,8 +300,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 		fieldAttrType({type}) {
 			const attrTypeByFieldType = {
-//				'number': 'number',
-//				'range': 'number',
+				'number': ['number', 'string'],
+				'range': ['number', 'string'],
 			};
 
 			if ( attrTypeByFieldType[ type ] ) {
