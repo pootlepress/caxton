@@ -44,17 +44,26 @@ class Caxton_Public{
 	}
 
 	/**
+	 * Registers Caxton scripts
+	 */
+	public function register_scripts() {
+		$ver = $this->version;
+		$assets = $this->url . 'assets';
+
+		wp_register_style( 'caxton-front', "$assets/front.css", [], $ver );
+		wp_register_script( 'caxton-utils', "$assets/caxton-utils.min.js", [], $ver, 'in_footer' );
+
+		$this->localize();
+	}
+
+	/**
 	 * Adds front end stylesheet and js
 	 * @action wp_enqueue_scripts
 	 */
 	public function enqueue() {
-		$ver = $this->version;
-		$assets = $this->url . 'assets';
+		wp_enqueue_style( 'caxton-front' );
+		wp_enqueue_script( 'caxton-utils' );
 
-		wp_enqueue_style( 'caxton-front', "$assets/front.css", [], $ver );
-		wp_enqueue_script( 'caxton-utils', "$assets/caxton-utils.min.js", [], $ver, 'in_footer' );
-
-		$this->localize();
 		$this->enqueue_compat();
 	}
 
@@ -79,34 +88,12 @@ class Caxton_Public{
 			[
 				'render_callback' => [ $this, 'post_grid' ],
 				'supports'        => [],
+				'script'          => 'caxton-front',
+				'style'           => 'caxton-utils',
 			]
 		);
-
-
-		function my_plugin_render_block_latest_post( $attributes ) {
-			$recent_posts = wp_get_recent_posts( array(
-				'numberposts' => 1,
-				'post_status' => 'publish',
-			) );
-			if ( count( $recent_posts ) === 0 ) {
-				return 'No posts';
-			}
-			$post = $recent_posts[ 0 ];
-			$post_id = $post['ID'];
-			return sprintf(
-				'<a class="wp-block-my-plugin-latest-post" href="%1$s">%2$s</a>',
-				esc_url( get_permalink( $post_id ) ),
-				esc_html( get_the_title( $post_id ) )
-			);
-		}
-
-		register_block_type(
-			'my-plugin/latest-post', array(
-				'render_callback' => 'my_plugin_render_block_latest_post',
-				'supports'        => [],
-			)
-		);
 	}
+
 
 	public function post_grid( $block ) {
 		$order = ! empty( $block['order'] ) ? explode( '/', $block['order'] ) : [ 'date', 'desc' ];

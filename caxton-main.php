@@ -85,7 +85,6 @@ class Caxton {
 		add_action( 'block_categories_all', array( $this->admin, 'block_categories' ), 5 );
 		add_action( 'rest_api_init', array( $this->admin, 'rest_api_init' ) );
 		add_action( 'wp_ajax_caxton_posts', array( $this->admin, 'posts' ) );
-
 	}
 
 	/**
@@ -98,6 +97,6 @@ class Caxton {
 		//Enqueue front end JS and CSS
 		add_action( 'wp_enqueue_scripts',	array( $this->public, 'enqueue' ) );
 		add_action( 'init',	array( $this->public, 'register_blocks' ) );
-
+		add_action( 'init',	array( $this->public, 'register_scripts' ) );
 	}
 }
