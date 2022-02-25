@@ -21,7 +21,9 @@
 	/**
 	 * @var FS_Plugin_Tag $update
 	 */
-	$update = $fs->get_update( false, false, WP_FS__TIME_24_HOURS_IN_SEC / 24 );
+	$update = $fs->has_release_on_freemius() ?
+        $fs->get_update( false, false, WP_FS__TIME_24_HOURS_IN_SEC / 24 ) :
+        null;
 
 	if ( is_object($update) ) {
 		/**
@@ -44,6 +46,7 @@
     $site                   = $fs->get_site();
     $name                   = $user->get_name();
     $license                = $fs->_get_license();
+    $is_license_foreign     = ( is_object( $license ) && $user->id != $license->user_id );
     $is_data_debug_mode     = $fs->is_data_debug_mode();
     $is_whitelabeled        = $fs->is_whitelabeled();
     $subscription           = ( is_object( $license ) ?
@@ -59,6 +62,10 @@
 	if ( $has_paid_plan ) {
         $fs->_add_license_activation_dialog_box();
 	}
+
+	if ( $fs->should_handle_user_change() ) {
+        $fs->_add_email_address_update_dialog_box();
+    }
 
     $ids_of_installs_activated_with_foreign_licenses = $fs->should_handle_user_change() ?
         $fs->get_installs_ids_with_foreign_licenses() :
@@ -84,12 +91,15 @@
 		) );
 	}
 
-	$payments = $fs->_fetch_payments();
+    $show_billing = ( ! $is_whitelabeled && ! $fs->apply_filters( 'hide_billing_and_payments_info', false ) );
+    if ( $show_billing ) {
+        $payments = $fs->_fetch_payments();
 
-    $show_billing = ( ! $is_whitelabeled && is_array( $payments ) && 0 < count( $payments ) );
+        $show_billing = ( is_array( $payments ) && 0 < count( $payments ) );
+    }
 
 
-	$has_tabs = $fs->_add_tabs_before_content();
+    $has_tabs = $fs->_add_tabs_before_content();
 
 	if ( $has_tabs ) {
 		$query_params['tabs'] = 'true';
@@ -138,6 +148,7 @@
             $install     = $fs->get_install_by_blog_id( $site_info['blog_id'] );
             $view_params = array(
                 'freemius' => $fs,
+                'user'     => $fs->get_user(),
                 'license'  => $license,
                 'site'     => $site_info,
                 'install'  => $install,
@@ -364,7 +375,7 @@
 
 										$profile   = array();
 
-										if ( ! $is_whitelabeled ) {
+    									if ( ! $is_whitelabeled ) {
                                             $profile[] = array(
                                                 'id'    => 'user_name',
                                                 'title' => fs_text_inline( 'Name', 'name', $slug ),
@@ -433,11 +444,11 @@
 											'value' => $fs->get_plugin_version()
 										);
 
-										if ( $is_premium && ! $is_whitelabeled ) {
+										if ( ! fs_is_network_admin() && $is_premium && ! $is_whitelabeled ) {
 										    $profile[] = array(
                                                 'id'    => 'beta_program',
                                                 'title' => '',
-                                                'value' => $user->is_beta
+                                                'value' => $site->is_beta
                                             );
                                         }
 
@@ -643,7 +654,7 @@
 															<?php endif ?>
 															<?php
 														elseif ( in_array( $p['id'], array( 'license_key', 'site_secret_key' ) ) ) : ?>
-                                                            <?php if ( ! $is_whitelabeled ) : ?>
+                                                            <?php if ( ! $is_whitelabeled && ( 'site_secret_key' === $p['id'] || ! $is_license_foreign ) ) : ?>
                                                                 <button class="button button-small fs-toggle-visibility"><?php fs_esc_html_echo_x_inline( 'Show', 'verb', 'show', $slug ) ?></button>
                                                             <?php endif ?>
                                                             <?php if ('license_key' === $p['id']) : ?>
@@ -656,6 +667,7 @@
 																'user_name'
 															) ) )
 														) : ?>
+                                                            <?php if ( 'email' !== $p['id'] || ! fs_is_network_admin() ) : ?>
 															<form action="<?php echo $fs->_get_admin_page_url( 'account' ) ?>" method="POST"
 															      onsubmit="var val = prompt('<?php echo esc_attr( sprintf(
                                                                       /* translators: %s: User's account property (e.g. name, email) */
@@ -666,9 +678,10 @@
 																<input type="hidden" name="fs_<?php echo $p['id'] ?>_<?php echo $fs->get_unique_affix() ?>"
 																       value="">
 																<?php wp_nonce_field( 'update_' . $p['id'] ) ?>
-																<input type="submit" class="button button-small"
+																<input type="submit" class="button button-small <?php if ( 'email' === $p['id'] ) echo 'button-edit-email-address' ?>"
 																       value="<?php echo fs_esc_attr_x_inline( 'Edit', 'verb', 'edit', $slug ) ?>">
 															</form>
+                                                            <?php endif ?>
                                                         <?php elseif ( 'user_id' === $p['id'] && ! empty( $ids_of_installs_activated_with_foreign_licenses ) ) : ?>
                                                                 <input id="fs_change_user" type="submit" class="button button-small"
                                                                        value="<?php echo fs_esc_attr_inline( 'Change User', 'change-user', $slug ) ?>">
@@ -728,12 +741,30 @@
                                     <div class="fs-table-body">
                                         <table class="widefat">
                                             <?php
+                                                $current_blog_id = get_current_blog_id();
+
                                                 foreach ( $site_view_params as $view_params ) {
                                                     fs_require_template(
                                                     	'account/partials/site.php',
 	                                                    $view_params
                                                     );
-                                            } ?>
+                                                }
+
+                                                /**
+                                                 * It's possible for the `Freemius::switch_to_blog()` method to be called within the `site.php` template and this changes the Freemius instance's context, so this check is for restoring the previous context based on the previously retrieved site.
+                                                 *
+                                                 * @author Leo Fajardo (@leorw)
+                                                 * @since 2.5.0
+                                                 */
+                                                $current_install = $fs->get_site();
+
+                                                if (
+                                                    is_object( $site ) &&
+                                                    ( ! is_object( $current_install ) || $current_install->id != $site->id )
+                                                ) {
+                                                    $fs->switch_to_blog( $current_blog_id, $site, true );
+                                                }
+                                            ?>
                                         </table>
                                     </div>
                                 </div>
@@ -837,7 +868,7 @@
 
 						<?php
 							if ( $show_billing ) {
-								$view_params = array( 'id' => $VARS['id'] );
+								$view_params = array( 'id' => $VARS['id'], 'payments' => $payments );
 								fs_require_once_template( 'account/billing.php', $view_params );
 								fs_require_once_template( 'account/payments.php', $view_params );
 							}
@@ -1093,4 +1124,4 @@
 		'module_slug'    => $slug,
 		'module_version' => $fs->get_plugin_version(),
 	);
-	fs_require_template( 'powered-by.php', $params );
+    fs_require_template( 'powered-by.php', $params );
