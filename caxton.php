@@ -4,14 +4,14 @@
  * Plugin URI: http://shramee.me/
  * Description: Caxton - blocks for Gutenberg
  * Author: PootlePress
- * Version: 1.27.0
+ * Version: 1.30.0
  * Author URI: https://pootlepress.com/
  * @developer shramee <shramee.srivastav@gmail.com>
  * TACHYONS v4.9.0 | http://tachyons.io - MIT License
  */
 function caxton_init() {
 	if ( function_exists( 'register_block_type' ) ) {
-		define( 'CAXTON_VERSION', '1.27.0' );
+		define( 'CAXTON_VERSION', '1.30.0' );
 		/** Plugin variables */
 		require 'inc/vars.php';
 		/** Plugin admin class */
