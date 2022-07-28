@@ -213,8 +213,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				colorStyle = 'background-color:{{Background color}};{{Gradient type}}',
 				imgStyle = '{{Background image}}{{Background image position}}{{Background parallax}}',
 				tpl =
-						'<div class="absolute absolute--fill cover bg-center" style="' + colorStyle + imgStyle + '"></div>' +
-						'<div class="absolute absolute--fill" style="' + colorStyle + '{{Background colors opacity}}"></div>';
+					'<div class="absolute absolute--fill cover bg-center" style="' + colorStyle + imgStyle + '"></div>' +
+					'<div class="absolute absolute--fill" style="' + colorStyle + '{{Background colors opacity}}"></div>';
 
 			fields[id] = Object.assign( { section: 'Background', tpl }, fields[id] );
 
@@ -864,6 +864,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			panelProps.className += `caxton-section caxton-section-${id.toLowerCase().replace( /[^0-z]/g, '-' )}`;
 
 			panelFields = th.renderFields( th.sectionsFields[id], id );
+
+			if ( ! panelFields.filter( i => i ).length ) {
+				return '';
+			}
 
 			if ( '_caxtonDefaultSection_' === id ) {
 				return el( 'div', {className: 'components-panel__body is-opened'}, panelFields );
