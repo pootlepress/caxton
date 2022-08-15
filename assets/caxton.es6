@@ -721,7 +721,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			]
 			return el( components.RadioControl, fieldProps );
 		}
-
+		
 		AlignmentToolbarInit(field, index) {
 			const props = this.fieldProps( field, index );
 
@@ -769,7 +769,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.wideControlsEnabled = true;
 
 			return el(
-				components.Toolbar,
+				components.ToolbarGroup,
 				props
 			)
 		}
@@ -806,7 +806,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.wideControlsEnabled = true;
 
 			return el(
-				components.Toolbar,
+				components.ToolbarGroup,
 				props
 			)
 		}
@@ -843,7 +843,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.wideControlsEnabled = true;
 
 			return el(
-				components.Toolbar,
+				components.ToolbarGroup,
 				props
 			)
 		}
@@ -851,7 +851,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		// endregion
 
 		renderPanel(id) {
-			const fields = this.fields;
 			let panelProps = {};
 			let panelFields;
 			const th = this;
@@ -902,6 +901,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 				functionSuffix = 'FieldEl';
 			}
 
+			if ( functionSuffix === 'ToolbarInit' ) {
+				section = "_caxtonDefaultSection_";
+			}
+
 			for ( let i = 0; i < fields.length; i ++ ) {
 				const f = fields[i];
 				let func;
@@ -919,7 +922,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 					if ( ! f.hide ) {
 						if ( ! section ) {
 							if ( ! panelsRendered.includes(f.section) ) {
-								console.log( panelsRendered, f.section );
 								panelsRendered.push( f.section );
 								els.push( this.renderPanel( f.section ) );
 							}
