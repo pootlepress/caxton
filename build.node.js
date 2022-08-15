@@ -13,4 +13,8 @@ browserify( './assets/caxton.es6' )
 	.bundle()
 	.pipe( fs.createWriteStream( './assets/caxton.min.js' ) );
 
-console.log( 'Compiled' );
+browserify( './assets/caxton-utils.es6' )
+	.transform( 'babelify', {presets: ['@babel/preset-env']} )
+	.transform( 'uglifyify' )
+	.bundle()
+	.pipe( fs.createWriteStream( './assets/caxton-utils.min.js' ) );
