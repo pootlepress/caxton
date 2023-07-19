@@ -98,8 +98,8 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 == Changelog ==
 
 Version 1.30.1
-* 2023-07-07
-* Dev - Update freemius SDK.
+* 2023-07-19
+* Dev - Remove freemius SDK.
 
 Version 1.30.0
 * 2022-02-27
