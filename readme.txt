@@ -3,7 +3,7 @@
 Contributors: pootlepress, shramee, jamie
 Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
-Tested up to: 5.9.1
+Tested up to: 6.3
 Requires PHP: 5.6.0
 Stable tag: 1.30.1
 License: GPLv2 or later
