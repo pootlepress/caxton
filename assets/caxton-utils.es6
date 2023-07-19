@@ -6,21 +6,21 @@
  */
 
 // region UX Utilities
-var CaxtonUtils = {
+const CaxtonUtils = {
 	closest    : function ( el, predicate ) {
 		return predicate( el ) ? el : (
 			el && CaxtonUtils.closest( el.parentNode, predicate )
 		);
 	},
 	watchMouse: function ( selector ) {
-		var monitorMouse = document.querySelectorAll( selector );
+		let monitorMouse = document.querySelectorAll( selector );
 
 		if ( 0 < monitorMouse.length ) {
 
 			document.body.style.setProperty( '--cxp-msx', 0 );
 			document.body.style.setProperty( '--cxp-msy', 0 );
 			document.addEventListener( 'mousemove', function ( e ) {
-				var
+				let
 					x = ( 2 * e.pageX / window.innerWidth ) - 1,
 					y = ( 2 * e.pageY / window.innerHeight ) - 1,
 					el = e.target;
@@ -32,14 +32,14 @@ var CaxtonUtils = {
 	watchScrollSetup: function () {
 		if ( this.setupDone ) return;
 		console.log( 'scroll setup' );
-		var ticking = false;
+		let ticking = false;
 		this.setupDone = true;
 		CaxtonUtils.watchScrollSetup
-		var watchScroll = function () {
-			var docHeight = window.innerHeight;
-			for ( var i = 0; i < CaxtonUtils.watchScrollSetup.targets.length; ++ i ) {
-				var el = CaxtonUtils.watchScrollSetup.targets[i];
-				var
+		let watchScroll = function () {
+			let docHeight = window.innerHeight;
+			for ( let i = 0; i < CaxtonUtils.watchScrollSetup.targets.length; ++ i ) {
+				let el = CaxtonUtils.watchScrollSetup.targets[i];
+				let
 					boundingBox = el.getBoundingClientRect(),
 					height      = boundingBox.height,
 					top         = boundingBox.top;
@@ -76,15 +76,15 @@ var CaxtonUtils = {
 		}
 	},
 	each: function( selector, callback ) {
-		var els = document.querySelectorAll( selector );
-		for ( var i = 0; i < els.length; i ++ ) {
+		let els = document.querySelectorAll( selector );
+		for ( let i = 0; i < els.length; i ++ ) {
 			callback.apply( els[i], [ els[i], i ] );
 		}
 	},
 	delegate: function( eventName, elementSelector, handler ) {
 		document.addEventListener( eventName, function ( e ) {
 			// loop parent nodes from the target to the delegation node
-			for ( var target = e.target; target && target != this; target = target.parentNode ) {
+			for ( let target = e.target; target && target != this; target = target.parentNode ) {
 				if ( target.matches( elementSelector ) ) {
 					handler.call( target, e );
 					break;
@@ -93,23 +93,24 @@ var CaxtonUtils = {
 		}, false );
 	},
 	loadFonts: function() {
-		var caxtonFontsToLoad = [];
+		let caxtonFontsToLoad = [];
 		CaxtonUtils.each( '[style*="font-family"]', function () {
-			var font = this.style.fontFamily;
+			let font = this.style.fontFamily;
 			if ( font && -1 === font.indexOf( ',' ) && caxtonFontsToLoad.indexOf( font ) === - 1 ) {
 				caxtonFontsToLoad.push( font );
 			}
 		} );
 		if ( caxtonFontsToLoad.length ) {
-			var gfUrl = 'https://fonts.googleapis.com/css?family=' + caxtonFontsToLoad.join( '|' ) + '#.css';
+			let gfUrl = 'https://fonts.googleapis.com/css?family=' + caxtonFontsToLoad.join( '|' ) + '#.css';
 			CaxtonUtils.asset( gfUrl );
 		}
 	},
 	loadedAssets: {}, // Loaded assets record
 	asset: function ( _url, callback ) {
-		var head = document.head, el;
+		let el;
+		const head = document.head;
 
-		url = _url.indexOf( '//' ) > - 1 ? _url : caxtonUtilProps.assetsUrl + _url;
+		const url = _url.indexOf( '//' ) > - 1 ? _url : caxtonUtilProps.assetsUrl + _url;
 
 
 		if ( ! callback ) {
@@ -184,7 +185,7 @@ var CaxtonUtils = {
 		if ( document.querySelector( '.caxton-carousel-pending-setup' ) ) {
 			CaxtonUtils.addFlexslider( function () {
 				CaxtonUtils.each( '.caxton-carousel-pending-setup', function () {
-					var $t = jQuery( this );
+					let $t = jQuery( this );
 					$t.flexslider( {
 						move         : 1,
 						animation    : "slide",
@@ -207,11 +208,11 @@ var CaxtonUtils = {
 			return;
 		}
 
-		var styles     = {},
+		let styles     = {},
 				attributes = css.split( ';' );
 
-		for ( var i = 0; i < attributes.length; i ++ ) {
-			var entry = attributes[i].split( ':' );
+		for ( let i = 0; i < attributes.length; i ++ ) {
+			let entry = attributes[i].split( ':' );
 			styles[entry.splice( 0, 1 )[0]] = entry.join( ':' );
 		}
 		if ( this ) {
@@ -220,7 +221,7 @@ var CaxtonUtils = {
 					that.setAttribute( 'data-default-css', that.getAttribute( 'style' ) );
 				}
 			}
-			for ( var prop in styles ) {
+			for ( let prop in styles ) {
 				if ( prop && styles.hasOwnProperty( prop ) ) {
 					that.style[prop]=styles[prop];
 				}
@@ -231,7 +232,7 @@ var CaxtonUtils = {
 	},
 	responsiveStyling: function ( width ) {
 		width = isNaN( width ) ? window.innerWidth : width;
-		var body = document.querySelector( 'body' );
+		let body = document.querySelector( 'body' );
 		if ( width > 1024 ) {
 			// Desktop
 			body.setAttribute( 'data-rwd', 'desktop' );
@@ -269,7 +270,7 @@ var CaxtonUtils = {
 			if ( ! selector ) {
 				return el.parentElement;
 			}
-			var target = el.parentElement.querySelector( selector );
+			let target = el.parentElement.querySelector( selector );
 			if ( ! target ) {
 				target = document.querySelector( selector );
 			}
@@ -277,7 +278,7 @@ var CaxtonUtils = {
 		}
 
 		CaxtonUtils.delegate( 'click', '[data-toggle-class]', function( e ) {
-			var el          = this,
+			let el          = this,
 					target      = findTarget( el, el.getAttribute( 'data-toggle-class' ) ),
 					toggleClass = el.getAttribute( 'data-toggle-classname' ) || 'toggle';
 
@@ -301,3 +302,5 @@ var CaxtonUtils = {
 CaxtonUtils._stylesManager();
 CaxtonUtils._interactionsManager();
 CaxtonUtils.ready( CaxtonUtils.newContentManager );
+
+window.CaxtonUtils = CaxtonUtils;
