@@ -5,3 +5,4 @@ package-lock.json
 build/
 Icon?
 inc/wp-sdk/assets/img/woobuilder-blocks.png
+.wp-env.json

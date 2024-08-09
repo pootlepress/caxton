@@ -5,7 +5,7 @@ Tags: gutenberg, gutenberg blocks, blocks, posts grid
 Requires at least: 4.9.0
 Tested up to: 6.3
 Requires PHP: 5.6.0
-Stable tag: 1.30.1
+Stable tag: 1.30.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,10 @@ With WordPress including Gutenberg in core in WP v5. We will be adding more and 
 7. Book block divider on column
 
 == Changelog ==
+
+Version 1.30.2
+* 2024-08-08
+* Fix - Issue #200 Security update.
 
 Version 1.30.1
 * 2023-07-19

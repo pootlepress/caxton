@@ -120,7 +120,7 @@ class Caxton_Public{
 
 		$classes = "caxton-posts-grid caxton-grid";
 
-		$classes .= " caxton-$block[imagesType]-images";
+		$classes .= " caxton-" . sanitize_html_class($block['imagesType']) . "-images";
 
 		if ( ! empty( $block['titleBelowImage'] ) )	$classes .= ' caxton-title-below-image';
 
