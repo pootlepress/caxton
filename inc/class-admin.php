@@ -62,11 +62,11 @@ class Caxton_Admin {
 		$url   = $this->url . 'assets/';
 		Caxton::instance()->public->enqueue();
 
-//		wp_enqueue_script( "$token-components", $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
-		wp_enqueue_script( "caxton", $url . 'caxton.min.js', array( 'wp-i18n', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api', 'wp-block-library', 'caxton-utils' ) );
+//		wp_enqueue_script( '$token-components', $url . 'assets/caxton-components.build.js', array( 'wp-blocks' ) );
+		wp_enqueue_script( 'caxton', $url . 'caxton.min.js', array( 'wp-i18n', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api', 'wp-block-library', 'caxton-utils' ) );
 
-		wp_enqueue_script( "caxton-blocks", $url . 'blocks.min.js', array( "caxton" ) );
-		wp_enqueue_style( "caxton-blocks", $url . 'blocks.css' );
+		wp_enqueue_script( 'caxton-blocks', $url . 'blocks.min.js', array( 'caxton' ) );
+		wp_enqueue_style( 'caxton-blocks', $url . 'blocks.css' );
 
 		$this->localize_scripts( $url );
 
@@ -102,7 +102,7 @@ class Caxton_Admin {
 
 		$post_id = filter_input( INPUT_GET, 'post' );
 
-		wp_localize_script( "caxton", 'caxton', [
+		wp_localize_script( 'caxton', 'caxton', [
 			'post'           => $post_id,
 			'content_vars'   => self::get_content_vars( $post_id ),
 			'postCategories' => $categories,

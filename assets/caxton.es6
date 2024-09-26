@@ -628,12 +628,18 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			const props = this.fieldProps( field, index );
 			const that = this;
 			const defaultIcons = [];
+			let allIcons;
+			if ( typeof caxtonFAIconsData === 'object' && caxtonFAIconsData.length ) {
+				allIcons = caxtonFAIconsData;
+			} else {
+				allIcons = [];
+			}
 			props.title = props.label;
 
 			props.className = 'caxton-icon-picker-panel';
 
-			for ( let i = 0; i < 100; i ++ ) {
-				let ico = caxtonFAIconsData[i];
+			for ( let i = 0; i < Math.min( allIcons.length, 100); i ++ ) {
+				let ico = allIcons[i];
 				defaultIcons.push( getFAIconSvg( ico.n, {key: i, className: 'icon-choice', 'data-icon': ico.n}, 'i' ) );
 			}
 			defaultIcons.push( el( 'p', {key: 'helptext'}, 'Search icons for more from all Font Awesome icons' ) );
@@ -660,8 +666,8 @@ function initCaxton( $, blocks, el, i18n, components ) {
 							searchTerm = searchTerm.toLowerCase();
 							$wrp = $( target ).siblings( '.caxton-matching-icons' );
 							$wrp.html( '' );
-							for ( let i = 0; iconsMatched < 50 && i < caxtonFAIconsData.length; i ++ ) {
-								const ico = caxtonFAIconsData[i];
+							for ( let i = 0; iconsMatched < 50 && i < allIcons.length; i ++ ) {
+								const ico = allIcons[i];
 								if ( ico.n.includes(searchTerm) ) {
 									iconsMatched ++;
 									$wrp.append( `<i data-icon="${ico.n}" class="icon-choice">` + getFAIconSvg( ico.n, false ) + '</i>' )
@@ -715,7 +721,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			]
 			return el( components.RadioControl, fieldProps );
 		}
-
+		
 		AlignmentToolbarInit(field, index) {
 			const props = this.fieldProps( field, index );
 
@@ -763,7 +769,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.wideControlsEnabled = true;
 
 			return el(
-				components.Toolbar,
+				components.ToolbarGroup,
 				props
 			)
 		}
@@ -800,7 +806,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.wideControlsEnabled = true;
 
 			return el(
-				components.Toolbar,
+				components.ToolbarGroup,
 				props
 			)
 		}
@@ -837,7 +843,7 @@ function initCaxton( $, blocks, el, i18n, components ) {
 			props.wideControlsEnabled = true;
 
 			return el(
-				components.Toolbar,
+				components.ToolbarGroup,
 				props
 			)
 		}
@@ -845,7 +851,6 @@ function initCaxton( $, blocks, el, i18n, components ) {
 		// endregion
 
 		renderPanel(id) {
-			const fields = this.fields;
 			let panelProps = {};
 			let panelFields;
 			const th = this;
@@ -894,6 +899,10 @@ function initCaxton( $, blocks, el, i18n, components ) {
 
 			if ( ! functionSuffix ) {
 				functionSuffix = 'FieldEl';
+			}
+
+			if ( functionSuffix === 'ToolbarInit' ) {
+				section = "_caxtonDefaultSection_";
 			}
 
 			for ( let i = 0; i < fields.length; i ++ ) {
@@ -1447,8 +1456,7 @@ jQuery( $ => {
 		);
 	}, 2500 );
 } );
-
 setTimeout( function() {
 	CaxtonUtils.asset( 'icons-data.js' );
 	CaxtonUtils.asset( 'icons-svg.js' );
-}, 2500 );
+}, 2000 );

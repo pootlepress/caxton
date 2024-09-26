@@ -52,6 +52,7 @@ class Caxton_Public{
 
 		wp_register_style( 'caxton-front', "$assets/front.css", [], $ver );
 		wp_register_script( 'caxton-utils', "$assets/caxton-utils.min.js", [], $ver, 'in_footer' );
+		wp_register_style( 'caxton-flexslider', "$assets/flexslider.css", [], $ver );
 
 		$this->localize();
 	}
